@@ -1,2 +1,1 @@
-# atb-custom.ecommerce.admin
-Admin App
+# Admin app [to be changed]
