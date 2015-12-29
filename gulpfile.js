@@ -11,6 +11,9 @@ var elixir = require('laravel-elixir');
  |
  */
 
-elixir(function(mix) {
-    mix.sass('app.scss');
+elixir(function (mix) {
+    mix.sass('app.scss', 'public/assets/css/app.css');
+    mix.copy('node_modules/material-design-lite/material.min.css', 'public/assets/css/material.min.css');
+    mix.copy('node_modules/material-design-lite/material.min.js', 'public/assets/js/material.min.js');
+    //mix.copy('resources/assets/images', 'public/assets/images');
 });
