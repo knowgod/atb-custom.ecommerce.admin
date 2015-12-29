@@ -30,4 +30,8 @@ class UserController extends Controller {
     public function create(){
         return view('user.create');
     }
+
+    public function update(){
+        return 'updated';
+    }
 }
