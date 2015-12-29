@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('user_group', 100);
             $table->string('register_source', 100);
 
+            $table->integer('permission_group_id', 10);
+
             $table->rememberToken();
             $table->timestamps();
         });
