@@ -16,10 +16,10 @@ Route::group(['middleware' => 'web'], function () {
 });
 
 Route::group(['middleware' => 'auth'], function (){
-
     Route::group(['namespace' => 'Admin'], function()
     {
         Route::get('/', 'DashboardController@index');
+        Route::get('/register', function(){ return 'user registration is here'; });
         Route::get('/profile', 'ProfileController@index');
         Route::get('/dashboard', 'DashboardController@index');
     });
@@ -31,9 +31,5 @@ Route::group(['middleware' => 'auth'], function (){
         Route::get('user/create', 'UserController@create');
     });
 });
-
-
-
-//Route::get('/register', function(){ return 'user registration is here'; });
 
 //Route::get('/profile', 'ProfileController@index');
