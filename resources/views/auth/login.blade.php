@@ -32,12 +32,6 @@
                 </button>
             </div>
         </form>
-
-        <div class="mdl-card__menu">
-            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                <i class="material-icons">share</i>
-            </button>
-        </div>
     </div>
 
     <a class="btn btn-link" href="{{ url('/auth/social/login/google') }}">Login with Google</a>
