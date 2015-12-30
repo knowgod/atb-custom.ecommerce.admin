@@ -2,7 +2,9 @@
 html, body {
     font-family: 'Roboto', 'Helvetica', sans-serif;
 }
-
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+}
 .main-avatar {
     width: 48px;
     height: 48px;
@@ -102,3 +104,22 @@ html, body {
     max-width: 1080px;
 }
 
+.login-card-wide.mdl-card {
+    max-width: 512px;
+    margin: 100px auto 20px auto;
+    .login-card-bg{
+        background: url('../images/nume_welcome.png') center / cover;
+    }
+    .mdl-card__title {
+        color: #fff;
+        height: 176px;
+        background: -webkit-linear-gradient(to top, rgba(0, 0, 0, .4), rgba(0, 0, 0, 0) 40%);
+        background: linear-gradient(to top, rgba(0, 0, 0, .4), rgba(0, 0, 0, 0) 40%);
+    }
+    .mdl-card__actions{
+        text-align: right;
+        .btn-link{
+            margin-right: 10px;
+        }
+    }
+}

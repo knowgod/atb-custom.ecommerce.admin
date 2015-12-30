@@ -5,12 +5,10 @@
 </head>
 <body>
 
-<div class="main-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+<div class="main-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid main-content">
-            <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-                @yield('content')
-            </div>
+            @yield('content')
         </div>
     </main>
 </div>
