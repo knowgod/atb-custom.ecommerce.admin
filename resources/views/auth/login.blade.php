@@ -1,69 +1,45 @@
 @extends('layouts.auth')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
-                        {!! csrf_field() !!}
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input type="email" class="form-control" name="email" value="{{ old('email') }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input type="password" class="form-control" name="password">
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember"> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-sign-in"></i>Login
-                                </button>
-
-                                <a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
-                            </div>
-                        </div>
-                    </form>
-                    <div>
-                        <a class="btn btn-link" href="{{ url('/auth/social/login/google') }}">Login with google</a>
-                    </div>
-                </div>
+    <div class="login-card-wide mdl-card mdl-shadow--2dp">
+        <div class="login-card-bg">
+            <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">Welcome</h2>
             </div>
         </div>
+        <form autocomplete="off" class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
+            {!! csrf_field() !!}
+            <div class="mdl-card__supporting-text">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" name="email" type="email" id="login-card-email" value="" >
+                    <label class="mdl-textfield__label" for="login-card-email">E-Mail</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" name="password" type="password" id="login-card-password" value="">
+                    <label class="mdl-textfield__label" for="login-card-password">Password</label>
+                </div>
+                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="login-card-remember">
+                    <input type="checkbox" id="login-card-remember" name="remember" class="mdl-checkbox__input" checked>
+                    <span class="mdl-checkbox__label">Remember Me</span>
+                </label>
+            </div>
+
+            <div class="mdl-card__actions mdl-card--border">
+                <a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    Sign In
+                </button>
+            </div>
+        </form>
+
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">share</i>
+            </button>
+        </div>
     </div>
-</div>
+
+    <a class="btn btn-link" href="{{ url('/auth/social/login/google') }}">Login with Google</a>
+
 @endsection
