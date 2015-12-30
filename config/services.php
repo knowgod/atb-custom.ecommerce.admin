@@ -36,8 +36,8 @@ return [
     ],
 
     'google' => [
-        'client_id' => '174734986373-i2cf552os2l0ui4hmfbk66h43h0k3kuv.apps.googleusercontent.com',
-        'client_secret' => 'VIF83p_Rnn4W6aIq7oZ21FpX',
-        'redirect' => 'http://admin.atypical-ecommerce-app.dev:8080/auth/social/callback/google',
+        'client_id' => env('GOOGLE_OAUTH_CLIENT_ID', '174734986373-i2cf552os2l0ui4hmfbk66h43h0k3kuv.apps.googleusercontent.com'),
+        'client_secret' => env('GOOGLE_OAUTH_CLIENT_SECRET', 'VIF83p_Rnn4W6aIq7oZ21FpX'),
+        'redirect' => env('GOOGLE_OAUTH_CLIENT_REDIRECT_URL', 'http://admin.atypical-ecommerce-app.dev:8080/auth/social/callback/google')
     ],
 ];
