@@ -35,4 +35,9 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'google' => [
+        'client_id' => '174734986373-i2cf552os2l0ui4hmfbk66h43h0k3kuv.apps.googleusercontent.com',
+        'client_secret' => 'VIF83p_Rnn4W6aIq7oZ21FpX',
+        'redirect' => 'http://admin.atypical-ecommerce-app.dev:8080/auth/social/callback/google',
+    ],
 ];

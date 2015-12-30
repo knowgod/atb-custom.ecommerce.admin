@@ -58,6 +58,9 @@
                             </div>
                         </div>
                     </form>
+                    <div>
+                        <a class="btn btn-link" href="{{ url('/auth/social/login/google') }}">Login with google</a>
+                    </div>
                 </div>
             </div>
         </div>
