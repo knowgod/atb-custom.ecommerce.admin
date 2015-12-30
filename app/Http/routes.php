@@ -18,6 +18,9 @@ Route::group(['middleware' => 'web'], function (){
 
     Route::auth();
 
+    Route::get('auth/social/login/google', 'Auth\Social\GoogleController@redirectToProvider');
+    Route::get('auth/social/callback/google', 'Auth\Social\GoogleController@handleProviderCallback');
+
     Route::group(['middleware' => 'auth'], function (){
         Route::group(['namespace' => 'Admin'], function (){
             Route::get('dashboard', 'DashboardController@index');

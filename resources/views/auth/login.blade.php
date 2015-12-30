@@ -1,6 +1,7 @@
 @extends('layouts.auth')
 
 @section('content')
+
     <div class="login-card-wide mdl-card mdl-shadow--2dp">
         <div class="login-card-bg">
             <div class="mdl-card__title">
@@ -32,4 +33,7 @@
             </div>
         </form>
     </div>
+
+    <a class="btn btn-link" href="{{ url('/auth/social/login/google') }}">Login with Google</a>
+
 @endsection
