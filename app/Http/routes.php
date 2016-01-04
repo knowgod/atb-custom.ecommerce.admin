@@ -40,7 +40,9 @@ Route::group(['middleware' => 'web'], function (){
             Route::post('user/create', 'UserController@create');
 
             Route::get('user/view/{id}', 'UserController@view');
-            Route::get('user/update/{id}', 'UserController@update');
+
+            Route::get('user/update/id/{id}', 'UserController@showUpdateForm');
+            Route::post('user/update', 'UserController@update');
 
         });
     });

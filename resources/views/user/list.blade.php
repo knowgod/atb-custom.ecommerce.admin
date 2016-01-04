@@ -13,7 +13,9 @@
                             {{-- @Myroslav sample output like this: --}}
                             {{$user->firstname}}
                             {{$user->lastname}}
+                            <a href="<?php echo '/user/update/id/' . $user->id ?>">UPDATE USER</a>
                         </li>
+
                     @empty
                         <p>No users</p>
                     @endforelse

@@ -39,7 +39,7 @@ class UserController extends Controller {
      */
 
     public function create(Request $request){
-        $validator = $this->validator($request->all());
+        $validator = $this->createValidator($request->all());
 
         if ($validator->fails()){
             $this->throwValidationException(
@@ -58,8 +58,29 @@ class UserController extends Controller {
 
     }
 
-    public function update(){
-        return view('user.update');
+    public function update(Request $request){
+        $validator = $this->updateValidator($request->all());
+
+        if ($validator->fails()){
+            $this->throwValidationException(
+                    $request, $validator
+            );
+        }
+        $user = User::find($request->input('id'));
+
+        $user->fill(['firstname'       => $request->input('firstname'),
+                     'lastname'        => $request->input('lastname'),
+                     'email'           => $request->input('email'),
+                     'register_source' => 'manual',
+        ]);
+
+        if ($request->has('password')){
+            $user->password = bcrypt($request->input('password'));
+        }
+
+        $user->save();
+        return redirect($this->redirectTo);
+
     }
 
     public function delete(){
@@ -70,7 +91,15 @@ class UserController extends Controller {
         return view('user.create');
     }
 
-    protected function validator(array $data){
+    public function showUpdateForm(Request $request, $id){
+        $user = User::find($id);
+        if (!$user){
+            abort(404);
+        }
+        return view('user.update', array('user' => $user));
+    }
+
+    protected function createValidator(array $data){
         return Validator::make($data, [
                 'firstname' => 'required|max:255',
                 'lastname'  => 'required|max:255',
@@ -78,5 +107,18 @@ class UserController extends Controller {
                 'password'  => 'required|confirmed|min:6',
         ]);
     }
+
+    protected function updateValidator(array $data){
+        $rulesSet = [
+                'firstname' => 'required|max:255',
+                'lastname'  => 'required|max:255',
+        ];
+        if ($data['password']){
+            array_merge($rulesSet, ['password'  => 'required|confirmed|min:6']);
+        }
+
+        return Validator::make($data, $rulesSet);
+    }
+
 
 }
