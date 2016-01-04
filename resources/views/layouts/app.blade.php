@@ -14,10 +14,8 @@
         @include('layouts.shared.nav')
     </div>
     <main class="mdl-layout__content mdl-color--grey-100">
-        <div class="mdl-grid main-content">
-            <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-                @yield('content')
-            </div>
+        <div class="main-content">
+            @yield('content')
         </div>
     </main>
 </div>

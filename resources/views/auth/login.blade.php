@@ -23,8 +23,17 @@
                     <input type="checkbox" id="login-card-remember" name="remember" class="mdl-checkbox__input" checked>
                     <span class="mdl-checkbox__label">Remember Me</span>
                 </label>
+                @if ($errors->has('email'))
+                    <div class="mdl-color-text--red-500">
+                        {{ $errors->first('email') }}
+                    </div>
+                @endif
+                @if ($errors->has('password'))
+                    <div class="mdl-color-text--red-500">
+                        {{ $errors->first('password') }}
+                    </div>
+                @endif
             </div>
-
             <div class="mdl-card__actions mdl-card--border">
                 <a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
                 <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
@@ -34,6 +43,17 @@
         </form>
     </div>
 
-    <a class="btn btn-link" href="{{ url('/auth/social/login/google') }}">Login with Google</a>
+        <div class="login-card-google mdl-card mdl-shadow--2dp mdl-separator">
+            <div class="login-card-bg">
+                <img src="/assets/images/google_welcome.jpg" alt="" />
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="{{ url('/auth/social/login/google') }}">
+                    Login with Google
+                </a>
+            </div>
+        </div>
+
+
 
 @endsection

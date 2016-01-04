@@ -102,9 +102,10 @@ input:-webkit-autofill {
 
 .main-content {
     max-width: 1080px;
+    margin: 0 auto;
 }
 
-.login-card-wide.mdl-card {
+.login-card-wide.mdl-card{
     max-width: 512px;
     margin: 100px auto 20px auto;
     .login-card-bg{
@@ -121,5 +122,21 @@ input:-webkit-autofill {
         .btn-link{
             margin-right: 10px;
         }
+    }
+}
+
+.login-card-google.mdl-card{
+    max-width: 512px;
+    margin: 20px auto;
+    min-height: 20px;
+    .login-card-bg{
+        img{
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    }
+    .mdl-card__actions{
+        text-align: center;
     }
 }
