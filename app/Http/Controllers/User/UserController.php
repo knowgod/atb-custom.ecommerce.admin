@@ -17,13 +17,14 @@ use Illuminate\Http\Request;
 class UserController extends Controller {
 
     protected $redirectTo = '/user/list';
+    protected $_itemsPerPage = 10;
 
     public function __construct(){
     }
 
     public function index(){
-
-        return view('user.list');
+        $users = User::paginate($this->_itemsPerPage);
+        return view('user.list', array('users' => $users));
     }
 
     public function view(){
@@ -46,14 +47,13 @@ class UserController extends Controller {
             );
         }
         User::create(
-                ['firstname'         => $request->input('firstname'),
-                 'lastname'          => $request->input('lastname'),
-                 'email'             => $request->input('email'),
-                 'password'          => bcrypt($request->input('password')),
-                 'register_source'   => 'manual',
+                ['firstname'       => $request->input('firstname'),
+                 'lastname'        => $request->input('lastname'),
+                 'email'           => $request->input('email'),
+                 'password'        => bcrypt($request->input('password')),
+                 'register_source' => 'manual',
                 ]
         );
-
         return redirect($this->redirectTo);
 
     }
