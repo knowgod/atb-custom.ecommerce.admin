@@ -12,11 +12,16 @@
 */
 
 Route::group(['middleware' => 'web'], function (){
+
     Route::get('/', function (){
         return Redirect::to('dashboard');
     });
 
     Route::auth();
+
+    Route::get('register', function (){
+        return Redirect::to('dashboard'); //we are disabling a registration possibility
+    });
 
     Route::get('auth/social/login/google', 'Auth\Social\GoogleController@redirectToProvider');
     Route::get('auth/social/callback/google', 'Auth\Social\GoogleController@handleProviderCallback');
@@ -24,16 +29,19 @@ Route::group(['middleware' => 'web'], function (){
     Route::group(['middleware' => 'auth'], function (){
         Route::group(['namespace' => 'Admin'], function (){
             Route::get('dashboard', 'DashboardController@index');
-            Route::get('register', function (){
-                return 'user registration is here';
-            });
             Route::get('profile', 'ProfileController@index');
         });
 
+
         Route::group(['namespace' => 'User'], function (){
+
             Route::get('user/list', 'UserController@index');
+            Route::get('user/create', 'UserController@showCreateForm');
+            Route::post('user/create', 'UserController@create');
+
             Route::get('user/view/{id}', 'UserController@view');
-            Route::get('user/create', 'UserController@create');
+            Route::get('user/update/{id}', 'UserController@update');
+
         });
     });
 });

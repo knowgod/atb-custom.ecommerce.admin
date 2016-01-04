@@ -12,14 +12,17 @@ use App\User;
 use App\Http\Requests;
 use Validator;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class UserController extends Controller {
 
+    protected $redirectTo = '/user/list';
+
     public function __construct(){
-        //$this->middleware('auth');
     }
 
     public function index(){
+
         return view('user.list');
     }
 
@@ -27,11 +30,53 @@ class UserController extends Controller {
         return view('user.view');
     }
 
-    public function create(){
-        return view('user.create');
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+
+    public function create(Request $request){
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()){
+            $this->throwValidationException(
+                    $request, $validator
+            );
+        }
+        User::create(
+                ['firstname'         => $request->input('firstname'),
+                 'lastname'          => $request->input('lastname'),
+                 'email'             => $request->input('email'),
+                 'password'          => bcrypt($request->input('password')),
+                 'register_source'   => 'manual',
+                ]
+        );
+
+        return redirect($this->redirectTo);
+
     }
 
     public function update(){
-        return 'updated';
+        return view('user.update');
     }
+
+    public function delete(){
+        return 'delete action';
+    }
+
+    public function showCreateForm(){
+        return view('user.create');
+    }
+
+    protected function validator(array $data){
+        return Validator::make($data, [
+                'firstname' => 'required|max:255',
+                'lastname'  => 'required|max:255',
+                'email'     => 'required|email|max:255|unique:users',
+                'password'  => 'required|confirmed|min:6',
+        ]);
+    }
+
 }
