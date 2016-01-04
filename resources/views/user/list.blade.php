@@ -1,28 +1,43 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">User Account List</div>
-                    @forelse($users as $user)
-                        <li>
-                            <?php var_dump($user['attributes']) ?>
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col mdl-grid ">
 
-                            {{-- @Myroslav sample output like this: --}}
-                            {{$user->firstname}}
-                            {{$user->lastname}}
-                            <a href="<?php echo '/user/update/id/' . $user->id ?>">UPDATE USER</a>
-                        </li>
+            <table class="mdl-data-table wide-table mdl-data-table--selectable mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">User</th>
+                    <th class="mdl-data-table__cell--non-numeric">Email</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($users as $user)
+                    <tr>
+                        <td class="mdl-data-table__cell--non-numeric">{{$user->firstname}} {{$user->lastname}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{$user->email}}</td>
+                        <td>
+                            <a class="mdl-js-button mdl-button--primary" href="<?php echo '/user/update/id/' . $user->id ?>">EDIT</a>
+                        </td>
+                    </tr>
 
-                    @empty
-                        <p>No users</p>
-                    @endforelse
-                </div>
+                @empty
+                    <tr>
+                        <td colspan="3">No users</td>
 
+                    </tr>
+                @endforelse
+
+                </tbody>
+            </table>
+
+        </div>
+        <div class="mdl-cell mdl-cell--12-col mdl-grid ">
+            <div class="pager mdl-shadow--2dp">
                 {!! $users->render() !!}
             </div>
         </div>
     </div>
+
 @endsection
