@@ -8,9 +8,8 @@
             <span class="visuallyhidden">Accounts</span>
         </button>
         <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
-            <li class="mdl-menu__item">hello@example.com</li>
-            <li class="mdl-menu__item">info@example.com</li>
-            <li class="mdl-menu__item"><i class="material-icons">add</i>Add another account...</li>
+            <li class="mdl-menu__item" onclick="location.href='{{ url('/settings') }}';">Settings</li>
+            <li class="mdl-menu__item" onclick="location.href='{{ url('/logout') }}';">Logout</li>
         </ul>
     </div>
 </header>
