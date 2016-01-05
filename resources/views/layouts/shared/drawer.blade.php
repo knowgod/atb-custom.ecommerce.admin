@@ -1,7 +1,9 @@
 <header class="main-drawer-header">
-    <img src="/assets/images/user.jpg" class="main-avatar">
+    @if(Request::user()->google_avatar_img)
+    <img src="<?php echo Request::user()->google_avatar_img ?>" class="main-avatar">
+    @endif
     <div class="main-avatar-dropdown">
-        <span>hello@example.com</span>
+        <span class="max-width-175"><?php echo Request::user()->email; ?></span>
         <div class="mdl-layout-spacer"></div>
         <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
             <i class="material-icons" role="presentation">arrow_drop_down</i>

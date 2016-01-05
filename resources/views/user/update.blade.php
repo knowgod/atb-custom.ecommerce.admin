@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Update User')
+
 @section('content')
 
     <div class="mdl-grid">

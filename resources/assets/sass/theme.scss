@@ -11,12 +11,21 @@ input:-webkit-autofill {
     height: 48px;
     border-radius: 24px;
 }
+.max-width-175{
+    max-width: 175px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .mdl-button {
     &.mdl-button--accent,
     &.mdl-button--icon,
     &.mdl-button--fab{
         color: $primary-color-text!important;
     }
+}
+
+.mdl-textfield{
+    max-width: 100%;
 }
 
 .main-layout {

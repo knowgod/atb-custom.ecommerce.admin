@@ -1,17 +1,13 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container spark-screen">
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+@section('title', 'Dashboard')
 
-                <div class="panel-body">
-                    You are logged in!
-                </div>
-            </div>
+@section('content')
+
+    <div class="mdl-grid">
+        <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+            <h3>Dashboard</h3>
         </div>
     </div>
-</div>
+
 @endsection
