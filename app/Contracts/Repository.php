@@ -38,6 +38,7 @@ abstract class Repository implements RepositoryInterface {
      */
     abstract public function model();
 
+    protected function orderBy(){}
     /**
      * @param array $columns
      * @return mixed
@@ -115,7 +116,7 @@ abstract class Repository implements RepositoryInterface {
      * @return \Illuminate\Database\Eloquent\Model
      *
      */
-    public function makeModel(){
+    protected function makeModel(){
         $model = $this->app->make($this->model());
 
         if (!$model instanceof Model){

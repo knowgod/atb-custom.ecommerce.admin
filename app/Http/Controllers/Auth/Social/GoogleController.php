@@ -37,15 +37,23 @@ class GoogleController extends AuthController {
 
         $user = $userRepository->findBy('email', $googleUser->getEmail(), ['id']);
 
+
         if (!$user){
+            if(!$googleUser['name']['givenName'] || !$googleUser['name']['familyName']){
+                $nameParts = explode(' ', $googleUser->getName());
+                $firstName = $nameParts[0];
+                $lastName = $nameParts[1];
+            }
             $user = $userRepository->create(
-                    ['firstname'         => $googleUser['name']['givenName'],
-                     'lastname'          => $googleUser['name']['familyName'],
-                     'email'             => $googleUser->getEmail(),
-                     'google_id'         => $googleUser->getId(),
-                     'password'          => bcrypt($googleUser->getId()),
-                     'register_source'   => 'google',
-                     'google_avatar_img' => $googleUser->getAvatar()
+                    [
+                            'fullname'          => $googleUser->getName(),
+                            'firstname'         => $firstName,
+                            'lastname'          => $lastName,
+                            'email'             => $googleUser->getEmail(),
+                            'google_id'         => $googleUser->getId(),
+                            'password'          => bcrypt($googleUser->getId()),
+                            'register_source'   => 'google',
+                            'google_avatar_img' => $googleUser->getAvatar()
                     ]);
         }
         Auth::login($user);

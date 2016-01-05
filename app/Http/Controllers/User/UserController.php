@@ -50,7 +50,8 @@ class UserController extends Controller {
             );
         }
         $this->userRepo->create(
-                ['firstname'       => $request->input('firstname'),
+                ['fullname'        => $request->input('firstname') . ' ' . $request->input('lastname'),
+                 'firstname'       => $request->input('firstname'),
                  'lastname'        => $request->input('lastname'),
                  'email'           => $request->input('email'),
                  'password'        => bcrypt($request->input('password')),
@@ -73,6 +74,7 @@ class UserController extends Controller {
         $this->userRepo->update(
                 ['firstname'       => $request->input('firstname'),
                  'lastname'        => $request->input('lastname'),
+                 'fullname'        => $request->input('firstname') . ' ' . $request->input('lastname'),
                  'email'           => $request->input('email'),
                  'register_source' => 'manual',
                 ], $user->id);
