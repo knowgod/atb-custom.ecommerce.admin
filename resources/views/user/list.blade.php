@@ -4,7 +4,7 @@
     <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--12-col mdl-grid ">
 
-            <table class="mdl-data-table wide-table mdl-data-table--selectable mdl-shadow--2dp">
+            <table class="mdl-data-table wide-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
                 <thead>
                 <tr>
                     <th class="mdl-data-table__cell--non-numeric">User</th>
@@ -40,4 +40,13 @@
         </div>
     </div>
 
+@endsection
+
+
+@section('fab')
+    <div class="fab-bottom">
+        <a href="{{ url('/user/create') }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
 @endsection

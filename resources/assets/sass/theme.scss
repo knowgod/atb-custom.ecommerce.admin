@@ -13,7 +13,8 @@ input:-webkit-autofill {
 }
 .mdl-button {
     &.mdl-button--accent,
-    &.mdl-button--icon{
+    &.mdl-button--icon,
+    &.mdl-button--fab{
         color: $primary-color-text!important;
     }
 }
@@ -111,6 +112,14 @@ input:-webkit-autofill {
             }
         }
     }
+}
+.mdl-layout__content{
+}
+.fab-bottom{
+    position: absolute;
+    bottom: 20px;
+    right: 36px;
+    z-index: 2;
 }
 .main-content {
     max-width: 1080px;

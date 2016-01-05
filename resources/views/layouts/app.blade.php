@@ -18,8 +18,8 @@
             @yield('content')
         </div>
     </main>
+    @yield('fab')
 </div>
-
 @include('layouts.shared.footer')
 </body>
 </html>
