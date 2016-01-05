@@ -1,26 +1,21 @@
 @extends('layouts.app')
 
+@section('title', 'Profile')
+
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">My Profile</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/updateProfile') }}">
-                        {!! csrf_field() !!}
-                        <p>Some stuff here</p>
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-user"></i>Update
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+
+    <div class="mdl-grid">
+        <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+            <form class="form-horizontal" role="form" method="POST" action="{{ url('/updateProfile') }}">
+                {!! csrf_field() !!}
+                <p>Some stuff here ...</p>
+                <div class="buttons">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        Update
+                    </button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-</div>
+
 @endsection
