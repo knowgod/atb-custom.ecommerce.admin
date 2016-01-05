@@ -1,3 +1,5 @@
+@import "palette.scss";
+
 html, body {
     font-family: 'Roboto', 'Helvetica', sans-serif;
 }
@@ -9,13 +11,23 @@ input:-webkit-autofill {
     height: 48px;
     border-radius: 24px;
 }
+.mdl-button {
+    &.mdl-button--accent,
+    &.mdl-button--icon{
+        color: $primary-color-text!important;
+    }
+}
 
 .main-layout {
+    background: url(../images/bg-main.png);
     .main-header .mdl-textfield {
         padding-top: 27px;
     }
     .mdl-layout__header .mdl-layout__drawer-button {
-        color: rgba(0, 0, 0, 0.54);
+        color: $primary-color-text;
+    }
+    .mdl-layout-title{
+        color: $primary-color-text;
     }
 }
 
@@ -70,35 +82,36 @@ input:-webkit-autofill {
     width: 100%;
 }
 
-.main-navigation {
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-    .mdl-navigation__link {
-        display: -webkit-flex !important;
-        display: -ms-flexbox !important;
-        display: flex !important;
-        -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-        flex-direction: row;
-        -webkit-align-items: center;
-        -ms-flex-align: center;
-        align-items: center;
-        color: rgba(255, 255, 255, 0.56);
-        font-weight: 500;
-        &:hover {
-            background-color: #00BCD4;
-            color: #37474F;
-        }
-        .material-icons {
-            font-size: 24px;
+.mdl-layout__drawer {
+    .main-navigation {
+        -webkit-box-flex: 1;
+        -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        .mdl-navigation__link {
+            display: -webkit-flex !important;
+            display: -ms-flexbox !important;
+            display: flex !important;
+            -webkit-flex-direction: row;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
             color: rgba(255, 255, 255, 0.56);
-            margin-right: 32px;
+            font-weight: 500;
+            &:hover {
+                background-color: $primary-color-dark;
+                color: $primary-color-light;
+            }
+            .material-icons {
+                font-size: 24px;
+                color: rgba(255, 255, 255, 0.56);
+                margin-right: 32px;
+            }
         }
     }
 }
-
 .main-content {
     max-width: 1080px;
     margin: 0 auto;
@@ -107,36 +120,19 @@ input:-webkit-autofill {
 .login-card-wide.mdl-card{
     max-width: 512px;
     margin: 100px auto 20px auto;
-    .login-card-bg{
-        background: url('../images/nume_welcome.png') center / cover;
-    }
     .mdl-card__title {
         color: #fff;
-        height: 176px;
-        background: -webkit-linear-gradient(to top, rgba(0, 0, 0, .4), rgba(0, 0, 0, 0) 40%);
-        background: linear-gradient(to top, rgba(0, 0, 0, .4), rgba(0, 0, 0, 0) 40%);
+        img{
+            display: block;
+            width: 100%;
+            height: auto;
+        }
     }
     .mdl-card__actions{
         text-align: right;
         .btn-link{
             margin-right: 10px;
         }
-    }
-}
-
-.login-card-google.mdl-card{
-    max-width: 512px;
-    margin: 20px auto;
-    min-height: 20px;
-    .login-card-bg{
-        img{
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-    }
-    .mdl-card__actions{
-        text-align: center;
     }
 }
 

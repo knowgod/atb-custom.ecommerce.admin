@@ -5,7 +5,7 @@
     <div class="login-card-wide mdl-card mdl-shadow--2dp">
         <div class="login-card-bg">
             <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Reset Password</h2>
+                <img src="/assets/images/atypical-logo.png" alt="" />
             </div>
         </div>
         <form autocomplete="off" class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">

@@ -6,7 +6,7 @@
 <body>
 
 <div class="main-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
-    <main class="mdl-layout__content mdl-color--grey-100">
+    <main class="mdl-layout__content">
         <div class="main-content">
             @yield('content')
         </div>

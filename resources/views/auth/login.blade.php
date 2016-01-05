@@ -5,7 +5,7 @@
     <div class="login-card-wide mdl-card mdl-shadow--2dp">
         <div class="login-card-bg">
             <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Welcome</h2>
+                <img src="/assets/images/atypical-logo.png" alt="" />
             </div>
         </div>
         <form autocomplete="off" class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
@@ -40,20 +40,12 @@
                     Sign In
                 </button>
             </div>
-        </form>
-    </div>
-
-        <div class="login-card-google mdl-card mdl-shadow--2dp mdl-separator">
-            <div class="login-card-bg">
-                <img src="/assets/images/google_welcome.jpg" alt="" />
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
+            <div class="mdl-card__actions mdl-card--border login-card-google">
                 <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="{{ url('/auth/social/login/google') }}">
                     Login with Google
                 </a>
             </div>
-        </div>
-
-
+        </form>
+    </div>
 
 @endsection

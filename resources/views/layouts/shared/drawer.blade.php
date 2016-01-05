@@ -8,7 +8,7 @@
             <span class="visuallyhidden">Accounts</span>
         </button>
         <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
-            <li class="mdl-menu__item" onclick="location.href='{{ url('/settings') }}';">Settings</li>
+            <li class="mdl-menu__item" onclick="location.href='{{ url('/settings') }}';">My Account</li>
             <li class="mdl-menu__item" onclick="location.href='{{ url('/logout') }}';">Logout</li>
         </ul>
     </div>
