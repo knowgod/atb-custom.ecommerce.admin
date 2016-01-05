@@ -45,6 +45,11 @@ Route::group(['middleware' => 'web'], function (){
             Route::post('user/update', 'UserController@update');
 
         });
+
+        Route::group(['namespace' => 'Invite'], function () {
+            Route::get('invite', ['as' => 'invite', 'uses' => 'InviteController@create']);
+            Route::post('invite_store', ['as' => 'invite_store', 'uses' => 'InviteController@store']);
+        });
     });
 });
 
