@@ -9,7 +9,7 @@
 
 namespace App\Http\Controllers\Auth\Social;
 
-use App\User;
+use App\Users\Repositories\UserRepository;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -31,14 +31,14 @@ class GoogleController extends AuthController {
      *
      * @return void
      */
-    public function handleProviderCallback(){
+    public function handleProviderCallback(UserRepository $userRepository){
 
         $googleUser = Socialite::driver('google')->user();
 
-        $user = User::whereEmail($googleUser->getEmail())->first(['id']);
+        $user = $userRepository->findBy('email', $googleUser->getEmail(), ['id']);
 
         if (!$user){
-            $user = User::create(
+            $user = $userRepository->create(
                     ['firstname'         => $googleUser['name']['givenName'],
                      'lastname'          => $googleUser['name']['familyName'],
                      'email'             => $googleUser->getEmail(),
@@ -46,8 +46,7 @@ class GoogleController extends AuthController {
                      'password'          => bcrypt($googleUser->getId()),
                      'register_source'   => 'google',
                      'google_avatar_img' => $googleUser->getAvatar()
-                    ]
-            );
+                    ]);
         }
         Auth::login($user);
         return redirect()->intended($this->redirectPath());

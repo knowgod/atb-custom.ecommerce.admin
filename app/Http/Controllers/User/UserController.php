@@ -8,7 +8,7 @@
  */
 namespace App\Http\Controllers\User;
 
-use App\User;
+use App\Users\Repositories\UserRepository;
 use App\Http\Requests;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -19,11 +19,14 @@ class UserController extends Controller {
     protected $redirectTo = '/user/list';
     protected $_itemsPerPage = 10;
 
-    public function __construct(){
+    public $userRepo = null;
+
+    public function __construct(UserRepository $userRepo){
+        $this->userRepo = $userRepo;
     }
 
     public function index(){
-        $users = User::paginate($this->_itemsPerPage);
+        $users = $this->userRepo->paginate($this->_itemsPerPage);
         return view('user.list', array('users' => $users));
     }
 
@@ -46,7 +49,7 @@ class UserController extends Controller {
                     $request, $validator
             );
         }
-        User::create(
+        $this->userRepo->create(
                 ['firstname'       => $request->input('firstname'),
                  'lastname'        => $request->input('lastname'),
                  'email'           => $request->input('email'),
@@ -55,7 +58,6 @@ class UserController extends Controller {
                 ]
         );
         return redirect($this->redirectTo);
-
     }
 
     public function update(Request $request){
@@ -66,19 +68,20 @@ class UserController extends Controller {
                     $request, $validator
             );
         }
-        $user = User::find($request->input('id'));
+        $user = $this->userRepo->findOrFail($request->input('id'));
 
-        $user->fill(['firstname'       => $request->input('firstname'),
-                     'lastname'        => $request->input('lastname'),
-                     'email'           => $request->input('email'),
-                     'register_source' => 'manual',
-        ]);
+        $this->userRepo->update(
+                ['firstname'       => $request->input('firstname'),
+                 'lastname'        => $request->input('lastname'),
+                 'email'           => $request->input('email'),
+                 'register_source' => 'manual',
+                ], $user->id);
 
         if ($request->has('password')){
-            $user->password = bcrypt($request->input('password'));
+            $this->userRepo->update(
+                    ['password' => bcrypt($request->input('password')),
+                    ], $user->id);
         }
-
-        $user->save();
         return redirect($this->redirectTo);
 
     }
@@ -92,10 +95,7 @@ class UserController extends Controller {
     }
 
     public function showUpdateForm(Request $request, $id){
-        $user = User::find($id);
-        if (!$user){
-            abort(404);
-        }
+        $user = $this->userRepo->findOrFail($id);
         return view('user.update', array('user' => $user));
     }
 
@@ -114,7 +114,7 @@ class UserController extends Controller {
                 'lastname'  => 'required|max:255',
         ];
         if ($data['password']){
-            array_merge($rulesSet, ['password'  => 'required|confirmed|min:6']);
+            array_merge($rulesSet, ['password' => 'required|confirmed|min:6']);
         }
 
         return Validator::make($data, $rulesSet);
