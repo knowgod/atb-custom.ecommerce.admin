@@ -39,7 +39,11 @@ class GoogleController extends AuthController {
 
 
         if (!$user){
-            $nameParts = explode(' ', $googleUser->getName());
+            $fullName = $googleUser->getName();
+            if(!$fullName){
+                $fullName = "Unknown Unknown";
+            }
+            $nameParts = explode(' ', $fullName);
             $firstName =  $googleUser['name']['givenName'] ? $googleUser['name']['givenName'] : $nameParts[0];
             $lastName = $googleUser['name']['familyName'] ? $googleUser['name']['familyName'] : $nameParts[1];
             $user = $userRepository->create(
