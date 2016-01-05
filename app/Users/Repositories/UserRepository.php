@@ -14,10 +14,6 @@ use App\Users\Entities\User as User;
 
 class UserRepository extends Repository {
 
-    public function __construct(){
-        
-    }
-
     public function model(){
         return User::class;
     }
