@@ -9,10 +9,10 @@ class UsersTableSeeder extends Seeder {
      * @return void
      */
     public function run(){
-        factory(App\User::class, 10)->create();
+        factory(App\Users\Entities\User::class, 50)->create();
 
         //create super admin (kind of)
-        App\User::create(
+        App\Users\Entities\User::create(
                 ['firstname'      => "Atypical",
                  'lastname'       => "SuperUser",
                  'email'          => 'vyatsyuk@atypicalbrands.com',

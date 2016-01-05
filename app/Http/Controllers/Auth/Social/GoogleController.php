@@ -9,7 +9,7 @@
 
 namespace App\Http\Controllers\Auth\Social;
 
-use App\User;
+use App\Users\Repositories\UserRepository;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -31,23 +31,32 @@ class GoogleController extends AuthController {
      *
      * @return void
      */
-    public function handleProviderCallback(){
+    public function handleProviderCallback(UserRepository $userRepository){
 
         $googleUser = Socialite::driver('google')->user();
 
-        $user = User::whereEmail($googleUser->getEmail())->first(['id']);
+        $user = $userRepository->findBy('email', $googleUser->getEmail(), ['id']);
+
 
         if (!$user){
-            $user = User::create(
-                    ['firstname'         => $googleUser['name']['givenName'],
-                     'lastname'          => $googleUser['name']['familyName'],
-                     'email'             => $googleUser->getEmail(),
-                     'google_id'         => $googleUser->getId(),
-                     'password'          => bcrypt($googleUser->getId()),
-                     'register_source'   => 'google',
-                     'google_avatar_img' => $googleUser->getAvatar()
-                    ]
-            );
+            $fullName = $googleUser->getName();
+            if(!$fullName){
+                $fullName = "Unknown Unknown";
+            }
+            $nameParts = explode(' ', $fullName);
+            $firstName =  $googleUser['name']['givenName'] ? $googleUser['name']['givenName'] : $nameParts[0];
+            $lastName = $googleUser['name']['familyName'] ? $googleUser['name']['familyName'] : $nameParts[1];
+            $user = $userRepository->create(
+                    [
+                            'fullname'          => $googleUser->getName(),
+                            'firstname'         => $firstName,
+                            'lastname'          => $lastName,
+                            'email'             => $googleUser->getEmail(),
+                            'google_id'         => $googleUser->getId(),
+                            'password'          => bcrypt($googleUser->getId()),
+                            'register_source'   => 'google',
+                            'google_avatar_img' => $googleUser->getAvatar()
+                    ]);
         }
         Auth::login($user);
         return redirect()->intended($this->redirectPath());
