@@ -1,45 +1,31 @@
 @extends('layouts.app')
 
+@section('title', 'Send invite')
+
 @section('content')
-    @if(Session::has('message'))
-        <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
-    @endif
-    <div class="container">
-        <div class="col-sm-offset-2 col-sm-8">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Send Email
+
+    <div class="mdl-grid">
+        <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+            @if(Session::has('message'))
+                <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+            @endif
+            <form action="/invite_store" method="POST" class="form-horizontal">
+                {{ csrf_field() }}
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" name="email" type="text" id="email" value="{{ old('email') }}" >
+                    <label class="mdl-textfield__label" for="email">E-Mail Address</label>
                 </div>
+                @include('invite.errors')
 
-                <div class="panel-body">
-                    <!-- Display Validation Errors -->
-                    @include('invite.errors')
-
-                    <!-- New Task Form -->
-                    <form action="/invite_store" method="POST" class="form-horizontal">
-                        {{ csrf_field() }}
-
-                        <!-- E-Mail Address -->
-                        <div class="form-group">
-                            <label for="email" class="col-sm-3 control-label">E-Mail</label>
-
-                            <div class="col-sm-6">
-                                <input type="email" name="email" class="form-control" value="{{ old('email') }}">
-                            </div>
-                        </div>
-
-                        <!-- Register Button -->
-                        <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-6">
-                                <button type="submit" class="btn btn-default">
-                                    <i class="fa fa-btn fa-sign-in"></i>Submit
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                <div class="buttons">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        Submit
+                    </button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
+
+
 @endsection
 
