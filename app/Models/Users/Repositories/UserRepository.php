@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Users\Repositories;
+namespace App\Models\Users\Repositories;
 
 use App\Contracts\Repository;
-use App\Users\Entities\User as User;
+use App\Models\Users\Entities\User as User;
 
 /**
  * @category Atypicalbrands

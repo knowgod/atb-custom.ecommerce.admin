@@ -9,7 +9,7 @@
 
 namespace App\Http\Controllers\Auth\Social;
 
-use App\Users\Repositories\UserRepository;
+use App\Models\Users\Repositories\UserRepository;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Auth;
 use Validator;

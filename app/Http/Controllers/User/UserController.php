@@ -8,7 +8,7 @@
  */
 namespace App\Http\Controllers\User;
 
-use App\Users\Repositories\UserRepository;
+use App\Models\Users\Repositories\UserRepository;
 use App\Http\Requests;
 use Validator;
 use App\Http\Controllers\Controller;
