@@ -50,9 +50,9 @@ interface RepositoryInterface {
 
     /**
      * @param $field
-     * @param $value
+     * @param array $condition
      * @param array $columns
      * @return mixed
      */
-    public function findBy($field, $value, $columns = array('*'));
+    public function findBy($field, array $condition, $columns = array('*'));
 }

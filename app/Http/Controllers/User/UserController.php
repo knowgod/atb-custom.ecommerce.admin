@@ -26,7 +26,11 @@ class UserController extends Controller {
     }
 
     public function index(){
-        $users = $this->userRepo->paginate($this->_itemsPerPage);
+        $users = $this->userRepo
+                ->all()
+                ->orderBy('id', 'desc')
+                ->paginate($this->_itemsPerPage);
+
         return view('user.list', array('users' => $users));
     }
 
@@ -88,6 +92,17 @@ class UserController extends Controller {
 
     }
 
+    public function lookup(Request $request){
+        //sample action for filtering
+
+        $users = $this->userRepo
+                ->findBy('firstname', array('like'=>'%111%'))
+                ->orderBy('id', 'desc')
+                ->paginate($this->_itemsPerPage);
+        var_dump($users->toArray());
+        return;
+    }
+
     public function delete(){
         return 'delete action';
     }
@@ -121,6 +136,5 @@ class UserController extends Controller {
 
         return Validator::make($data, $rulesSet);
     }
-
 
 }

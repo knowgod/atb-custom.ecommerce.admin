@@ -10,7 +10,6 @@ namespace App\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Container\Container as App;
-use DB;
 
 abstract class Repository implements RepositoryInterface {
     /**
@@ -28,7 +27,22 @@ abstract class Repository implements RepositoryInterface {
      */
     public function __construct(App $app){
         $this->app = $app;
-        $this->makeModel();
+        $this->createModel();
+    }
+
+    /**
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     *
+     */
+
+    protected function createModel(){
+        $model = $this->app->make($this->getModel());
+
+        if (!$model instanceof Model){
+            throw new Exception("Class {$this->getModel()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
+        }
+        return $this->model = $model->newQuery();
     }
 
     /**
@@ -36,15 +50,15 @@ abstract class Repository implements RepositoryInterface {
      *
      * @return mixed
      */
-    abstract public function model();
+    abstract public function getModel();
 
-    protected function orderBy(){}
     /**
      * @param array $columns
      * @return mixed
      */
     public function all($columns = array('*')){
-        return $this->model->get($columns);
+        $this->model->get($columns);
+        return $this->model;
     }
 
     /**
@@ -53,7 +67,8 @@ abstract class Repository implements RepositoryInterface {
      * @return mixed
      */
     public function paginate($perPage = 15, $columns = array('*')){
-        return $this->model->paginate($perPage, $columns);
+        $this->model->paginate($perPage, $columns);
+        return $this->model;
     }
 
     /**
@@ -61,8 +76,8 @@ abstract class Repository implements RepositoryInterface {
      * @return mixed
      */
     public function create(array $data){
-
-        return $this->model->create($data);
+        $a =1;
+        return $this->model->getModel()->create($data);
     }
 
     /**
@@ -103,25 +118,16 @@ abstract class Repository implements RepositoryInterface {
 
     /**
      * @param $attribute
-     * @param $value
+     * @param array $condition
      * @param array $columns
      * @return mixed
      */
-    public function findBy($attribute, $value, $columns = array('*')){
-        return $this->model->where($attribute, '=', $value)->first($columns);
+    public function findBy($attribute, array $condition, $columns = array('*')){
+        $operator = current(array_keys($condition));
+        $search = current(array_values($condition));
+
+        $this->model->where($attribute, $operator, $search)->get($columns);
+        return $this->model;
     }
 
-    /**
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     *
-     */
-    protected function makeModel(){
-        $model = $this->app->make($this->model());
-
-        if (!$model instanceof Model){
-            throw new Exception("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
-        }
-        return $this->model = $model;
-    }
 }

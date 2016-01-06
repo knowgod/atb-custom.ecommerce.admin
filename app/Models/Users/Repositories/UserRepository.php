@@ -14,7 +14,7 @@ use App\Models\Users\Entities\User as User;
 
 class UserRepository extends Repository {
 
-    public function model(){
+    public function getModel(){
         return User::class;
     }
 }
