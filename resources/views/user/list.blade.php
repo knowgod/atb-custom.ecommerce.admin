@@ -15,7 +15,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @forelse($users as $user)
+                @forelse($collection as $user)
                     <tr>
                         <td class="mdl-data-table__cell--non-numeric">{{$user->firstname}} {{$user->lastname}}</td>
                         <td class="mdl-data-table__cell--non-numeric">{{$user->email}}</td>
@@ -37,7 +37,7 @@
         </div>
         <div class="mdl-cell mdl-cell--12-col mdl-grid ">
             <div class="pager mdl-shadow--2dp">
-                {!! $users->render() !!}
+                {!! $collection->render() !!}
             </div>
         </div>
     </div>

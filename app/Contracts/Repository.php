@@ -76,7 +76,6 @@ abstract class Repository implements RepositoryInterface {
      * @return mixed
      */
     public function create(array $data){
-        $a =1;
         return $this->model->getModel()->create($data);
     }
 

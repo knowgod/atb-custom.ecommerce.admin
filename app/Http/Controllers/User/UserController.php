@@ -31,7 +31,7 @@ class UserController extends Controller {
                 ->orderBy('id', 'desc')
                 ->paginate($this->_itemsPerPage);
 
-        return view('user.list', array('users' => $users));
+        return view('user.list', array('collection' => $users));
     }
 
     public function view(){
