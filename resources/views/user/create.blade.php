@@ -1,9 +1,3 @@
-@extends('layouts.app')
-
-@section('title', 'Create User')
-
-@section('content')
-
     <div class="mdl-grid">
         <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
             <form class="form-horizontal" role="form" method="POST" action="{{ url('/user/create') }}">
@@ -48,12 +42,10 @@
                     <div class="mdl-color-text--red-500">{{ $errors->first('password_confirmation') }}</div>
                 @endif
                 <div class="buttons">
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
                         Create User
                     </button>
                 </div>
             </form>
         </div>
     </div>
-
-@endsection

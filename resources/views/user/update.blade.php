@@ -1,9 +1,3 @@
-@extends('layouts.app')
-
-@section('title', 'Update User')
-
-@section('content')
-
     <div class="mdl-grid">
         <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
             <form class="form-horizontal" role="form" method="POST" action="{{ url('/user/update') }}">
@@ -56,5 +50,3 @@
             </form>
         </div>
     </div>
-
-@endsection
