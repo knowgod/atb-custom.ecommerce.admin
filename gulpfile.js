@@ -15,6 +15,8 @@ gulp.task('copy', function () {
 
     gulp.src('node_modules/material-design-lite/material.min.js')
         .pipe(gulp.dest('public/assets/js/'));
+    gulp.src('node_modules/angular/angular.min.js')
+        .pipe(gulp.dest('public/assets/js/'));
 });
 
 gulp.task('images', function () {
@@ -22,9 +24,15 @@ gulp.task('images', function () {
         .pipe(gulp.dest('public/assets/images'));
 });
 
+gulp.task('js', function () {
+    gulp.src(['resources/assets/js/**/*'])
+        .pipe(gulp.dest('public/assets/js'));
+});
+
 gulp.task('watch', function() {
     gulp.watch('resources/assets/sass/*.scss', ['css']);
     gulp.watch('resources/assets/images/**/*', ['images']);
+    gulp.watch('resources/assets/js/**/*', ['js']);
 });
 
-gulp.task('default', ['css', 'copy', 'images']);
+gulp.task('default', ['css', 'copy', 'images', 'js']);
