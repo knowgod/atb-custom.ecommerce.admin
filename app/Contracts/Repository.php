@@ -23,7 +23,7 @@ abstract class Repository implements RepositoryInterface {
     protected $model;
 
     /**
-     * @var
+     * @var $query \Illuminate\Database\Eloquent\Builder
      */
 
     protected $query;
@@ -36,12 +36,6 @@ abstract class Repository implements RepositoryInterface {
         $this->initModel();
     }
 
-    /**
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     *
-     */
-
     protected function initModel(){
         $model = $this->app->make($this->getModel());
 
@@ -52,6 +46,12 @@ abstract class Repository implements RepositoryInterface {
         $this->query = $model->newQuery();
         return;
     }
+
+    /**
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     *
+     */
 
     protected function getQueryBuilder(){
         return $this->query;
