@@ -26,10 +26,7 @@ class UserController extends Controller {
     }
 
     public function index(){
-        $users = $this->userRepo
-                ->all()
-                ->orderBy('id', 'desc')
-                ->paginate($this->_itemsPerPage);
+        $users = $this->userRepo->getPaginatedUsers($this->_itemsPerPage);
 
         return view('user.list', array('collection' => $users));
     }

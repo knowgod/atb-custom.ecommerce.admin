@@ -23,11 +23,17 @@ abstract class Repository implements RepositoryInterface {
     protected $model;
 
     /**
+     * @var
+     */
+
+    protected $query;
+
+    /**
      * @param App $app
      */
     public function __construct(App $app){
         $this->app = $app;
-        $this->createModel();
+        $this->initModel();
     }
 
     /**
@@ -36,13 +42,19 @@ abstract class Repository implements RepositoryInterface {
      *
      */
 
-    protected function createModel(){
+    protected function initModel(){
         $model = $this->app->make($this->getModel());
 
         if (!$model instanceof Model){
             throw new Exception("Class {$this->getModel()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
         }
-        return $this->model = $model->newQuery();
+        $this->model = $model;
+        $this->query = $model->newQuery();
+        return;
+    }
+
+    protected function getQueryBuilder(){
+        return $this->query;
     }
 
     /**
@@ -57,8 +69,7 @@ abstract class Repository implements RepositoryInterface {
      * @return mixed
      */
     public function all($columns = array('*')){
-        $this->model->get($columns);
-        return $this->model;
+        return $this->getQueryBuilder()->get($columns);
     }
 
     /**
@@ -67,8 +78,7 @@ abstract class Repository implements RepositoryInterface {
      * @return mixed
      */
     public function paginate($perPage = 15, $columns = array('*')){
-        $this->model->paginate($perPage, $columns);
-        return $this->model;
+        return $this->getQueryBuilder()->paginate($perPage, $columns);
     }
 
     /**
@@ -76,7 +86,7 @@ abstract class Repository implements RepositoryInterface {
      * @return mixed
      */
     public function create(array $data){
-        return $this->model->getModel()->create($data);
+        return $this->model->create($data);
     }
 
     /**
@@ -86,7 +96,7 @@ abstract class Repository implements RepositoryInterface {
      * @return mixed
      */
     public function update(array $data, $id, $attribute = "id"){
-        return $this->model->where($attribute, '=', $id)->update($data);
+        return $this->getQueryBuilder()->where($attribute, '=', $id)->update($data);
     }
 
     /**
@@ -94,7 +104,7 @@ abstract class Repository implements RepositoryInterface {
      * @return mixed
      */
     public function delete($id){
-        return $this->model->destroy($id);
+        return $this->getQueryBuilder()->destroy($id);
     }
 
     /**
@@ -103,7 +113,7 @@ abstract class Repository implements RepositoryInterface {
      * @return mixed
      */
     public function find($id, $columns = array('*')){
-        return $this->model->find($id, $columns);
+        return $this->getQueryBuilder()->find($id, $columns);
     }
 
     /**
@@ -112,7 +122,7 @@ abstract class Repository implements RepositoryInterface {
      * @return mixed
      */
     public function findOrFail($id, $columns = array('*')){
-        return $this->model->findOrFail($id, $columns);
+        return $this->getQueryBuilder()->findOrFail($id, $columns);
     }
 
     /**
@@ -125,8 +135,7 @@ abstract class Repository implements RepositoryInterface {
         $operator = current(array_keys($condition));
         $search = current(array_values($condition));
 
-        $this->model->where($attribute, $operator, $search)->get($columns);
-        return $this->model;
+        return $this->getQueryBuilder()->where($attribute, $operator, $search);
     }
 
 }
