@@ -35,16 +35,16 @@ class GoogleController extends AuthController {
 
         $googleUser = Socialite::driver('google')->user();
 
-        $user = $userRepository->findBy('email', $googleUser->getEmail(), ['id']);
+        $user = $userRepository->findBy('email', ['=' => $googleUser->getEmail()], ['id'])->first();
 
 
         if (!$user){
             $fullName = $googleUser->getName();
-            if(!$fullName){
+            if (!$fullName){
                 $fullName = "Unknown Unknown";
             }
             $nameParts = explode(' ', $fullName);
-            $firstName =  $googleUser['name']['givenName'] ? $googleUser['name']['givenName'] : $nameParts[0];
+            $firstName = $googleUser['name']['givenName'] ? $googleUser['name']['givenName'] : $nameParts[0];
             $lastName = $googleUser['name']['familyName'] ? $googleUser['name']['familyName'] : $nameParts[1];
             $user = $userRepository->create(
                     [
