@@ -27,7 +27,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
     $scope.openCreate = function(){
         var req = {
             method: 'GET',
-            url: '/user/create',
+            url: '/'+$scope.name+'/create',
             pop: 'main',
             headers: { 'Accept': 'text/html, */*'},
             params: $scope.query
@@ -44,7 +44,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
     $scope.getItems = function(){
         var req = {
             method: 'GET',
-            url: '/user/list',
+            url: '/'+$scope.name+'/list',
             pop: 'main',
             headers: {  },
                 params: $scope.query
@@ -55,10 +55,6 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             setTimeout(componentHandler.upgradeDom, 10);
         }, function(){ });
 
-    };
-
-    $scope.show = function(){
-        sharedMessageService.emitDataUpdate('onShow', $scope.data);
     };
 
     $scope.massAction = function(action){
