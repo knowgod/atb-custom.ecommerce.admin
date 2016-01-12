@@ -1,4 +1,4 @@
-atypicalApp.controller('GridCtrl', ['$scope', '$http', 'sharedMessageService', function($scope, $http, sharedMessageService){
+atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageService', function($scope, $http, sharedMessageService){
 
     $scope.actions = {
         'openCreate': '',
@@ -21,6 +21,7 @@ atypicalApp.controller('GridCtrl', ['$scope', '$http', 'sharedMessageService', f
     $scope.filters = [];
 
     $scope.openUpdate = function(url){
+        sharedMessageService.emitDataUpdate('onShowOverlay');
         var req = {
             method: 'GET',
             url: url,
@@ -37,6 +38,7 @@ atypicalApp.controller('GridCtrl', ['$scope', '$http', 'sharedMessageService', f
     };
 
     $scope.openCreate = function(){
+        sharedMessageService.emitDataUpdate('onShowOverlay');
         var req = {
             method: 'GET',
             url: '/user/create',
@@ -52,6 +54,11 @@ atypicalApp.controller('GridCtrl', ['$scope', '$http', 'sharedMessageService', f
         });
     };
 
+    sharedMessageService.onDataUpdate('onClose', $scope, function(message, data){
+        $scope.getItems();
+    });
+
+
     $scope.getItems = function(){
         var req = {
             method: 'GET',
@@ -62,7 +69,6 @@ atypicalApp.controller('GridCtrl', ['$scope', '$http', 'sharedMessageService', f
             params: $scope.query
         };
         $http(req).then(function(response){
-            console.log(response)
             $scope.data = response.data.collection;
         }, function(){
 
@@ -80,12 +86,16 @@ atypicalApp.controller('GridCtrl', ['$scope', '$http', 'sharedMessageService', f
 
     $scope.navigation = {
         prev : function(){
-            $scope.query.page--;
-            $scope.getItems();
+            //if($scope.data.page > 1) {
+                $scope.query.page--;
+                $scope.getItems();
+            //}
         },
         next : function(){
-            $scope.query.page++;
-            $scope.getItems();
+            //if($scope.data.page < $scope.data.last_page) {
+                $scope.query.page++;
+                $scope.getItems();
+            //}
         },
         page: function(id){
             $scope.query.page = id;
@@ -97,7 +107,7 @@ atypicalApp.controller('GridCtrl', ['$scope', '$http', 'sharedMessageService', f
         return new Array(num);
     }
 
-}]).controller('GridPopCtrl', ['$scope', '$http', 'sharedMessageService','$sce', function($scope, $http, sharedMessageService, $sce){
+}]).controller('GridPopController', ['$scope', '$http', 'sharedMessageService','$sce', function($scope, $http, sharedMessageService, $sce){
     $scope.isVisible = false;
     $scope.htmlContent = '';
 
@@ -111,9 +121,48 @@ atypicalApp.controller('GridCtrl', ['$scope', '$http', 'sharedMessageService', f
         $event.preventDefault();
     };
 
+    $scope.onClose = function(){
+        $scope.isVisible = false;
+    };
+
     sharedMessageService.onDataUpdate('onShow', $scope, function(message, data){
         $scope.isVisible = true;
         $scope.htmlContent =  $sce.trustAsHtml(data);
         setTimeout(componentHandler.upgradeDom, 400);
     });
+
+    sharedMessageService.onDataUpdate('onClose', $scope, function(message, data){
+        $scope.isVisible = false;
+        $scope.htmlContent =  $sce.trustAsHtml('');
+        setTimeout(componentHandler.upgradeDom, 400);
+    });
+
+}]).controller('GridFormController', ['$scope', '$http', 'sharedMessageService', function($scope, $http, sharedMessageService){
+
+    $scope.formData = {};
+    $scope.formDataErrors = {};
+
+    $scope.dataSubmit = function(){
+        $scope.formDataErrors = {};
+        $http.post($scope.formUrl, $scope.formData).success(function(data) {
+            $scope.formData = {};
+            sharedMessageService.emitDataUpdate('onClose');
+
+        }).error(function(data){
+            $scope.formDataErrors = data;
+        });
+    };
+
+}]).controller('OverlayController', ['$scope', '$http', 'sharedMessageService', function($scope, $http, sharedMessageService){
+
+    $scope.isVisible = false;
+
+    sharedMessageService.onDataUpdate('onShowOverlay', $scope, function(message, data){
+        $scope.isVisible = true;
+    });
+
+    sharedMessageService.onDataUpdate('onCloseOverlay', $scope, function(message, data){
+        $scope.isVisible = false;
+    });
+
 }]);

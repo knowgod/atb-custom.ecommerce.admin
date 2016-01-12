@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="main-content">
-        <div class="grid-ctrl" ng-controller='GridCtrl' ng-init='data=<?php echo json_encode($collection) ?>'>
+        <div class="grid-ctrl" ng-controller='GridController' ng-init='data=<?php echo json_encode($collection) ?>'>
             <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--12-col mdl-shadow--2dp mdl-color--white">
 
@@ -41,7 +41,7 @@
                             <td class="mdl-data-table__cell--non-numeric"><% item.firstname %> <% item.lastname %></td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.email %></td>
                             <td>
-                                <a class="mdl-js-button mdl-button--primary" ng-click="openUpdate('/user/update/id/'+item.id)" href="">EDIT</a>
+                                <a class="mdl-js-button mdl-button--primary " ng-click="openUpdate('/user/update/id/'+item.id)" href="">EDIT</a>
                             </td>
                         </tr>
                         </tbody>
@@ -49,13 +49,13 @@
                     <div class="pager" ng-show="data.total>data.per_page">
                         <ul class="pagination">
                             <li>
-                                <a ng-click="navigation.prev()" href="#">«</a>
+                                <a ng-click="navigation.prev()" ng-class="1 == data.current_page ? 'active' : ''" href="#">«</a>
                             </li>
                             <li ng-repeat="i in getNumber(data.last_page) track by $index">
-                                <a ng-click="navigation.page($index+1)" href="#"><% $index+1 %></a>
+                                <a ng-click="navigation.page($index+1)" ng-class="($index+1) == data.current_page ? 'active' : ''" href="#"><% $index+1 %></a>
                             </li>
                             <li>
-                                <a ng-click="navigation.next()" href="#">»</a>
+                                <a ng-click="navigation.next()" ng-class="data.last_page == data.current_page ? 'active' : ''" href="#">»</a>
                             </li>
                         </ul>
                     </div>
@@ -72,9 +72,9 @@
 @endsection
 
 @section('bodyend')
-    <div class="grid-pop-ctrl" ng-controller="GridPopCtrl" ng-class="{'is-visible':isVisible}" ng-click="clickOuter($event)">
+    <div class="grid-pop-ctrl" ng-controller="GridPopController" ng-class="{'is-visible':isVisible}" ng-click="clickOuter($event)">
         <div class="grid-pop" ng-click="clickInner($event)">
-            <div ng-bind-html="htmlContent"></div>
+            <div ng-bind-html="htmlContent" compile-template></div>
         </div>
     </div>
 @endsection
