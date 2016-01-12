@@ -1,14 +1,5 @@
 atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageService', function($scope, $http, sharedMessageService){
 
-    $scope.actions = {
-        'openCreate': '',
-        'openUpdate':'',
-        'create':'',
-        'update':'',
-        'delete':'',
-        'get':''
-    };
-
     $scope.query = {
         page: 1,
         sort: 'id',
@@ -16,7 +7,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
     };
 
     $scope.massCheckbox = false;
-
+    $scope.checkboxData = [];
 
     $scope.filters = [];
 
@@ -25,16 +16,12 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             method: 'GET',
             pop: 'main',
             url: url,
-            headers: {
-                'Accept': 'text/html, */*'
-            },
+            headers: { 'Accept': 'text/html, */*'},
             params: $scope.query
         };
         $http(req).then(function(response){
             sharedMessageService.emitDataUpdate('onShow', response.data);
-        }, function(){
-
-        });
+        }, function(){ });
     };
 
     $scope.openCreate = function(){
@@ -42,47 +29,91 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             method: 'GET',
             url: '/user/create',
             pop: 'main',
-            headers: {
-                'Accept': 'text/html, */*'
-            },
+            headers: { 'Accept': 'text/html, */*'},
             params: $scope.query
         };
         $http(req).then(function(response){
             sharedMessageService.emitDataUpdate('onShow', response.data);
-        }, function(){
-
-        });
+        }, function(){ });
     };
 
     sharedMessageService.onDataUpdate('onClose', $scope, function(message, data){
         $scope.getItems();
     });
 
-
     $scope.getItems = function(){
         var req = {
             method: 'GET',
             url: '/user/list',
             pop: 'main',
-            headers: {
-                //'Accept': 'text/html, */*'
-            },
-            params: $scope.query
+            headers: {  },
+                params: $scope.query
         };
         $http(req).then(function(response){
             $scope.data = response.data.collection;
-        }, function(){
+            $scope.checkbox.clearSelection();
+            setTimeout(componentHandler.upgradeDom, 10);
+        }, function(){ });
 
-        });
-
-    };
-
-    $scope.massCheckboxClick = function(el){
-        console.log($scope.massCheckbox)
     };
 
     $scope.show = function(){
         sharedMessageService.emitDataUpdate('onShow', $scope.data);
+    };
+
+    $scope.massAction = function(action){
+        if($scope.checkboxData.length) {
+            alert(action + ' action for ' + $scope.checkboxData.join() + 'ids')
+        }
+    };
+
+    $scope.checkbox = {
+        add: function(id){
+            var elIndex = $scope.checkboxData.indexOf(id.toString());
+            if(elIndex == -1) {
+                $scope.checkboxData.push(id.toString());
+            }
+        },
+
+        remove: function(id){
+            var elIndex = $scope.checkboxData.indexOf(id.toString());
+            if(elIndex >= 0) {
+                $scope.checkboxData.splice(elIndex, 1);
+            }
+        },
+
+        action: function(id, event){
+            (event.target.checked)
+            ? $scope.checkbox.add(id)
+            : $scope.checkbox.remove(id);
+        },
+
+        massAction: function(){
+            $scope.checkbox.updateChildren();
+            (!$scope.massCheckbox) && $scope.checkbox.clearSelection();
+        },
+
+        clearSelection: function(){
+            var checkboxGrid = document.querySelector('.mdl-checkbox-grid');
+            checkboxGrid.MaterialCheckbox.uncheck();
+            $scope.checkboxData = [];
+        },
+
+        updateChildren: function(){
+            var checkboxes = document.querySelectorAll('.mdl-data-table--body .mdl-checkbox');
+
+            for(var index in checkboxes){
+                if(checkboxes.hasOwnProperty(index)){
+                    if($scope.massCheckbox){
+                        checkboxes[index].MaterialCheckbox.check();
+                        $scope.checkbox.add(checkboxes[index].MaterialCheckbox.inputElement_.value);
+                    }else{
+                        checkboxes[index].MaterialCheckbox.uncheck();
+                    }
+                }
+            }
+
+        }
     };
 
     $scope.navigation = {
