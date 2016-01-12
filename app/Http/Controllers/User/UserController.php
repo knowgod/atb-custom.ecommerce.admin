@@ -125,12 +125,10 @@ class UserController extends Controller {
     protected function updateValidator(array $data){
         $rulesSet = [
                 'firstname' => 'required|max:255',
-                'email'     => 'required|email|max:255|unique:users',
+                //'email'     => 'required|email|max:255|unique:users',
                 'lastname'  => 'required|max:255',
+                'password'  => 'sometimes|required|confirmed|min:6'
         ];
-        if (isset($data['password'])){
-            array_merge($rulesSet, ['password' => 'required|confirmed|min:6']);
-        }
 
         return Validator::make($data, $rulesSet);
     }
