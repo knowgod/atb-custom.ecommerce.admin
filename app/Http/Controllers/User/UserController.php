@@ -128,7 +128,7 @@ class UserController extends Controller {
                 'email'     => 'required|email|max:255|unique:users',
                 'lastname'  => 'required|max:255',
         ];
-        if ($data['password']){
+        if (isset($data['password'])){
             array_merge($rulesSet, ['password' => 'required|confirmed|min:6']);
         }
 
