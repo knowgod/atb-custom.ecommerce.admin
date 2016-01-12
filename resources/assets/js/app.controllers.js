@@ -58,9 +58,21 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
     };
 
     $scope.massAction = function(action){
-        if($scope.checkboxData.length) {
-            alert(action + ' action for ' + $scope.checkboxData.join() + 'ids')
-        }
+        var req = {
+            method: 'POST',
+            url: '/'+$scope.name+'/massAction',
+            pop: 'main',
+            headers: { },
+            params: {
+                action: action,
+                items: $scope.checkboxData.join()
+            }
+        };
+        $http(req).then(function(response){
+            $scope.checkbox.clearSelection();
+            $scope.getItems();
+        }, function(){ });
+
     };
 
     $scope.checkbox = {
