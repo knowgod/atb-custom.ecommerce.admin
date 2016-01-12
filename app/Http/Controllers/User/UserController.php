@@ -93,7 +93,7 @@ class UserController extends Controller {
         //sample action for filtering
 
         $users = $this->userRepo
-                ->findBy('firstname', array('like'=>'%111%'))
+                ->findBy('firstname', array('like' => '%111%'))
                 ->orderBy('id', 'desc')
                 ->paginate($this->_itemsPerPage);
         var_dump($users->toArray());
@@ -125,6 +125,7 @@ class UserController extends Controller {
     protected function updateValidator(array $data){
         $rulesSet = [
                 'firstname' => 'required|max:255',
+                'email'     => 'required|email|max:255|unique:users',
                 'lastname'  => 'required|max:255',
         ];
         if ($data['password']){
