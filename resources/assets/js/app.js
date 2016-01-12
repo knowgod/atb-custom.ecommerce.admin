@@ -2,9 +2,25 @@ var atypicalApp = angular.module('atypical.app',
 
     ['ngSanitize'],
 
-    function ($interpolateProvider) {
+    function ($interpolateProvider, $httpProvider) {
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
+
+        $httpProvider.interceptors.push(function($q, sharedMessageService) {
+            return {
+                'request': function(config) {
+                    if(config.pop && config.pop == 'main'){
+                        sharedMessageService.emitDataUpdate('onShowOverlay');
+                    }
+                    return config;
+                },
+
+                'response': function(response) {
+                    sharedMessageService.emitDataUpdate('onCloseOverlay');
+                    return response;
+                }
+            };
+        });
     }
 
 ).factory('sharedMessageService', ['$rootScope',

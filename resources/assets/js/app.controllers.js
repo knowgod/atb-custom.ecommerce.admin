@@ -21,9 +21,9 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
     $scope.filters = [];
 
     $scope.openUpdate = function(url){
-        sharedMessageService.emitDataUpdate('onShowOverlay');
         var req = {
             method: 'GET',
+            pop: 'main',
             url: url,
             headers: {
                 'Accept': 'text/html, */*'
@@ -38,10 +38,10 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
     };
 
     $scope.openCreate = function(){
-        sharedMessageService.emitDataUpdate('onShowOverlay');
         var req = {
             method: 'GET',
             url: '/user/create',
+            pop: 'main',
             headers: {
                 'Accept': 'text/html, */*'
             },
@@ -63,6 +63,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         var req = {
             method: 'GET',
             url: '/user/list',
+            pop: 'main',
             headers: {
                 //'Accept': 'text/html, */*'
             },
@@ -86,20 +87,22 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
 
     $scope.navigation = {
         prev : function(){
-            //if($scope.data.page > 1) {
+            if($scope.query.page > 1) {
                 $scope.query.page--;
                 $scope.getItems();
-            //}
+            }
         },
         next : function(){
-            //if($scope.data.page < $scope.data.last_page) {
+            if($scope.query.page < $scope.data.last_page) {
                 $scope.query.page++;
                 $scope.getItems();
-            //}
+            }
         },
         page: function(id){
-            $scope.query.page = id;
-            $scope.getItems();
+            if(id > 0 && $scope.query.page <= $scope.data.last_page && id!= $scope.data.current_page) {
+                $scope.query.page = id;
+                $scope.getItems();
+            }
         }
     };
 
