@@ -44,14 +44,10 @@
                 {!! $collection->render() !!}
             </div>
         </div>
-    </div>
-@endsection
-
-
-@section('fab')
-    <div class="fab-bottom">
-        <a href="{{ url('/invite/create') }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
-            <i class="material-icons">add</i>
-        </a>
+        <div class="fab-bottom">
+            <a href="{{ url('/invite/create') }}" ng-click="openCreate()" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                <i class="material-icons">add</i>
+            </a>
+        </div>
     </div>
 @endsection

@@ -36,6 +36,13 @@ class InviteController extends Controller
             $message->to($request->email, 'name')->subject('Invitation!');
         });
 
+        $this->inviteRepo->create(
+            [
+                'email'           => $request->input('email'),
+                'status' => '0',
+            ]
+        );
+
         return Redirect::route('invite')->with('message', 'Invitation has been sent successfully!');
     }
 
