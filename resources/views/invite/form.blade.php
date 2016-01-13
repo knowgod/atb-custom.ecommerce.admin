@@ -9,7 +9,7 @@
             @if(Session::has('message'))
                 <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
             @endif
-            <form action="/invite_store" method="POST" class="form-horizontal">
+            <form action="/invite/store" method="POST" class="form-horizontal">
                 {{ csrf_field() }}
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" name="email" type="text" id="email" value="{{ old('email') }}" >

@@ -47,8 +47,8 @@ Route::group(['middleware' => 'web'], function (){
         });
 
         Route::group(['namespace' => 'Invite'], function () {
-            Route::get('invite', ['as' => 'invite', 'uses' => 'InviteController@create']);
-            Route::post('invite_store', ['as' => 'invite_store', 'uses' => 'InviteController@store']);
+            Route::get('invite/create', ['as' => 'invite/create', 'uses' => 'InviteController@create']);
+            Route::post('invite/store', ['as' => 'invite/store', 'uses' => 'InviteController@store']);
             Route::get('invite/list', ['as' => 'invite/list', 'uses' => 'InviteController@index']);
 
         });
