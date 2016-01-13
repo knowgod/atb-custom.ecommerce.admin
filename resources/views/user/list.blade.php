@@ -72,7 +72,11 @@
                             <th class="mdl-data-table__cell--non-numeric"></th>
                             <th class="mdl-data-table__cell--non-numeric"><input type="text" ng-model="query.filterBy.fullname" /></th>
                             <th class="mdl-data-table__cell--non-numeric"><input type="text" ng-model="query.filterBy.email" /></th>
-                            <th></th>
+                            <th>
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white" ng-click="getItems()">
+                                    <i class="material-icons">search</i>
+                                </button>
+                            </th>
                         </tr>
                         </thead>
                         <tbody class="mdl-data-table--body">
