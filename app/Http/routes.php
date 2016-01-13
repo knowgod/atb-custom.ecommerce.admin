@@ -27,18 +27,19 @@ Route::group(['middleware' => 'web'], function (){
     Route::get('auth/social/callback/google', 'Auth\Social\GoogleController@handleProviderCallback');
 
     Route::group(['middleware' => 'auth'], function (){
+
         Route::group(['namespace' => 'Admin'], function (){
             Route::get('dashboard', 'DashboardController@index');
-            Route::get('profile', 'ProfileController@index');
-        });
 
+            Route::get('profile', 'ProfileController@index');
+            Route::post('profile/update', 'ProfileController@update');
+        });
 
         Route::group(['namespace' => 'User'], function (){
 
             Route::get('user/list', 'UserController@index');
             Route::get('user/create', 'UserController@showCreateForm');
             Route::post('user/create', 'UserController@create');
-
             Route::get('user/view/{id}', 'UserController@view');
 
             Route::get('user/update/id/{id}', 'UserController@showUpdateForm');

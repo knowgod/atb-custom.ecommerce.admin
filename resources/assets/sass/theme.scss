@@ -32,6 +32,9 @@ input:-webkit-autofill {
     td{
         border-top: 1px solid rgba(0,0,0,.12) !important;
         border-bottom: 0 !important;
+        &.narrow{
+            width: 5%;
+        }
     }
     tr:last-child{
         td{
@@ -185,6 +188,10 @@ input:-webkit-autofill {
             padding: 0 5px;
             a{
                 text-decoration: none;
+                cursor: pointer;
+                &.active{
+                    color: $primary-text-color;
+                }
             }
         }
     }
@@ -199,7 +206,7 @@ input:-webkit-autofill {
     left: 0;
     height: 100%;
     width: 100%;
-    z-index: 4;
+    z-index: 5;
     visibility: hidden;
     -webkit-transition-property: background-color;
     transition-property: background-color;
@@ -220,7 +227,7 @@ input:-webkit-autofill {
     overflow: hidden;
 }
 .grid-pop-ctrl{
-    z-index: 5;
+    z-index: 6;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
@@ -252,4 +259,24 @@ input:-webkit-autofill {
         -webkit-transform: translate3d(0,0,0) scale(0);
         transform: translate3d(0,0,0) scale(0);
     }
+    .buttons{
+        text-align: right;
+        border-top: 1px solid rgba(0,0,0,.1);
+        padding-top: 8px;
+    }
+    .grid-pop-header{
+        margin: -8px -8px 10px -8px;
+        padding: 0 16px;
+        width: 100%;
+        position: relative;
+        .mdl-layout-title{
+            color: #fff;
+        }
+        .mdl-button{
+            position: absolute;
+            top:-16px;
+            right: -16px;
+        }
+    }
+
 }
