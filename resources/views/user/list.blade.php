@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="main-content">
-        <div class="grid-ctrl" ng-controller='GridController' ng-init='data=<?php echo json_encode($collection) ?>; name="user";'>
+        <div class="grid-ctrl" ng-controller='GridController' ng-init='data=<?php echo $collection->toJson(JSON_HEX_TAG | JSON_HEX_APOS)?>; name="user";'>
             <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--12-col mdl-shadow--2dp mdl-color--white">
 

@@ -7,7 +7,7 @@
     <div class="mdl-grid">
         <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
             <form class="form-horizontal" role="form" method="POST" action="{{ url('/profile/update') }}" ng-controller="GridFormController"
-                  ng-init="formUrl='{{ url('/profile/update') }}'; formData={{ json_encode($user) }}">
+                  ng-init="formUrl='{{ url('/profile/update') }}'; formData={{ $user->toJson() }}">
 
                 <input type="hidden" name="_token" ng-model="formData._token" id="csrf-token" value="{{ csrf_token() }}" />
 
