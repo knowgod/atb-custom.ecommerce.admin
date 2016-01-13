@@ -12,7 +12,11 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
     $scope.massCheckbox = false;
     $scope.checkboxData = [];
 
-    $scope.filters = [];
+    $scope.updateSortOrder = function(field, direction){
+        $scope.query.orderBy = field;
+        $scope.query.orderDirection = direction;
+        $scope.getItems();
+    };
 
     $scope.openUpdate = function(url){
         var req = {
@@ -57,16 +61,20 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
     });
 
     $scope.getItems = function(){
+        sharedMessageService.emitDataUpdate('onShowHorizontalLoader');
         var req = {
             method: 'GET',
-            url: '/'+$scope.name+'/list?' + $scope.helper.parseGridStateToQueryString($scope.query),
-            loader: 'round'
+            url: '/'+$scope.name+'/list?' + $scope.helper.parseGridStateToQueryString($scope.query)
         };
         $http(req).then(function(response){
             $scope.data = response.data.collection;
             $scope.checkbox.clearSelection();
             setTimeout(componentHandler.upgradeDom, 10);
-        }, function(){ });
+            sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
+
+        }, function(){
+            sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
+        });
 
     };
 
@@ -219,6 +227,18 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
     });
 
     sharedMessageService.onDataUpdate('onCloseOverlay', $scope, function(message, data){
+        $scope.isVisible = false;
+    });
+
+}]).controller('HorizontalLoaderController', ['$scope', '$http', 'sharedMessageService', function($scope, $http, sharedMessageService){
+
+    $scope.isVisible = false;
+
+    sharedMessageService.onDataUpdate('onShowHorizontalLoader', $scope, function(message, data){
+        $scope.isVisible = true;
+    });
+
+    sharedMessageService.onDataUpdate('onCloseHorizontalLoader', $scope, function(message, data){
         $scope.isVisible = false;
     });
 

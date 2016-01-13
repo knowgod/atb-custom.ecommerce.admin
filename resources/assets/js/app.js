@@ -9,7 +9,7 @@ var atypicalApp = angular.module('atypical.app',
         $httpProvider.interceptors.push(function($q, sharedMessageService) {
             return {
                 'request': function(config) {
-                    if(config.loader && config.loader == 'main'){
+                    if(config.loader && config.loader == 'round'){
                         sharedMessageService.emitDataUpdate('onShowOverlay');
                     }
                     return config;

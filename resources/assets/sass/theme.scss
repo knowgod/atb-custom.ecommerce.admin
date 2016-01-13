@@ -40,6 +40,9 @@ input:-webkit-autofill {
         }
     }
     tr{
+        th{
+            line-height: 22px;
+        }
         &:last-child {
             td {
                 border-bottom: 1px solid rgba(0, 0, 0, .2) !important;
@@ -49,6 +52,16 @@ input:-webkit-autofill {
             th {
                 padding-top: 0;
                 height: 30px;
+            }
+        }
+    }
+    .mdl-data-table__cell--buttons{
+        .mdl-button--icon{
+            height: 20px;
+            width: 20px;
+            min-width: 20px;
+            &.active{
+                color: $accent-color!important;
             }
         }
     }
@@ -236,6 +249,18 @@ input:-webkit-autofill {
 
 .main-loader-ctrl{
     overflow: hidden;
+}
+#horisontal-loader-ctrl{
+    z-index: 10;
+    position: fixed;
+    top:55%;
+    left: 50%;
+    margin: 0 0 0 -125px;
+    visibility: hidden;
+    width: 250px;
+    &.is-visible {
+        visibility: visible;
+    }
 }
 .grid-pop-ctrl{
     z-index: 6;

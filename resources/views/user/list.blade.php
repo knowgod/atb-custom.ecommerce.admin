@@ -16,9 +16,45 @@
                                     <input type="checkbox" id="checkbox-grid" class="mdl-checkbox__input" ng-click="checkbox.massAction()" ng-model="massCheckbox">
                                 </label>
                             </th>
-                            <th class="mdl-data-table__cell--non-numeric">ID</th>
-                            <th class="mdl-data-table__cell--non-numeric">User</th>
-                            <th class="mdl-data-table__cell--non-numeric">Email</th>
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons">
+                                ID
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                        ng-click="updateSortOrder('id','ASC')"
+                                        ng-class="{'active':query.orderBy=='id'&&query.orderDirection=='ASC'}">
+                                    <i class="material-icons">arrow_drop_up</i>
+                                </button>
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                        ng-click="updateSortOrder('id','DESC')"
+                                        ng-class="{'active':query.orderBy=='id'&&query.orderDirection=='DESC'}">
+                                    <i class="material-icons">arrow_drop_down</i>
+                                </button>
+                            </th>
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons">
+                                User
+                                    <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                            ng-click="updateSortOrder('fullname','ASC')"
+                                            ng-class="{'active':query.orderBy=='fullname'&&query.orderDirection=='ASC'}">
+                                        <i class="material-icons">arrow_drop_up</i>
+                                    </button>
+                                    <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                            ng-click="updateSortOrder('fullname','DESC')"
+                                            ng-class="{'active':query.orderBy=='fullname'&&query.orderDirection=='DESC'}">
+                                        <i class="material-icons">arrow_drop_down</i>
+                                    </button>
+                            </th>
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons">
+                                Email
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                        ng-click="updateSortOrder('email','ASC')"
+                                        ng-class="{'active':query.orderBy=='email'&&query.orderDirection=='ASC'}">
+                                    <i class="material-icons">arrow_drop_up</i>
+                                </button>
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                        ng-click="updateSortOrder('email','DESC')"
+                                        ng-class="{'active':query.orderBy=='email'&&query.orderDirection=='DESC'}">
+                                    <i class="material-icons">arrow_drop_down</i>
+                                </button>
+                            </th>
                             <th>
                                 <button id="grid-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon mdl-button-on-white">
                                     <i class="material-icons">more_vert</i>
@@ -34,7 +70,7 @@
                         <tr class="mdl-data-table__row--filter">
                             <th class="narrow"></th>
                             <th class="mdl-data-table__cell--non-numeric"></th>
-                            <th class="mdl-data-table__cell--non-numeric"><input type="text" ng-model="query.filterBy.name" /></th>
+                            <th class="mdl-data-table__cell--non-numeric"><input type="text" ng-model="query.filterBy.fullname" /></th>
                             <th class="mdl-data-table__cell--non-numeric"><input type="text" ng-model="query.filterBy.email" /></th>
                             <th></th>
                         </tr>
