@@ -19,7 +19,7 @@ input:-webkit-autofill {
 
 .mdl-button {
     &.mdl-button--accent,
-    &.mdl-button--icon,
+    &.mdl-button--icon.mdl-button--colored,
     &.mdl-button--fab{
         color: $primary-color-text!important;
         &.mdl-button-on-white{
@@ -35,10 +35,21 @@ input:-webkit-autofill {
         &.narrow{
             width: 5%;
         }
+        &.actions{
+            padding-top: 7px;
+        }
     }
-    tr:last-child{
-        td{
-            border-bottom: 1px solid rgba(0,0,0,.2) !important;
+    tr{
+        &:last-child {
+            td {
+                border-bottom: 1px solid rgba(0, 0, 0, .2) !important;
+            }
+        }
+        &.mdl-data-table__row--filter {
+            th {
+                padding-top: 0;
+                height: 30px;
+            }
         }
     }
 }

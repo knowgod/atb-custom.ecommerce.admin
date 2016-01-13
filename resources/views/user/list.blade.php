@@ -31,6 +31,13 @@
                                 </ul>
                             </th>
                         </tr>
+                        <tr class="mdl-data-table__row--filter">
+                            <th class="narrow"></th>
+                            <th class="mdl-data-table__cell--non-numeric"></th>
+                            <th class="mdl-data-table__cell--non-numeric"><input type="text" ng-model="query.filterBy.name" /></th>
+                            <th class="mdl-data-table__cell--non-numeric"><input type="text" ng-model="query.filterBy.email" /></th>
+                            <th></th>
+                        </tr>
                         </thead>
                         <tbody class="mdl-data-table--body">
                         <tr ng-repeat="item in data.data track by item.id">
@@ -42,8 +49,13 @@
                             <td class="mdl-data-table__cell--non-numeric"><% item.id %></td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.firstname %> <% item.lastname %></td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.email %></td>
-                            <td>
-                                <a class="mdl-js-button mdl-button--primary " ng-click="openUpdate('/user/update/id/'+item.id)" href="">EDIT</a>
+                            <td class="actions">
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white" ng-click="openUpdate('/user/update/id/'+item.id)">
+                                    <i class="material-icons">create</i>
+                                </button>
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white" ng-click="invokeDelete('/user/delete/id/'+item.id)">
+                                    <i class="material-icons">block</i>
+                                </button>
                             </td>
                         </tr>
                         </tbody>
@@ -53,7 +65,7 @@
                             <li>
                                 <a ng-click="navigation.prev()" ng-class="1 == data.current_page ? 'active' : ''" href="#">«</a>
                             </li>
-                            <li ng-repeat="i in getNumber(data.last_page) track by $index">
+                            <li ng-repeat="i in helper.getNumberAsObject(data.last_page) track by $index">
                                 <a ng-click="navigation.page($index+1)" ng-class="($index+1) == data.current_page ? 'active' : ''" href="#"><% $index+1 %></a>
                             </li>
                             <li>
