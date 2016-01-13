@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class JsonAwareViewFactory extends Factory {
     public function make($view, $data = array(), $mergeData = array()){
         if (Request::capture()->wantsJson()){
-            return json_encode($data);
+            return json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS);
         }
         return parent::make($view, $data, $mergeData);
     }
