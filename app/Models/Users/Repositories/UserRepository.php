@@ -40,8 +40,10 @@ class UserRepository extends Repository {
     }
 
     public function applyFilters($filterData){
-        foreach($filterData as $fieldName=>$filterValue){
-            $this->findBy($fieldName, ['like'=>$filterValue]);
+        foreach ($filterData as $fieldName => $filterValue){
+            if ($filterValue){
+                $this->findBy($fieldName, ['like' => $filterValue]);
+            }
         }
         return $this;
     }
