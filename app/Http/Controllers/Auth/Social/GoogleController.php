@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Auth\Social;
 
 use App\Models\Users\Repositories\UserRepository;
+use App\Models\Invitations\Repositories\InviteRepository;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -31,12 +32,16 @@ class GoogleController extends AuthController {
      *
      * @return void
      */
-    public function handleProviderCallback(UserRepository $userRepository){
+    public function handleProviderCallback(UserRepository $userRepository, InviteRepository $inviteRepository){
 
         $googleUser = Socialite::driver('google')->user();
 
         $user = $userRepository->findBy('email', ['=' => $googleUser->getEmail()], ['id'])->first();
+        $inviteExist = $inviteRepository->findBy('email', ['=' => $googleUser->getEmail()], ['id'])->first();
 
+        if (!$inviteExist) {
+            return redirect('/login/');
+        }
 
         if (!$user){
             $fullName = $googleUser->getName();
