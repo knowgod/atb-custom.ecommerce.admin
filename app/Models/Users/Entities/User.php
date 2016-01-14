@@ -29,4 +29,11 @@ class User extends Authenticatable {
     protected $hidden = [
             'password', 'remember_token',
     ];
+
+    public function toJson($options = ''){
+        if(!$options){
+            $options = JSON_HEX_TAG | JSON_HEX_APOS;
+        }
+        return json_encode($this->jsonSerialize(), $options);
+    }
 }

@@ -45,6 +45,7 @@ Route::group(['middleware' => 'web'], function (){
             Route::get('user/update/id/{id}', 'UserController@showUpdateForm');
             Route::post('user/update', 'UserController@update');
 
+            Route::get('user/delete/id/{id}', 'UserController@delete');
         });
 
         Route::group(['namespace' => 'Invite'], function () {
