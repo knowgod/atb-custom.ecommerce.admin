@@ -31,24 +31,24 @@ class InviteController extends Controller
 
     public function store(Request $request)
     {
-        Mail::send('invite.email', ['email' => $request->email], function ($message) use ($request) {
+        Mail::send('invite.email', ['email' => $request->input('email')], function ($message) use ($request) {
             $message->from($request->user()->email, 'NuMe');
-            $message->to($request->email, 'name')->subject('Invitation!');
+            $message->to($request->input('email'), 'name')->subject('Invitation!');
         });
 
         $this->inviteRepo->create(
             [
-                'email'           => $request->input('email'),
+                'email'  => $request->input('email'),
                 'status' => '0',
             ]
         );
 
-        return Redirect::route('invite')->with('message', 'Invitation has been sent successfully!');
+        return Redirect::route('invite/list')->with('message', 'Invitation has been sent successfully!');
     }
 
     public function resend(Request $request)
     {
-        var_dump($request);die;
+
     }
 
     public function massResend()
