@@ -57,7 +57,7 @@
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white" ng-click="openUpdate('/user/update/id/'+item.id)">
                                     <i class="material-icons">create</i>
                                 </button>
-                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white" ng-click="invokeDelete('/user/delete/id/'+item.id)">
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white" ng-click="invokeAction('/user/delete/id/'+item.id)">
                                     <i class="material-icons">block</i>
                                 </button>
                             </td>
