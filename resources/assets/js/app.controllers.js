@@ -31,7 +31,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         }, function(){ });
     };
 
-    $scope.invokeDelete = function(url){
+    $scope.invokeAction = function(url){
         var req = {
             method: 'GET',
             loader: 'round',

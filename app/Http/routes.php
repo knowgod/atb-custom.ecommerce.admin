@@ -52,6 +52,7 @@ Route::group(['middleware' => 'web'], function (){
             Route::get('invite/create', ['as' => 'invite/create', 'uses' => 'InviteController@create']);
             Route::post('invite/store', ['as' => 'invite/store', 'uses' => 'InviteController@store']);
             Route::get('invite/list', ['as' => 'invite/list', 'uses' => 'InviteController@index']);
+            Route::get('invite/resend/id/{id}', 'InviteController@resend');
 
         });
     });

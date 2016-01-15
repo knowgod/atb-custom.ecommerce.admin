@@ -28,4 +28,25 @@ class InviteRepository extends Repository {
             ->orderBy('id', 'desc')
             ->paginate($perPage);
     }
+
+    public function orderBy($field, $direction){
+        $this->getQueryBuilder()->orderBy($field, $direction);
+        return $this;
+    }
+
+    public function applyFilters($filterData){
+        foreach ($filterData as $fieldName => $filterValue){
+            if ($filterValue){
+                $this->findBy($fieldName, ['like' => $filterValue]);
+            }
+        }
+        return $this;
+    }
+
+    public function getInvitationByEmail($email)
+    {
+        return $this->getQueryBuilder()
+            ->where('email', 'like', $email)
+            ->first(['email']);
+    }
 }
