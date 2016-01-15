@@ -2,8 +2,6 @@
 
 namespace App\Models\Users\Repositories;
 
-use App\Models\Users\Entities\DUser as User;
-
 /**
  * @category Atypicalbrands
  * Written by: vyatsyuk@atypicalbrands.com
