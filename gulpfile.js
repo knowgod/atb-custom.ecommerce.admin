@@ -1,15 +1,21 @@
 var gulp = require('gulp');
-var sass = require('gulp-sass');
 var rename = require('gulp-rename');
+var compass = require('gulp-compass');
+var minifyCSS = require('gulp-minify-css');
 
 gulp.task('css', function () {
     gulp.src('resources/assets/sass/app.scss')
-        .pipe(sass().on('error', sass.logError))
+        .pipe(compass({
+            css: 'public/assets/css',
+            sass: 'resources/assets/sass',
+            image: 'resources/assets/images'
+        }))
+        .pipe(minifyCSS())
         .pipe(gulp.dest('public/assets/css'));
 });
 
 gulp.task('copy', function () {
-    gulp.src('node_modules/material-design-lite/dist/material.light_blue-orange.min.css')
+    gulp.src('node_modules/material-design-lite/dist/material.blue-orange.min.css')
         .pipe(rename('material.min.css'))
         .pipe(gulp.dest('public/assets/css/'));
 
