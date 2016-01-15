@@ -2,6 +2,7 @@
     <div class="main-avatar-dropdown">
         <div class="mdl-layout-spacer"></div>
         <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+
             @if(Request::user()->google_avatar_img)
                 <img src="<?php echo Request::user()->google_avatar_img ?>" class="main-avatar">
             @else

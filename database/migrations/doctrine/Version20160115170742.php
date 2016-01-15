@@ -17,7 +17,6 @@ class Version20160115170742 extends AbstractMigration
         $this->addSql('CREATE TABLE dusers (id INT AUTO_INCREMENT NOT NULL, firstname VARCHAR(255) DEFAULT NULL, lastname VARCHAR(255) DEFAULT NULL, email VARCHAR(32) NOT NULL, register_source VARCHAR(255) DEFAULT NULL, google_id VARCHAR(255) DEFAULT NULL, google_avatar_img VARCHAR(255) DEFAULT NULL, fullname VARCHAR(255) DEFAULT NULL, password VARCHAR(255) NOT NULL, remember_token VARCHAR(255) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_F006BE1BE7927C74 (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('DROP TABLE migrations');
         $this->addSql('DROP TABLE some_test_table');
-        $this->addSql('DROP TABLE users');
         $this->addSql('DROP INDEX password_resets_email_index ON password_resets');
         $this->addSql('DROP INDEX password_resets_token_index ON password_resets');
         $this->addSql('ALTER TABLE password_resets ADD PRIMARY KEY (email)');

@@ -45,7 +45,7 @@ class DUser implements
     /**
      * @ORM\Column(type="string", length=32, nullable=false, unique=true)
      */
-    protected $email;
+    public $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -63,7 +63,7 @@ class DUser implements
      * @ORM\Column(type="string", length=255, nullable=true)
      */
 
-    protected $google_avatar_img;
+    public $google_avatar_img;
 
 
     /**
