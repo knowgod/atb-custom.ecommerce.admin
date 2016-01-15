@@ -48,6 +48,19 @@ Route::group(['middleware' => 'web'], function (){
             Route::get('user/delete/id/{id}', 'UserController@delete');
         });
 
+        Route::group(['namespace' => 'Order'], function (){
+
+            Route::get('order/list', 'OrderController@index');
+            Route::get('order/create', 'OrderController@showCreateForm');
+            Route::post('order/create', 'OrderController@create');
+            Route::get('order/view/{id}', 'OrderController@view');
+
+            Route::get('order/update/id/{id}', 'OrderController@showUpdateForm');
+            Route::post('order/update', 'OrderController@update');
+
+            Route::get('order/delete/id/{id}', 'OrderController@delete');
+        });
+
         Route::group(['namespace' => 'Invite'], function () {
             Route::get('invite', ['as' => 'invite', 'uses' => 'InviteController@create']);
             Route::post('invite_store', ['as' => 'invite_store', 'uses' => 'InviteController@store']);

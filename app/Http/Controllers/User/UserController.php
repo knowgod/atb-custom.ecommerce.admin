@@ -100,17 +100,6 @@ class UserController extends Controller {
 
     }
 
-    public function lookup(Request $request){
-        //sample action for filtering
-
-        $users = $this->userRepo
-                ->findBy('firstname', array('like' => '%111%'))
-                ->orderBy('id', 'desc')
-                ->paginate($this->_itemsPerPage);
-        var_dump($users->toArray());
-        return;
-    }
-
     public function delete($id){
         $this->userRepo->find($id)->delete();
         return redirect($this->redirectTo);
