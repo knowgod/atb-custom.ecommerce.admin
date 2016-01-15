@@ -30,7 +30,10 @@ class User extends Authenticatable {
             'password', 'remember_token',
     ];
 
-    public function toJson($options = JSON_HEX_TAG | JSON_HEX_APOS){
+    public function toJson($options = ''){
+        if(!$options){
+            $options = JSON_HEX_TAG | JSON_HEX_APOS;
+        }
         return json_encode($this->jsonSerialize(), $options);
     }
 }

@@ -12,9 +12,11 @@
 */
 
 $factory->define(App\Models\Users\Entities\User::class, function (Faker\Generator $faker) {
+
         return [
-            'firstname' => $faker->firstName,
-            'lastname' => $faker->lastName,
+            'firstname' => ($fname = $faker->firstName),
+            'lastname' => ($lname =  $faker->lastName),
+            'fullname' => $fname . ' ' . $lname,
             'email' => $faker->email,
             'password' => bcrypt(str_random(10)),
             'remember_token' => str_random(10),

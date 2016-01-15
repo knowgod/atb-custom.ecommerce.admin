@@ -25,8 +25,19 @@ class UserController extends Controller {
         $this->userRepo = $userRepo;
     }
 
-    public function index(){
-        $users = $this->userRepo->getPaginatedUsers($this->_itemsPerPage);
+    public function index(Request $request){
+        if($request->has('filterBy')){
+            $this->userRepo->applyFilters($request->input('filterBy'));
+        }
+        if($request->has(['orderBy', 'orderDirection'])){
+            $this->userRepo->orderBy($request->input('orderBy'),$request->input('orderDirection'));
+        }
+
+        if($request->has(['orderBy', 'orderDirection'])){
+            $this->userRepo->orderBy($request->input('orderBy'),$request->input('orderDirection'));
+        }
+        $users = $this->userRepo
+                ->getPaginatedUsers($this->_itemsPerPage);
 
         return view('user.list', array('collection' => $users));
     }
@@ -100,8 +111,9 @@ class UserController extends Controller {
         return;
     }
 
-    public function delete(){
-        return 'delete action';
+    public function delete($id){
+        $this->userRepo->find($id)->delete();
+        return redirect($this->redirectTo);
     }
 
     public function showCreateForm(){
