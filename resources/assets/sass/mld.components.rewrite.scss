@@ -1,0 +1,55 @@
+@import "_palette.scss";
+
+.mdl-button {
+    &.mdl-button--accent,
+    &.mdl-button--icon.mdl-button--colored,
+    &.mdl-button--fab{
+        color: $primary-color-text!important;
+        &.mdl-button-on-white{
+            color: $secondary-text-color!important;
+        }
+    }
+}
+.mdl-data-table{
+    border: 0!important;
+    td{
+        border-top: 1px solid rgba(0,0,0,.12) !important;
+        border-bottom: 0 !important;
+        &.narrow{
+            width: 5%;
+        }
+        &.actions{
+            padding-top: 7px;
+        }
+    }
+    tr{
+        th{
+            line-height: 22px;
+        }
+        &:last-child {
+            td {
+                border-bottom: 1px solid rgba(0, 0, 0, .2) !important;
+            }
+        }
+        &.mdl-data-table__row--filter {
+            th {
+                padding-top: 0;
+                height: 30px;
+            }
+        }
+    }
+    .mdl-data-table__cell--buttons{
+        .mdl-button--icon{
+            height: 20px;
+            width: 20px;
+            min-width: 20px;
+            &.active{
+                color: $accent-color!important;
+            }
+        }
+    }
+}
+.mdl-textfield{
+    width: 100%!important;
+    max-width: 300px;
+}
