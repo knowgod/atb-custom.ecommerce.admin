@@ -41,7 +41,7 @@
         <li class="mdl-menu__item"><a href="{{ url('/') }}">Dashboard</a></li>
         <li class="mdl-menu__item"><a href="{{ url('/user/list') }}">Users</a></li>
         <li class="mdl-menu__item"><a href="{{ url('/order/list') }}">Orders</a></li>
-        <li class="mdl-menu__item"><a href="{{ url('/invite') }}">Invitations</a></li>
+        <li class="mdl-menu__item"><a href="{{ url('/invite/list') }}">Invitations</a></li>
     </ul>
     <span class="mdl-layout__header--notification material-icons mdl-badge" data-badge="0">notifications</span>
     @include('layouts.shared.account')

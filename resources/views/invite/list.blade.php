@@ -109,7 +109,7 @@
                             <td class="mdl-data-table__cell--non-numeric"><% item.status %></td>
                             <td class="actions">
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white" ng-click="invokeAction('/invite/resend/id/'+item.id)">
-                                    <i class="material-icons">RESEND INVITE</i>
+                                    <i class="material-icons">cached</i>
                                 </button>
                             </td>
                         </tr>
