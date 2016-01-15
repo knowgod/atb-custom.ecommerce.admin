@@ -163,7 +163,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         LaravelDoctrine\ORM\DoctrineServiceProvider::class,
         LaravelDoctrine\Extensions\GedmoExtensionsServiceProvider::class,
-        LaravelDoctrine\ORM\Auth\Passwords\PasswordResetServiceProvider,
+        LaravelDoctrine\ORM\Auth\Passwords\PasswordResetServiceProvider::class,
     ],
 
     /*
