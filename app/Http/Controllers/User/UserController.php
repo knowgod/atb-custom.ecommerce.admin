@@ -17,7 +17,8 @@ use Illuminate\Http\Request;
 class UserController extends Controller {
 
     protected $redirectTo = '/user/list';
-    protected $_itemsPerPage = 10;
+
+    protected $_itemsPerPage = 15;
 
     public $userRepo = null;
 
@@ -26,18 +27,16 @@ class UserController extends Controller {
     }
 
     public function index(Request $request){
-        if($request->has('filterBy')){
-            $this->userRepo->applyFilters($request->input('filterBy'));
-        }
-        if($request->has(['orderBy', 'orderDirection'])){
-            $this->userRepo->orderBy($request->input('orderBy'),$request->input('orderDirection'));
-        }
+        $filters = ($request->has('filterBy')) ? $request->input('filterBy') : [];
+        $orderBy = ($request->has(['orderBy', 'orderDirection'])) ?
+                [
+                  'orderBy'        => $request->input('orderBy'),
+                  'orderDirection' => $request->input('orderDirection')
+                ] : [];
 
-        if($request->has(['orderBy', 'orderDirection'])){
-            $this->userRepo->orderBy($request->input('orderBy'),$request->input('orderDirection'));
-        }
-        $users = $this->userRepo
-                ->getPaginateUsers($this->_itemsPerPage);
+        $perPage = ($request->has('per_page') ? $request->input('per_page') : $this->_itemsPerPage);
+
+        $users = $this->userRepo->getUserGridCollection($filters, $orderBy, $perPage);
 
         return view('user.list', array('collection' => $users));
     }
@@ -126,7 +125,7 @@ class UserController extends Controller {
     protected function updateValidator(array $data){
         $rulesSet = [
                 'firstname' => 'required|max:255',
-                //'email'     => 'required|email|max:255|unique:users',
+            //'email'     => 'required|email|max:255|unique:users',
                 'lastname'  => 'required|max:255',
                 'password'  => 'sometimes|required|confirmed|min:6'
         ];

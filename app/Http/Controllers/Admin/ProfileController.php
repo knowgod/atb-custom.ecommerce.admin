@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Users\Repositories\UserRepository;
+use App\Models\Users\Repositories\User;
+
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use Auth;
 
-class ProfileController extends Controller
-{
+class ProfileController extends Controller {
 
     protected $redirectTo = '/profile';
 
@@ -20,15 +21,14 @@ class ProfileController extends Controller
         $this->userRepo = $userRepo;
     }
 
-    public function index()
-    {
-        return view('profile.index', ['user'=>Auth::user()]);
+    public function index(){
+        return view('profile.index', ['user' => Auth::user()]);
     }
 
     /**
      * Update the user's profile.
      *
-     * @param  Request  $request
+     * @param  Request $request
      * @return Response
      */
 
@@ -40,21 +40,19 @@ class ProfileController extends Controller
                     $request, $validator
             );
         }
-        $user = $this->userRepo->findOrFail($request->input('id'));
 
-        $this->userRepo->update(
-                ['firstname'       => $request->input('firstname'),
-                 'lastname'        => $request->input('lastname'),
-                 'fullname'        => $request->input('firstname') . ' ' . $request->input('lastname'),
-                 'email'           => $request->input('email'),
-                 'register_source' => 'manual',
-                ], $user->id);
+        $user = $this->userRepo->find($request->input('id'));
+
+        $user->setFirstname($request->input('firstname'))
+                ->setLastname($request->input('lastname'))
+                ->setFullname($request->input('firstname') . ' ' . $request->input('lastname'))
+                ->setEmail($request->input('email'));
 
         if ($request->has('password')){
-            $this->userRepo->update(
-                    ['password' => bcrypt($request->input('password')),
-                    ], $user->id);
+            $user->setPassword(bcrypt($request->input('password')));
         }
+        $user->save();
+
         return redirect($this->redirectTo);
     }
 
