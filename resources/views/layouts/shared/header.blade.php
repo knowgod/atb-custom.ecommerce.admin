@@ -25,23 +25,14 @@
     </div>
     <div class="mdl-layout-spacer"></div>
 
-    {{--<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">--}}
-        {{--<label class="mdl-button mdl-js-button mdl-button--icon" for="search">--}}
-            {{--<i class="material-icons">search</i>--}}
-        {{--</label>--}}
-        {{--<div class="mdl-textfield__expandable-holder">--}}
-            {{--<input class="mdl-textfield__input" type="text" id="search">--}}
-            {{--<label class="mdl-textfield__label" for="search">Enter your query...</label>--}}
-        {{--</div>--}}
-    {{--</div>--}}
-    <button class="mdl-button--apps mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-button--colored" id="hdrbtn">
+    <button class="mdl-button--apps mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-button--colored main-menu" id="hdrbtn">
         <i class="material-icons">apps</i>
     </button>
     <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
-        <li class="mdl-menu__item"><a href="{{ url('/') }}">Dashboard</a></li>
-        <li class="mdl-menu__item"><a href="{{ url('/user/list') }}">Users</a></li>
-        <li class="mdl-menu__item"><a href="{{ url('/order/list') }}">Orders</a></li>
-        <li class="mdl-menu__item"><a href="{{ url('/invite') }}">Invitations</a></li>
+        <li class="mdl-menu__item"><a href="{{ url('/') }}"><i class="material-icons">assessment</i>Dashboard</a></li>
+        <li class="mdl-menu__item"><a href="{{ url('/user/list') }}"><i class="material-icons">supervisor_account</i>Users</a></li>
+        <li class="mdl-menu__item"><a href="{{ url('/order/list') }}"><i class="material-icons">inbox</i>Orders</a></li>
+        <li class="mdl-menu__item"><a href="{{ url('/invite') }}"><i class="material-icons">add_box</i>Invitations</a></li>
     </ul>
     <span class="mdl-layout__header--notification material-icons mdl-badge" data-badge="0">notifications</span>
     @include('layouts.shared.account')

@@ -46,6 +46,43 @@ input:-webkit-autofill {
     width: 100%;
 }
 
+.main-menu{
+    &+.mdl-menu__container{
+        ul{
+            width: 200px;
+            padding: 15px;
+            li{
+                width: 100px;
+                display: inline-block;
+                padding: 0;
+                float: left;
+                height: auto;
+                text-align: center;
+
+                a{
+                    display: block;
+                    padding: 10px 0;
+                    text-decoration: none;
+                    color: $secondary-text-color;
+                    &:hover,
+                    &.active{
+                        color: $primary-text-color;
+                        i{
+                            color: #0288D1;
+                        }
+                    }
+                }
+                i{
+                    display: block;
+                    margin: 0 auto;
+                    font-size: 34px;
+                    color: #71BBE3;
+                }
+            }
+        }
+    }
+}
+
 .main-loader-ctrl,
 .grid-pop-ctrl{
     background-color: transparent;

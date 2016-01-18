@@ -21,7 +21,7 @@
     <div class="main-content">
         <div class="grid-ctrl" ng-controller='GridController' ng-init='init("gridCollection");'>
             <div >
-                <div class="mdl-cell mdl-cell--12-col mdl-shadow--2dp mdl-color--white">
+                <div class="mdl-cell mdl-cell--12-col mdl-shadow--2dp mdl-color--white mdl-data-table--container">
 
                     <table class="mdl-data-table wide-table mdl-data-table--selectable">
                         <thead>
@@ -35,21 +35,22 @@
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
                                         ng-show="query.orderBy=='id'">
                                     <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
-                                </button> ID
+                                </button>
+                                Order #
                             </th>
                             <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('fullname')">
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
                                         ng-show="query.orderBy=='fullname'">
                                     <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
                                 </button>
-                                User
+                                Status
                             </th>
                             <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('email')">
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
                                         ng-show="query.orderBy=='email'">
                                     <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
                                 </button>
-                                Email
+                                Created At
                             </th>
 
                         </tr>
@@ -60,8 +61,8 @@
                                 <div data-mdl-checkbox el="item"></div>
                             </td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.id %></td>
-                            <td class="mdl-data-table__cell--non-numeric"><% item.firstname %> <% item.lastname %></td>
-                            <td class="mdl-data-table__cell--non-numeric"><% item.email %></td>
+                            <td class="mdl-data-table__cell--non-numeric"><% item.firstname %></td>
+                            <td class="mdl-data-table__cell--non-numeric"><% item.status %></td>
 
                         </tr>
                         </tbody>
