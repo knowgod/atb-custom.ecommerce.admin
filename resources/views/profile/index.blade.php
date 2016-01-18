@@ -11,22 +11,22 @@
 
                 <input type="hidden" name="_token" ng-model="formData._token" id="csrf-token" value="{{ csrf_token() }}" />
 
-                <input type="hidden" class="form-control" ng-model="formData.id" name="id" value="{{$user->id}}">
+                <input type="hidden" class="form-control" ng-model="formData.id" name="id" value="{{$user->getId()}}">
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.firstname}">
-                    <input class="mdl-textfield__input" name="firstname" ng-model="formData.firstname" type="text" id="firstname" value="{{$user->firstname}}" >
+                    <input class="mdl-textfield__input" name="firstname" ng-model="formData.firstname" type="text" id="firstname" value="{{$user->getFirstname()}}" >
                     <label class="mdl-textfield__label" for="firstname">First Name</label>
                     <span class="mdl-textfield__error"><% formDataErrors.firstname[0] %></span>
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.lastname}">
-                    <input class="mdl-textfield__input" name="lastname" ng-model="formData.lastname" type="text" id="lastname" value="{{$user->lastname}}" >
+                    <input class="mdl-textfield__input" name="lastname" ng-model="formData.lastname" type="text" id="lastname" value="{{$user->getLastname()}}" >
                     <label class="mdl-textfield__label" for="lastname">Last Name</label>
                     <span class="mdl-textfield__error"><% formDataErrors.lastname[0] %></span>
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.email}">
-                    <input class="mdl-textfield__input" name="email" ng-model="formData.email" type="text" id="email" value="{{$user->email}}" >
+                    <input class="mdl-textfield__input" name="email" ng-model="formData.email" type="text" id="email" value="{{$user->getEmail()}}" >
                     <label class="mdl-textfield__label" for="email">E-Mail Address</label>
                     <span class="mdl-textfield__error"><% formDataErrors.email[0] %></span>
                 </div>

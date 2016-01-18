@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\Users\Entities;
+use App\Models\Users\Entities\User;
 
 class UsersTableSeeder extends Seeder {
     /**
@@ -10,16 +10,18 @@ class UsersTableSeeder extends Seeder {
      * @return void
      */
     public function run(){
-        factory(App\Models\Users\Entities\User::class, 50)->create();
+        for($i = 0; $i <= 50; $i++){
+            $user = new User();
+            $faker = Faker\Factory::create();
+            $user->setEmail($faker->email)
+                    ->setFirstname($fname = $faker->firstName)
+                    ->setLastname($lname =  $faker->lastName)
+                    ->setFullname($fname . ' ' . $lname)
+                    ->setRegisterSource('manual')
+                    ->setPassword(bcrypt(str_random(10)));
+            $user->setRememberToken(str_random(10));
+            $user->save();
+        }
 
-        //create super admin (kind of)
-        App\Models\Users\Entities\User::create(
-                ['firstname'      => "Atypical",
-                 'lastname'       => "SuperUser",
-                 'email'          => 'vyatsyuk@atypicalbrands.com',
-                 'password'       => bcrypt('abcABC123'),
-                 'remember_token' => str_random(10),
-                ]
-        );
     }
 }

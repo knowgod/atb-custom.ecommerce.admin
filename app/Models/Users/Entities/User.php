@@ -77,6 +77,8 @@ class User extends DoctrineModel implements
 
     protected $fullname;
 
+    protected $hidden = ['password'];
+
     /**
      * @return mixed
      */
