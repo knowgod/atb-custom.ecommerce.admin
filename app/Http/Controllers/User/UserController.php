@@ -37,7 +37,7 @@ class UserController extends Controller {
             $this->userRepo->orderBy($request->input('orderBy'),$request->input('orderDirection'));
         }
         $users = $this->userRepo
-                ->getPaginatedUsers($this->_itemsPerPage);
+                ->getPaginateUsers($this->_itemsPerPage);
 
         return view('user.list', array('collection' => $users));
     }
