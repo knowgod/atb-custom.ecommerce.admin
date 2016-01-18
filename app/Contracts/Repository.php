@@ -11,7 +11,7 @@ namespace App\Contracts;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Container\Container as App;
 
-abstract class Repository implements RepositoryInterface {
+abstract class Repository {
     /**
      * @var App
      */
