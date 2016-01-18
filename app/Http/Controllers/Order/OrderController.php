@@ -26,7 +26,10 @@ class OrderController extends Controller {
 
     public function index(Request $request){
         return view('order.list', array('collection' => [
-            ['a'=>1, 'waka'=>'test'],['b'=>2, 'beta' => 2]
+            'data' => array(
+                ['id'=>1, 'email'=>'test'],
+                ['id'=>2, 'email' => 2]
+            )
         ]));
     }
 

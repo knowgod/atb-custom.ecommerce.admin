@@ -24,7 +24,12 @@
     }
     tr{
         th{
-            line-height: 22px;
+            &.filter-field{
+                cursor:pointer;
+                .material-icons{
+                    font-size: 15px;
+                }
+            }
         }
         &:last-child {
             td {
@@ -43,9 +48,6 @@
             height: 20px;
             width: 20px;
             min-width: 20px;
-            &.active{
-                color: $accent-color!important;
-            }
         }
     }
 }

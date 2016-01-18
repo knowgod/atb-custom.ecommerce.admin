@@ -1,4 +1,5 @@
-atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageService', 'helperGeneralService', function($scope, $http, sharedMessageService, helperGeneralService){
+atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageService', 'helperGeneralService',
+    function($scope, $http, sharedMessageService, helperGeneralService){
 
     $scope.helper = helperGeneralService;
 
@@ -11,10 +12,18 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
 
     $scope.massCheckbox = false;
     $scope.checkboxData = [];
+    
+    $scope.init = function(data){
+        $scope.data = window[data];
+        $scope.urlBase = window[data].urlBase;
+    };
 
-    $scope.updateSortOrder = function(field, direction){
-        $scope.query.orderBy = field;
-        $scope.query.orderDirection = direction;
+    $scope.updateSortOrder = function(field){
+        if($scope.query.orderBy == field){
+            $scope.query.orderDirection = ($scope.query.orderDirection == 'ASC') ? 'DESC' : 'ASC';
+        }else{
+            $scope.query.orderBy = field;
+        }
         $scope.getItems();
     };
 
@@ -47,7 +56,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
     $scope.openCreate = function(){
         var req = {
             method: 'GET',
-            url: '/'+$scope.name+'/create?' + $scope.helper.parseGridStateToQueryString($scope.query),
+            url: '/'+$scope.urlBase+'/create?' + $scope.helper.parseGridStateToQueryString($scope.query),
             loader: 'round',
             headers: { 'Accept': 'text/html, */*'}
         };
@@ -64,12 +73,12 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         sharedMessageService.emitDataUpdate('onShowHorizontalLoader');
         var req = {
             method: 'GET',
-            url: '/'+$scope.name+'/list?' + $scope.helper.parseGridStateToQueryString($scope.query)
+            url: '/'+$scope.urlBase+'/list?' + $scope.helper.parseGridStateToQueryString($scope.query)
         };
         $http(req).then(function(response){
             $scope.data = response.data.collection;
             $scope.checkbox.clearSelection();
-            setTimeout(componentHandler.upgradeDom, 10);
+            //setTimeout(componentHandler.upgradeDom, 100);
             sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
 
         }, function(){
@@ -84,7 +93,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
 
         var req = {
             method: 'POST',
-            url: '/'+$scope.name+'/action',
+            url: '/'+$scope.urlBase+'/action',
             loader: 'round',
             headers: { },
             data: {
@@ -146,9 +155,12 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                     }
                 }
             }
-
         }
     };
+
+    $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+        componentHandler.upgradeDom();
+    });
 
     $scope.navigation = {
         prev : function(){
@@ -171,6 +183,9 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         }
     };
 
+
+}]).controller('GridBottomController', ['$scope', '$http', 'sharedMessageService', function($scope, $http, sharedMessageService){
+    $scope.isVisible = false;
 
 }]).controller('GridPopController', ['$scope', '$http', 'sharedMessageService','$sce', function($scope, $http, sharedMessageService, $sce){
     $scope.isVisible = false;

@@ -1,5 +1,5 @@
 <div class="mdl-layout__header-row">
-    <span class="mdl-layout-title">Excelsior!</span>
+    <span class="mdl-layout-title">@yield('title')</span>
     <div class="mdl-layout__search">
         <form action="#" class="mdl-layout__search-form">
             <button class="mdl-button mdl-js-button mdl-button--icon">

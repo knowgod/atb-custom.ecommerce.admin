@@ -9,12 +9,11 @@
             <header class="mdl-layout__header ">
                 @include('layouts.shared.header')
             </header>
-            <div class="mdl-layout__drawer">
-                @include('layouts.shared.nav')
-            </div>
+            @yield('navigation')
             <main class="mdl-layout__content">
                 @yield('content')
             </main>
+            @yield('pagination')
         </div>
         @include('layouts.shared.footer')
         @yield('bodyend')
