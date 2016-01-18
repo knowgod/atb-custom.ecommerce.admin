@@ -55,7 +55,7 @@
                         </tr>
                         </thead>
                         <tbody class="mdl-data-table--body">
-                        <tr ng-repeat="item in data.data track by item.id"  on-finish-render="ngRepeatFinished">
+                        <tr ng-repeat="item in data.data track by item.id"  on-finish-render="ngRepeatFinished" ng-class="{'is-selected' : rowSelected(item.id)}">
                             <td class="narrow checkbox-data-holder" data-holder="<% item.id %>">
                                 <div data-mdl-checkbox el="item"></div>
                             </td>
@@ -66,19 +66,6 @@
                         </tr>
                         </tbody>
                     </table>
-                    <div class="pager" ng-show="false && data.total>data.per_page">
-                        <ul class="pagination">
-                            <li>
-                                <a ng-click="navigation.prev()" ng-class="1 == data.current_page ? 'active' : ''" href="#">«</a>
-                            </li>
-                            <li ng-repeat="i in helper.getNumberAsObject(data.last_page) track by $index">
-                                <a ng-click="navigation.page($index+1)" ng-class="($index+1) == data.current_page ? 'active' : ''" href="#"><% $index+1 %></a>
-                            </li>
-                            <li>
-                                <a ng-click="navigation.next()" ng-class="data.last_page == data.current_page ? 'active' : ''" href="#">»</a>
-                            </li>
-                        </ul>
-                    </div>
 
                 </div>
             </div>
@@ -94,10 +81,8 @@
     </div>
 @endsection
 
-@section('pagination')
-<div class="grid-bottom mdl-shadow--2dp" ng-controller="GridBottomController" ng-class="{'is-shown':isVisible}">
-    <div class="grid-bottom--inner"></div>
-</div>
+@section('page.bottom')
+    @include('layouts.shared.page_bottom')
 @endsection
 
 @section('navigation')

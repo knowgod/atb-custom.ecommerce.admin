@@ -46,26 +46,6 @@ input:-webkit-autofill {
     width: 100%;
 }
 
-.pager{
-    width: 100%;
-    background: #fff;
-    ul{
-        padding: 0;
-        text-align: center;
-        li{
-            display: inline-block;
-            padding: 0 5px;
-            a{
-                text-decoration: none;
-                cursor: pointer;
-                &.active{
-                    color: $primary-text-color;
-                }
-            }
-        }
-    }
-}
-
 .main-loader-ctrl,
 .grid-pop-ctrl{
     background-color: transparent;
