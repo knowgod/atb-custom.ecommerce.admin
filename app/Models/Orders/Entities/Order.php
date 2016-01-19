@@ -40,7 +40,7 @@ class Order extends DoctrineModel{
     protected $customer_name;
 
     /**
-     * @ORM\Column(type="string", length=32, nullable=false)
+     * @ORM\Column(type="string", length=128, nullable=false)
      */
     protected $email;
 
@@ -67,6 +67,12 @@ class Order extends DoctrineModel{
      */
 
     protected $payment_method;
+
+    /**
+     * @ORM\Column(type="string", length=55, nullable=true)
+     */
+
+    protected $website;
 
     /**
      * @ORM\Column(type="string", length=32, nullable=true)
@@ -259,6 +265,22 @@ class Order extends DoctrineModel{
      */
     public function setQty($qty){
         $this->qty = $qty;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWebsite(){
+        return $this->website;
+    }
+
+    /**
+     * @param mixed $website
+     * @return Order
+     */
+    public function setWebsite($website){
+        $this->website = $website;
         return $this;
     }
 

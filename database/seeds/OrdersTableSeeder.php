@@ -27,9 +27,11 @@ class OrdersTableSeeder extends Seeder {
                     ->setGrandTotal($grandTotal)
                     ->setDiscountAmount($discount)
                     ->setTotalPaid($grandTotal)
-                    ->setShippingCountryCode($faker->countryCode)
+                    ->setShippingCountryCode($faker->randomElement(['US', 'CA', 'GBR', 'AU', 'UA']))
                     ->setPaymentMethod($faker->randomElement(['Credit Card', 'PayPal']))
-                    ->setCouponCode('NUME' . $faker->randomElement(['HAIR', 'AWSM', 'DISC']));
+                    ->setCouponCode('NUME' . $faker->randomElement(['HAIR', 'AWSM', 'DISC']))
+                    ->setWebsite('nume');
+
             $order->save();
         }
 
