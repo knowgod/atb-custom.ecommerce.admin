@@ -9,7 +9,7 @@
             <ul class="mdl-menu mdl-menu--top-right mdl-js-menu mdl-js-ripple-effect"
             for="grid-menu-lower-right">
             <li class="mdl-menu__item" ng-disabled="!checkboxData.length" ng-click="invokeMassAction('delete');">Delete</li>
-            <li class="mdl-menu__item" ng-disabled="!checkboxData.length" ng-click="invokeMassAction('another_action');">Another Action</li>
+            <li class="mdl-menu__item" ng-disabled="!checkboxData.length" ng-click="invokeMassAction('test');">Another Action</li>
             </ul>
 
         </div>

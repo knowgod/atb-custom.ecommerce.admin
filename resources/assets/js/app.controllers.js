@@ -100,7 +100,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
 
             var req = {
                 method: 'POST',
-                url: '/' + $scope.urlBase + '/action',
+                url: '/' + $scope.urlBase + '/mass/' + action,
                 loader: 'round',
                 headers: {},
                 data: {

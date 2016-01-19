@@ -46,6 +46,8 @@ Route::group(['middleware' => 'web'], function (){
             Route::post('user/update', 'UserController@update');
 
             Route::get('user/delete/id/{id}', 'UserController@delete');
+            Route::post('user/mass/delete', 'UserController@massDelete');
+
         });
 
         Route::group(['namespace' => 'Order'], function (){

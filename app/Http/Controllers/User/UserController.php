@@ -29,16 +29,14 @@ class UserController extends Controller {
     }
 
     public function index(Request $request){
-        $filters = ($request->has('filterBy')) ? $request->input('filterBy') : [];
-        $orderBy = ($request->has(['orderBy', 'orderDirection'])) ?
-                [
-                  'orderBy'        => $request->input('orderBy'),
-                  'orderDirection' => $request->input('orderDirection')
-                ] : [];
 
-        $perPage = ($request->has('perPage') ? $request->input('perPage') : $this->_itemsPerPage);
+        $collectionParams = $this->prepareGridCollectionParams($request);
 
-        $users = $this->userRepo->getUserGridCollection($filters, $orderBy, $perPage);
+        $users = $this->userRepo->getUserGridCollection(
+                $collectionParams['filterBy'],
+                $collectionParams['orderBy'],
+                $collectionParams['perPage']
+        );
 
         return view('user.list', array('collection' => $users));
     }
@@ -100,9 +98,25 @@ class UserController extends Controller {
     }
 
     public function delete($id){
-        $user =  $this->userRepo->find($id);
+        $user = $this->userRepo->find($id);
         $user->remove();
         return redirect($this->redirectTo);
+    }
+
+    public function massDelete(Request $request){
+        /**
+         * @var $item User
+         */
+
+        if (!$request->has('items')){
+            return redirect($this->redirectTo);
+        }
+        $items = $this->userRepo->findBy(array('id' => $request->get('items')));
+        foreach ($items as $item){
+            $item->remove();
+        }
+
+        return redirect($this->redirectTo)->with('grid_collection_query', $request->get('query'));
     }
 
     public function showCreateForm(){
@@ -112,6 +126,33 @@ class UserController extends Controller {
     public function showUpdateForm(Request $request, $id){
         $user = $this->userRepo->find($id);
         return view('user.update', array('user' => $user));
+    }
+
+    protected function prepareGridCollectionParams(Request $request){
+        $gridParams = [
+            'orderBy'=> [],
+            'filterBy'=>[],
+            'perPage'=>null
+        ];
+        $sessionQueryData = \Session::get('grid_collection_query');
+        if($sessionQueryData){
+            $gridParams['orderBy'] = [
+                'orderBy'=>$sessionQueryData['orderBy'],
+                'orderDirection'=>$sessionQueryData['orderDirection'],
+            ];
+            $gridParams['perPage'] = (isset($sessionQueryData['perPage'])) ? $sessionQueryData['perPage'] : $this->_itemsPerPage;
+            return $gridParams;
+        }
+
+        $gridParams['filterBy'] = ($request->has('filterBy')) ? $request->input('filterBy') : [];
+        $gridParams['orderBy'] = ($request->has(['orderBy', 'orderDirection'])) ?
+                [
+                        'orderBy'        => $request->input('orderBy'),
+                        'orderDirection' => $request->input('orderDirection')
+                ] : [];
+
+        $gridParams['perPage'] = ($request->has('perPage') ? $request->input('perPage') : $this->_itemsPerPage);
+        return $gridParams;
     }
 
     protected function createValidator(array $data){
