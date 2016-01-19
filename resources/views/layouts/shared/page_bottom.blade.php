@@ -20,7 +20,7 @@
                 <ul class="mdl-menu mdl-menu--top-right mdl-js-menu mdl-js-ripple-effect per-page--menu"
                     for="pager_per-page">
                     <li class="mdl-menu__item" ng-repeat="item in perPageCollection" ng-disabled="data.per_page == item">
-                        <a ng-click="invokeNavAction('paging',item)" href=""><% item %></a>
+                        <a ng-click="invokeNavAction('perPage',item)" href=""><% item %></a>
                     </li>
                 </ul>
             </div>

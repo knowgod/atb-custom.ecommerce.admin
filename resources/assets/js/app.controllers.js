@@ -205,7 +205,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                 case 'navigation':
                     $scope.navigation[data.param]();
                     break;
-                case 'paging':
+                case 'perPage':
                     $scope.query[data.action] = data.param;
                     $scope.getItems();
                     break;

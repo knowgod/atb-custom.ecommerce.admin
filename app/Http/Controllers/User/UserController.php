@@ -34,7 +34,7 @@ class UserController extends Controller {
                   'orderDirection' => $request->input('orderDirection')
                 ] : [];
 
-        $perPage = ($request->has('per_page') ? $request->input('per_page') : $this->_itemsPerPage);
+        $perPage = ($request->has('perPage') ? $request->input('perPage') : $this->_itemsPerPage);
 
         $users = $this->userRepo->getUserGridCollection($filters, $orderBy, $perPage);
 
@@ -80,21 +80,17 @@ class UserController extends Controller {
                     $request, $validator
             );
         }
-        $user = $this->userRepo->findOrFail($request->input('id'));
+        $user = $this->userRepo->find($request->input('id'));
 
-        $this->userRepo->update(
-                ['firstname'       => $request->input('firstname'),
-                 'lastname'        => $request->input('lastname'),
-                 'fullname'        => $request->input('firstname') . ' ' . $request->input('lastname'),
-                 'email'           => $request->input('email'),
-                 'register_source' => 'manual',
-                ], $user->id);
+        $user->setFirstname($request->input('firstname'))
+                ->setLastname($request->input('lastname'))
+                ->setFullname($request->input('firstname') . ' ' . $request->input('lastname'))
+                ->setEmail($request->input('email'));
 
         if ($request->has('password')){
-            $this->userRepo->update(
-                    ['password' => bcrypt($request->input('password')),
-                    ], $user->id);
+            $user->setPassword(bcrypt($request->input('password')));
         }
+        $user->save();
         return redirect($this->redirectTo);
 
     }
