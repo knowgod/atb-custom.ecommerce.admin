@@ -144,10 +144,10 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                 sharedMessageService.emitDataUpdate('onSelectionGrid', $scope.checkboxData);
             },
 
-            /*massAction: function () {
+            massAction: function () {
                 $scope.checkbox.updateChildren();
                 (!$scope.massCheckbox) && $scope.checkbox.clearSelection();
-            },*/
+            },
 
             clearSelection: function () {
                 var checkboxGrid = document.querySelector('.mdl-checkbox-grid');
