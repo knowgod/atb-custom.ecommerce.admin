@@ -31,3 +31,12 @@ $factory->define(App\Models\Invitations\Entities\Invite::class, function (Faker\
         'status' => rand(0, 1)
     ];
 });
+
+
+$factory->define(App\Models\Invitations\Entities\Invite::class, function (Faker\Generator $faker) {
+
+    return [
+        'email' => $faker->email,
+        'status' => rand(0, 1)
+    ];
+});
