@@ -2,10 +2,7 @@
 
 namespace App\Listeners\Invite;
 
-use App\Models\Users\Entities\User;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\Invitations\Repositories\InviteRepository;
 
 class LoginEventHandler
