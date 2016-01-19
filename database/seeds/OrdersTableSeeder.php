@@ -14,7 +14,7 @@ class OrdersTableSeeder extends Seeder {
         $faker = Faker\Factory::create();
         $numPrefix = $faker->randomDigit;
 
-        for($i = 0; $i <= 50; $i++){
+        for($i = 0; $i <= 150; $i++){
             $order = new Order();
             $grandTotal = $faker->randomFloat(null, 10.99, 99.99); // 48.8932
             $discount = $grandTotal * 0.2;
