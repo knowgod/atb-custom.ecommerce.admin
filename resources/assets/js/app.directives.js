@@ -49,7 +49,7 @@ atypicalApp.directive('compileTemplate', function($compile, $parse){
                 code: '='
             },
             replace: true,
-            template: '<img src="/assets/images/flags/<% code.shipping_country_code | lowercase %>.png" alt="<% code.shipping_country_code %>" />',
+            template: '<img src="/assets/images/flags/<%  code.shipping_country_code | lowercase %>.png" alt="<% code.shipping_country_code %>" />',
             compile: function() {
                 return {
                     pre: function() { },

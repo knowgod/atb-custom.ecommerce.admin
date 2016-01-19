@@ -46,7 +46,7 @@
                         </tr>
                         </thead>
                         <tbody class="mdl-data-table--body">
-                        <tr ng-repeat="item in data.data track by item.id" ng-class="{'is-selected' : rowSelected(item.id)}">
+                        <tr ng-repeat="item in data.data track by item.id" ng-class="{'is-selected' : rowSelected(item.id)}" ng-cloak>
                             <td class="narrow">
                                 <div data-mdl-checkbox el="item" parent="checkbox"></div>
                             </td>
