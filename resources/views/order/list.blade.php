@@ -20,7 +20,7 @@
 
     <div class="main-content">
         <div class="grid-ctrl" ng-controller='GridController' ng-init='init("gridCollection");'>
-            <div >
+            <div>
                 <div class="mdl-cell mdl-cell--12-col mdl-shadow--2dp mdl-color--white mdl-data-table--container">
 
                     <table class="mdl-data-table wide-table mdl-data-table--selectable">

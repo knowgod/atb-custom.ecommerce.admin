@@ -26,26 +26,12 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             $scope.getItems();
         };
 
-        $scope.openUpdate = function (url) {
-            var req = {
-                method: 'GET',
-                loader: 'round',
-                url: url + '?' + $scope.helper.parseGridStateToQueryString($scope.query),
-                headers: {'Accept': 'text/html, */*'}
-
-            };
-            $http(req).then(function (response) {
-                sharedMessageService.emitDataUpdate('onShow', response.data);
-            }, function () {
-            });
-        };
-
         $scope.updateGrid = function (source) {
             $scope.data = source;
             sharedMessageService.emitDataUpdate('onUpdateGrid', $scope.data);
         };
 
-        $scope.invokeDelete = function (url) {
+        $scope.invokeAction = function (url) {
             var req = {
                 method: 'GET',
                 loader: 'round',
@@ -59,12 +45,42 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             });
         };
 
+        //this method should replace openCreate and openUpdate
+        $scope.invokeHtmlAction = function (url) {
+            var req = {
+                method: 'GET',
+                loader: 'round',
+                url: url + '?' + $scope.helper.parseGridStateToQueryString($scope.query),
+                headers: {'Accept': 'text/html, */*'}
+
+            };
+            $http(req).then(function (response) {
+                sharedMessageService.emitDataUpdate('onShow', response.data);
+            }, function () {
+            });
+        };
+
+
         $scope.openCreate = function () {
             var req = {
                 method: 'GET',
                 url: '/' + $scope.urlBase + '/create?' + $scope.helper.parseGridStateToQueryString($scope.query),
                 loader: 'round',
                 headers: {'Accept': 'text/html, */*'}
+            };
+            $http(req).then(function (response) {
+                sharedMessageService.emitDataUpdate('onShow', response.data);
+            }, function () {
+            });
+        };
+
+        $scope.openUpdate = function (url) {
+            var req = {
+                method: 'GET',
+                loader: 'round',
+                url: url + '?' + $scope.helper.parseGridStateToQueryString($scope.query),
+                headers: {'Accept': 'text/html, */*'}
+
             };
             $http(req).then(function (response) {
                 sharedMessageService.emitDataUpdate('onShow', response.data);
@@ -219,6 +235,14 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             $scope.massAction(data.action);
         });
 
+        sharedMessageService.onDataUpdate('onHtmlAction', $scope, function (message, data) {
+            $scope.invokeHtmlAction(data);
+        });
+
+        sharedMessageService.onDataUpdate('onAction', $scope, function (message, data) {
+            $scope.invokeAction(data);
+        });
+
         $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
             componentHandler.upgradeDom();
         });
@@ -274,6 +298,12 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             sharedMessageService.emitDataUpdate('onNavAction', {'action':action, 'param': param});
             $scope.filter[action] = param;
         };
+
+        $scope.invokeHtmlAction = function(url){
+            sharedMessageService.emitDataUpdate('onHtmlAction', url);
+        };
+
+
 
     }]).controller('GridPopController', ['$scope', '$http', 'sharedMessageService', '$sce',
     function ($scope, $http, sharedMessageService, $sce) {

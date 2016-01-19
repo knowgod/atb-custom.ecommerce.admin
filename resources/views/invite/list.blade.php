@@ -1,15 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Invitations List')
+@section('title', 'Excelsior!')
 
 @section('content')
+    <script>
+        window['gridCollection'] = <?php echo json_encode($collection); ?>;
+        window['gridCollection'].urlBase = 'invite';
+
+    </script>
     <div class="main-content">
-        <div class="grid-ctrl" ng-controller='GridController' ng-init='data=<?php echo $collection->toJson(JSON_HEX_TAG | JSON_HEX_APOS)?>; name="invite";'>
-            @if(Session::has('message'))
-                <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
-            @endif
-            <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--12-col mdl-shadow--2dp mdl-color--white">
+        <div class="grid-ctrl" ng-controller='GridController' ng-init='init("gridCollection");'>
+            <div>
+                <div class="mdl-cell mdl-cell--12-col mdl-shadow--2dp mdl-color--white mdl-data-table--container">
 
                     <table class="mdl-data-table wide-table mdl-data-table--selectable">
                         <thead>
@@ -19,81 +21,35 @@
                                     <input type="checkbox" id="checkbox-grid" class="mdl-checkbox__input" ng-click="checkbox.massAction()" ng-model="massCheckbox">
                                 </label>
                             </th>
-                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons">
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('email')">
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                        ng-show="query.orderBy=='email'">
+                                    <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
+                                </button>
                                 Email
-                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
-                                        ng-click="updateSortOrder('email','ASC')"
-                                        ng-class="{'active':query.orderBy=='email'&&query.orderDirection=='ASC'}">
-                                    <i class="material-icons">arrow_drop_up</i>
-                                </button>
-                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
-                                        ng-click="updateSortOrder('email','DESC')"
-                                        ng-class="{'active':query.orderBy=='email'&&query.orderDirection=='DESC'}">
-                                    <i class="material-icons">arrow_drop_down</i>
-                                </button>
                             </th>
-                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons">
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('created_at')">
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                        ng-show="query.orderBy=='created_at'">
+                                    <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
+                                </button>
                                 Created At
-                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
-                                        ng-click="updateSortOrder('created_at','ASC')"
-                                        ng-class="{'active':query.orderBy=='created_at'&&query.orderDirection=='ASC'}">
-                                    <i class="material-icons">arrow_drop_up</i>
-                                </button>
-                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
-                                        ng-click="updateSortOrder('created_at','DESC')"
-                                        ng-class="{'active':query.orderBy=='created_at'&&query.orderDirection=='DESC'}">
-                                    <i class="material-icons">arrow_drop_down</i>
-                                </button>
                             </th>
-                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons">
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('updated_at')">
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                        ng-show="query.orderBy=='updated_at'">
+                                    <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
+                                </button>
                                 Updated At
-                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
-                                        ng-click="updateSortOrder('updated_at','ASC')"
-                                        ng-class="{'active':query.orderBy=='updated_at'&&query.orderDirection=='ASC'}">
-                                    <i class="material-icons">arrow_drop_up</i>
-                                </button>
-                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
-                                        ng-click="updateSortOrder('updated_at','DESC')"
-                                        ng-class="{'active':query.orderBy=='updated_at'&&query.orderDirection=='DESC'}">
-                                    <i class="material-icons">arrow_drop_down</i>
-                                </button>
                             </th>
-                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons">
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('status')">
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                        ng-show="query.orderBy=='status'">
+                                    <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
+                                </button>
                                 Status
-                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
-                                        ng-click="updateSortOrder('status','ASC')"
-                                        ng-class="{'active':query.orderBy=='status'&&query.orderDirection=='ASC'}">
-                                    <i class="material-icons">arrow_drop_up</i>
-                                </button>
-                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
-                                        ng-click="updateSortOrder('status','DESC')"
-                                        ng-class="{'active':query.orderBy=='status'&&query.orderDirection=='DESC'}">
-                                    <i class="material-icons">arrow_drop_down</i>
-                                </button>
                             </th>
-                            <th>
-                                <button id="grid-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon mdl-button-on-white">
-                                    <i class="material-icons">more_vert</i>
-                                </button>
-
-                                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-                                    for="grid-menu-lower-right">
-                                    <li class="mdl-menu__item" ng-disabled="!checkboxData.length" ng-click="massAction('delete');">Delete</li>
-                                    <li class="mdl-menu__item" ng-disabled="!checkboxData.length" ng-click="massAction('another_action');">Another Action</li>
-                                </ul>
-                            </th>
-                        </tr>
-                        <tr class="mdl-data-table__row--filter">
-                            <th class="narrow"></th>
-                            <th class="mdl-data-table__cell--non-numeric"><input type="text" ng-model="query.filterBy.email" /></th>
-                            <th class="mdl-data-table__cell--non-numeric"><input type="text" ng-model="query.filterBy.created_at" /></th>
-                            <th class="mdl-data-table__cell--non-numeric"><input type="text" ng-model="query.filterBy.updated_at" /></th>
-                            <th class="mdl-data-table__cell--non-numeric"><input type="text" ng-model="query.filterBy.status" /></th>
-                            <th>
-                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white" ng-click="getItems()">
-                                    <i class="material-icons">search</i>
-                                </button>
-                            </th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody class="mdl-data-table--body">
@@ -115,23 +71,10 @@
                         </tr>
                         </tbody>
                     </table>
-                    <div class="pager" ng-show="data.total>data.per_page">
-                        <ul class="pagination">
-                            <li>
-                                <a ng-click="navigation.prev()" ng-class="1 == data.current_page ? 'active' : ''" href="#">«</a>
-                            </li>
-                            <li ng-repeat="i in helper.getNumberAsObject(data.last_page) track by $index">
-                                <a ng-click="navigation.page($index+1)" ng-class="($index+1) == data.current_page ? 'active' : ''" href="#"><% $index+1 %></a>
-                            </li>
-                            <li>
-                                <a ng-click="navigation.next()" ng-class="data.last_page == data.current_page ? 'active' : ''" href="#">»</a>
-                            </li>
-                        </ul>
-                    </div>
 
                 </div>
                 <div class="fab-bottom">
-                    <a href="{{ url('/invite/create') }}" ng-click="openCreate()" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                    <a href="" ng-click="openCreate()" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
                         <i class="material-icons">add</i>
                     </a>
                 </div>
@@ -146,4 +89,12 @@
             <div ng-bind-html="htmlContent" compile-template></div>
         </div>
     </div>
+@endsection
+
+@section('page.bottom')
+    @include('layouts.shared.page_bottom')
+@endsection
+
+@section('navigation')
+    @include('invite.nav')
 @endsection
