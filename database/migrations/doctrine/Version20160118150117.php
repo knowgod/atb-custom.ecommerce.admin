@@ -13,7 +13,6 @@ class Version20160118150117 extends AbstractMigration
     public function up(Schema $schema)
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-        $this->addSql('ALTER TABLE password_resets ADD PRIMARY KEY (email)');
         $this->addSql('ALTER TABLE users DROP user_group, DROP permission_group_id, CHANGE id id INT AUTO_INCREMENT NOT NULL, CHANGE firstname firstname VARCHAR(255) DEFAULT NULL, CHANGE lastname lastname VARCHAR(255) DEFAULT NULL, CHANGE email email VARCHAR(32) NOT NULL, CHANGE password password VARCHAR(255) NOT NULL, CHANGE register_source register_source VARCHAR(255) DEFAULT NULL, CHANGE remember_token remember_token VARCHAR(255) DEFAULT NULL');
     }
 
