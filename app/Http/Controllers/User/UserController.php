@@ -100,7 +100,8 @@ class UserController extends Controller {
     }
 
     public function delete($id){
-        $this->userRepo->find($id)->delete();
+        $user =  $this->userRepo->find($id);
+        $user->remove();
         return redirect($this->redirectTo);
     }
 
@@ -109,7 +110,7 @@ class UserController extends Controller {
     }
 
     public function showUpdateForm(Request $request, $id){
-        $user = $this->userRepo->findOrFail($id);
+        $user = $this->userRepo->find($id);
         return view('user.update', array('user' => $user));
     }
 
