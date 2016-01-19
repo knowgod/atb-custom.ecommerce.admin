@@ -45,9 +45,9 @@
                                 </button>
                                 Status
                             </th>
-                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('createdAt.date')">
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('createdAt')">
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
-                                        ng-show="query.orderBy=='createdAt.date'">
+                                        ng-show="query.orderBy=='createdAt'">
                                     <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
                                 </button>
                                 Created At
