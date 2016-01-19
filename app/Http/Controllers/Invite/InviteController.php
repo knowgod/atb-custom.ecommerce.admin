@@ -53,7 +53,7 @@ class InviteController extends Controller
         $message = $this->_invitationDuplicateMessage;
 
         if (!$invite) {
-            $this->sendEmail($request->user()->email, $request->input('email'));
+            $this->sendEmail($request->user()->getEmail(), $request->input('email'));
             $this->inviteRepo->create(
                 [
                     'email'  => $request->input('email'),
@@ -70,7 +70,7 @@ class InviteController extends Controller
     {
         $invite = $this->inviteRepo->find($request->id, ['email']);
 
-        $this->sendEmail($request->user()->email, $invite->email);
+        $this->sendEmail($request->user()->getEmail(), $invite->email);
 
         $this->inviteRepo->update(
             ['status'=>0],

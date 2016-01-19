@@ -22,6 +22,17 @@ class UsersTableSeeder extends Seeder {
             $user->setRememberToken(str_random(10));
             $user->save();
         }
-
+        try{
+            $user = new User();
+            $user->setEmail('atbadmin@atypicalbrands.com')
+                    ->setFirstname('Atypical')
+                    ->setLastname('Admin')
+                    ->setFullname('Atypical Admin')
+                    ->setRegisterSource('manual')
+                    ->setPassword(bcrypt('abcABC123'));
+            $user->save();
+        }catch (\Exception $e){
+            return;
+        }
     }
 }
