@@ -62,4 +62,19 @@ class OrderController extends Controller {
         return view('order.create');
     }
 
+    public function massDelete(Request $request){
+        /**
+         * @var $item User
+         */
+
+        if (!$request->has('items')){
+            return redirect($this->redirectTo);
+        }
+        $items = $this->orderRepo->findBy(array('id' => $request->get('items')));
+        foreach ($items as $item){
+            $item->remove();
+        }
+        return redirect($this->redirectTo)->with('grid_collection_query', $request->get('query'));
+    }
+
 }

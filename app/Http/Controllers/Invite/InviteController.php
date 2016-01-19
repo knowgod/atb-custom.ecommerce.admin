@@ -5,13 +5,12 @@ namespace App\Http\Controllers\Invite;
 use App\Models\Invitations\Repositories\InviteRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Redirect;
+use Validator;
 
-class InviteController extends Controller
-{
+
+class InviteController extends Controller {
     public $inviteRepo = null;
     protected $_itemsPerPage = 10;
 
@@ -27,63 +26,60 @@ class InviteController extends Controller
         $this->inviteRepo = $inviteRepository;
     }
 
-    public function index(Request $request)
-    {
-        if($request->has('filterBy')){
+    public function index(Request $request){
+        if ($request->has('filterBy')){
             $this->inviteRepo->applyFilters($request->input('filterBy'));
         }
-        if($request->has(['orderBy', 'orderDirection'])){
-            $this->inviteRepo->orderBy($request->input('orderBy'),$request->input('orderDirection'));
+        if ($request->has(['orderBy', 'orderDirection'])){
+            $this->inviteRepo->orderBy($request->input('orderBy'), $request->input('orderDirection'));
         }
 
-        if($request->has(['orderBy', 'orderDirection'])){
-            $this->inviteRepo->orderBy($request->input('orderBy'),$request->input('orderDirection'));
+        if ($request->has(['orderBy', 'orderDirection'])){
+            $this->inviteRepo->orderBy($request->input('orderBy'), $request->input('orderDirection'));
         }
 
         $invitations = $this->inviteRepo->getPaginatedInvitations($this->_itemsPerPage);
         return view('invite.list', array('collection' => $invitations));
     }
 
-    public function create()
-    {
+    public function create(){
         return view('invite.form');
     }
 
-    public function store(Request $request)
-    {
-        $invite = $this->inviteRepo->getInvitationByEmail($request->input('email'));
-        $message = $this->_invitationDuplicateMessage;
+    public function store(Request $request){
 
-        if (!$invite) {
-            $this->sendEmail($request->user()->getEmail(), $request->input('email'));
-            $this->inviteRepo->create(
-                [
-                    'email'  => $request->input('email'),
-                    'status' => '0',
-                ]
+        $validator = $this->createValidator($request->all());
+        if ($validator->fails()){
+            return $this->throwValidationException(
+                    $request, $validator
             );
-            $message = $this->_invitationSuccessMessage;
         }
+
+        $this->sendEmail($request->user()->getEmail(), $request->input('email'));
+        $this->inviteRepo->create(
+                [
+                        'email'  => $request->input('email'),
+                        'status' => '0',
+                ]
+        );
         return redirect($this->redirectTo)->with('message', $this->_invitationSuccessMessage);;
     }
 
-    public function resend(Request $request)
-    {
+    public function resend(Request $request){
         $invite = $this->inviteRepo->find($request->id, ['email']);
 
         $this->sendEmail($request->user()->getEmail(), $invite->email);
 
         $this->inviteRepo->update(
-            ['status'=>0],
-            $invite->email,
-            'email'
+                ['status' => 0],
+                $invite->email,
+                'email'
         );
         return redirect($this->redirectTo)->with('message', $this->_invitationSuccessMessage);;
     }
 
-    protected function sendEmail($fromEmail, $toEmail)
-    {
-        Mail::send('invite.email', ['email' => $toEmail], function ($message) use ($fromEmail, $toEmail) {
+    protected function sendEmail($fromEmail, $toEmail){
+        Mail::send('invite.email', ['email' => $toEmail], function ($message) use ($fromEmail, $toEmail){
             $message->from($fromEmail, 'NuMe');
             $message->to($toEmail, 'name')->subject($this->_invitationSubjectMessage);
         });
@@ -94,8 +90,14 @@ class InviteController extends Controller
         return redirect($this->redirectTo)->with('message', $this->_invitationSuccessMessage);;
     }
 
-    public function massResend()
-    {
+    public function massResend(){
 
+    }
+
+    protected function createValidator(array $data){
+
+        $rules = ['email' => 'required|email|max:255|unique:invites'];
+        $customMessages = ['email.unique' => 'Such invitation already exists.'];
+        return Validator::make($data, $rules, $customMessages);
     }
 }
