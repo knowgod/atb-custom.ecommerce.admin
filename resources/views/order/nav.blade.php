@@ -17,15 +17,20 @@
 
         <span class="mdl-navigation__separator"></span>
 
-        <a class="mdl-navigation__link" href=""><i class="material-icons" role="presentation">add_to_photos</i>Work
+        <a class="mdl-navigation__link" href="" ng-click="invokeNavAction('status', 'Pending')">
+            <i class="material-icons" ng-class="{'active':filter.status=='Pending'}" role="presentation">add_to_photos</i>Work
             Queue <span class="count">50</span></a>
-        <a class="mdl-navigation__link" href=""><i class="material-icons active" role="pretation">assignment_returned</i>Processing
+        <a class="mdl-navigation__link" href="" ng-click="invokeNavAction('status', 'Processing')">
+            <i class="material-icons" ng-class="{'active':filter.status=='Processing'}" role="pretation">assignment_returned</i>Processing
             <span class="count">1.5k</span></a>
-        <a class="mdl-navigation__link" href=""><i class="material-icons" role="presentation">flight</i>Shipping
+        <a class="mdl-navigation__link" href="" ng-click="invokeNavAction('status', 'Shipping')">
+            <i class="material-icons" ng-class="{'active':filter.status=='Shipping'}" role="presentation">flight</i>Shipping
             <span class="count">50</span></a>
-        <a class="mdl-navigation__link" href=""><i class="material-icons" role="pretation">warning</i>Open Issues
+        <a class="mdl-navigation__link" href="" ng-click="invokeNavAction('status', 'Under Review')">
+            <i class="material-icons" ng-class="{'active':filter.status=='Under Review'}" role="pretation">warning</i>Open Issues
             <span class="count">23k</span></a>
-        <a class="mdl-navigation__link" href=""><i class="material-icons" role="presentation">done</i>Completed
+        <a class="mdl-navigation__link" href="" ng-click="invokeNavAction('status', 'Shipped')">
+            <i class="material-icons" ng-class="{'active':filter.status=='Shipped'}" role="presentation">done</i>Completed
             <span class="count">150k</span></a>
 
         <span class="mdl-navigation__separator"></span>

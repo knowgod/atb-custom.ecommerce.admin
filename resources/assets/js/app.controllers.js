@@ -207,6 +207,10 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                     $scope.query.filterBy[data.action] = data.param;
                     $scope.getItems();
                     break;
+                case 'status':
+                    $scope.query.filterBy[data.action] = data.param;
+                    $scope.getItems();
+                    break;
                 default:
                     $scope.getItems();
                     break;
@@ -270,13 +274,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
 
         $scope.invokeNavAction = function(action, param){
             sharedMessageService.emitDataUpdate('onNavAction', {'action':action, 'param': param});
-            switch(action){
-                case 'website':
-                    $scope.filter.website = param;
-                    break;
-                default:
-                    break;
-            }
+            $scope.filter[action] = param;
         };
 
     }]).controller('GridPopController', ['$scope', '$http', 'sharedMessageService', '$sce',
