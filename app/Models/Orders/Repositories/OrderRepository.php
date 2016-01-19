@@ -47,6 +47,12 @@ class OrderRepository extends EntityRepository {
         return $this->paginate($qb->getQuery(), $perPage);
     }
 
+    public function getOrdersStatusesCount(){
+        $query = $this->_em->createQuery('SELECT u.status, COUNT(u.id) as cnt FROM ' . $this->getEntityName() . ' u GROUP BY u.status');
+        return $query->getResult();
+
+    }
+
     /**
      * Finds an entity by its primary key / identifier.
      *

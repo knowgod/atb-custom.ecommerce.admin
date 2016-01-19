@@ -38,12 +38,15 @@ class OrderController extends Controller {
                 $collectionParams['perPage']
         );
 
-        return view('order.list', array('collection' => $orders));
+        $orderStatusesCount = $this->orderRepo->getOrdersStatusesCount();
+
+        return view('order.list', ['collection'           => $orders,
+                                   'order_statuses_count' => $orderStatusesCount]);
     }
 
     public function view(Request $request, $id){
         $order = $this->orderRepo->find($id);
-        return view('order.view', ['order'=>$order]);
+        return view('order.view', ['order' => $order]);
     }
 
     public function create(Request $request){
