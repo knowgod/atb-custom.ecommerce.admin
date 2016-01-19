@@ -8,6 +8,7 @@
                 <i class="material-icons">close</i>
             </button>
         </div>
+
         <form action="/" method="POST" class="form-horizontal" ng-controller="GridFormController" ng-init="formUrl='{{ url("/invite/store") }}';">
 
             <input type="hidden" name="_token" ng-model="formData._token" id="csrf-token" value="{{ csrf_token() }}" />

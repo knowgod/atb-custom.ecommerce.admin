@@ -6,7 +6,6 @@
     <script>
         window['gridCollection'] = <?php echo json_encode($collection); ?>;
         window['gridCollection'].urlBase = 'invite';
-
     </script>
     <div class="main-content">
         <div class="grid-ctrl" ng-controller='GridController' ng-init='init("gridCollection");'>
@@ -71,12 +70,6 @@
                         </tr>
                         </tbody>
                     </table>
-
-                </div>
-                <div class="fab-bottom">
-                    <a href="" ng-click="openCreate()" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
-                        <i class="material-icons">add</i>
-                    </a>
                 </div>
             </div>
         </div>
