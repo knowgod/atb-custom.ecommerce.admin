@@ -15,6 +15,8 @@ class InviteController extends Controller
     public $inviteRepo = null;
     protected $_itemsPerPage = 10;
 
+    protected $redirectTo = '/invite/list';
+
     protected $_invitationSuccessMessage = 'Invitation has been sent successfully!';
     protected $_invitationDuplicateMessage = 'Invitation to this email has already been sent!';
     protected $_invitationDeleteMessage = 'Invitation has been successfully removed';
@@ -62,8 +64,7 @@ class InviteController extends Controller
             );
             $message = $this->_invitationSuccessMessage;
         }
-
-        return Redirect::route('invite/list')->with('message', $message);
+        return redirect($this->redirectTo)->with('message', $this->_invitationSuccessMessage);;
     }
 
     public function resend(Request $request)
@@ -77,8 +78,7 @@ class InviteController extends Controller
             $invite->email,
             'email'
         );
-
-        return Redirect::route('invite/list')->with('message', $this->_invitationSuccessMessage);
+        return redirect($this->redirectTo)->with('message', $this->_invitationSuccessMessage);;
     }
 
     protected function sendEmail($fromEmail, $toEmail)
@@ -91,7 +91,7 @@ class InviteController extends Controller
 
     public function delete(Request $request){
         $this->inviteRepo->find($request->id, ['email'])->delete();
-        return Redirect::route('invite/list')->with('message', $this->_invitationDeleteMessage);
+        return redirect($this->redirectTo)->with('message', $this->_invitationSuccessMessage);;
     }
 
     public function massResend()
