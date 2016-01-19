@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use App\Models\Users\Entities\User;
 use App\Models\Users\Repositories\UserRepository;
+
+use App\Models\Orders\Entities\Order;
+use App\Models\Orders\Repositories\OrderRepository;
+
 use App\Http\Controllers\Auth\Social;
 
 use Doctrine\ORM\EntityManager;
@@ -29,18 +33,17 @@ class AppServiceProvider extends ServiceProvider {
      * @return void
      */
     public function register(){
-
-        /*        $this->when(Social\GoogleController::class)
-                        ->needs(ObjectRepository::class)
-                        ->give(function ($app){
-                            EntityManager::getRepository(User::class);
-                        }
-                        );*/
-
         $this->app->bind(UserRepository::class, function ($app){
             return new UserRepository(
                     $app['em'],
                     $app['em']->getClassMetaData(User::class)
+            );
+        });
+
+        $this->app->bind(OrderRepository::class, function ($app){
+            return new OrderRepository(
+                    $app['em'],
+                    $app['em']->getClassMetaData(Order::class)
             );
         });
     }

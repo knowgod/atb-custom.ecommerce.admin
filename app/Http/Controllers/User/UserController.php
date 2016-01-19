@@ -129,6 +129,8 @@ class UserController extends Controller {
     }
 
     protected function prepareGridCollectionParams(Request $request){
+        //TODO: create a separate class to hold grid params and move this...
+
         $gridParams = [
             'orderBy'=> [],
             'filterBy'=>[],
