@@ -22,3 +22,12 @@ $factory->define(App\Models\Users\Entities\User::class, function (Faker\Generato
             'remember_token' => str_random(10),
         ];
 });
+
+
+$factory->define(App\Models\Invitations\Entities\Invite::class, function (Faker\Generator $faker) {
+
+    return [
+        'email' => $faker->email,
+        'status' => rand(0, 1)
+    ];
+});
