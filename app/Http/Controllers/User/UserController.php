@@ -128,35 +128,6 @@ class UserController extends Controller {
         return view('user.update', array('user' => $user));
     }
 
-    protected function prepareGridCollectionParams(Request $request){
-        //TODO: create a separate class to hold grid params and move this...
-
-        $gridParams = [
-            'orderBy'=> [],
-            'filterBy'=>[],
-            'perPage'=>null
-        ];
-        $sessionQueryData = \Session::get('grid_collection_query');
-        if($sessionQueryData){
-            $gridParams['orderBy'] = [
-                'orderBy'=>$sessionQueryData['orderBy'],
-                'orderDirection'=>$sessionQueryData['orderDirection'],
-            ];
-            $gridParams['perPage'] = (isset($sessionQueryData['perPage'])) ? $sessionQueryData['perPage'] : $this->_itemsPerPage;
-            return $gridParams;
-        }
-
-        $gridParams['filterBy'] = ($request->has('filterBy')) ? $request->input('filterBy') : [];
-        $gridParams['orderBy'] = ($request->has(['orderBy', 'orderDirection'])) ?
-                [
-                        'orderBy'        => $request->input('orderBy'),
-                        'orderDirection' => $request->input('orderDirection')
-                ] : [];
-
-        $gridParams['perPage'] = ($request->has('perPage') ? $request->input('perPage') : $this->_itemsPerPage);
-        return $gridParams;
-    }
-
     protected function createValidator(array $data){
         return Validator::make($data, [
                 'firstname' => 'required|max:255',

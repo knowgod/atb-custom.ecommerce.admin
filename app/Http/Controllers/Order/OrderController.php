@@ -9,6 +9,9 @@
 
 namespace App\Http\Controllers\Order;
 
+use App\Models\Orders\Repositories\OrderRepository;
+use App\Models\Orders\Entities\Order;
+
 use App\Http\Requests;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -17,35 +20,31 @@ use Illuminate\Http\Request;
 class OrderController extends Controller {
 
     protected $redirectTo = '/order/list';
-    protected $_itemsPerPage = 10;
+    protected $_itemsPerPage = 15;
 
-    public $userRepo = null;
+    public $orderRepo = null;
 
-/*    public function __construct(){
-    }*/
+    public function __construct(OrderRepository $orderRepo){
+        $this->orderRepo = $orderRepo;
+    }
 
     public function index(Request $request){
-        return view('order.list', array('collection' => [
-            'per_page' => 10,
-            'total' => 3,
-            'current_page' => 1,
-            'data' => array(
-                ['id'=>1, 'email'=>'test'],
-                ['id'=>2, 'email' => 2]
-            )
-        ]));
+
+        $collectionParams = $this->prepareGridCollectionParams($request);
+
+        $orders = $this->orderRepo->getOrderGridCollection(
+                $collectionParams['filterBy'],
+                $collectionParams['orderBy'],
+                $collectionParams['perPage']
+        );
+
+        return view('order.list', array('collection' => $orders));
     }
 
-    public function view(){
-        return view('order.view');
+    public function view(Request $request, $id){
+        $order = $this->orderRepo->find($id);
+        return view('order.view', ['order'=>$order]);
     }
-
-    /**
-     * Handle a registration request for the application.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
 
     public function create(Request $request){
         return redirect($this->redirectTo);
@@ -53,7 +52,6 @@ class OrderController extends Controller {
 
     public function update(Request $request){
         return redirect($this->redirectTo);
-
     }
 
     public function delete($id){
@@ -62,30 +60,6 @@ class OrderController extends Controller {
 
     public function showCreateForm(){
         return view('order.create');
-    }
-
-    public function showUpdateForm(Request $request, $id){
-        return view('order.update', array('order' => []));
-    }
-
-    protected function createValidator(array $data){
-        return Validator::make($data, [
-                'firstname' => 'required|max:255',
-                'lastname'  => 'required|max:255',
-                'email'     => 'required|email|max:255|unique:users',
-                'password'  => 'required|confirmed|min:6',
-        ]);
-    }
-
-    protected function updateValidator(array $data){
-        $rulesSet = [
-                'firstname' => 'required|max:255',
-                //'email'     => 'required|email|max:255|unique:users',
-                'lastname'  => 'required|max:255',
-                'password'  => 'sometimes|required|confirmed|min:6'
-        ];
-
-        return Validator::make($data, $rulesSet);
     }
 
 }

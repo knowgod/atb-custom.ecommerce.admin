@@ -55,12 +55,13 @@ Route::group(['middleware' => 'web'], function (){
             Route::get('order/list', 'OrderController@index');
             Route::get('order/create', 'OrderController@showCreateForm');
             Route::post('order/create', 'OrderController@create');
-            Route::get('order/view/{id}', 'OrderController@view');
+            Route::get('order/view/id/{id}', 'OrderController@view');
 
             Route::get('order/update/id/{id}', 'OrderController@showUpdateForm');
             Route::post('order/update', 'OrderController@update');
 
             Route::get('order/delete/id/{id}', 'OrderController@delete');
+            Route::post('order/mass/delete', 'OrderController@massDelete');
         });
 
         Route::group(['namespace' => 'Invite'], function () {
