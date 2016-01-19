@@ -7,14 +7,14 @@
         window['gridCollection'] = <?php echo json_encode($collection); ?>;
         window['gridCollection'].urlBase = 'order';
         window['gridCollection'].columns = {
-            'order_number':true,
-            'order_status':true,
-            'order_created':true,
-            'order_shipping_name':true,
-            'order_total':true,
-            'order_qty':true,
-            'order_coupon':true,
-            'order_payment':true
+            'increment_id':true,
+            'status':true,
+            'createdAt':true,
+            'customer_name':true,
+            'grand_total':true,
+            'qty':true,
+            'coupon_code':true,
+            'payment_method':true
         }
     </script>
 
@@ -31,26 +31,61 @@
                                     <input type="checkbox" id="checkbox-grid" class="mdl-checkbox__input" ng-click="checkbox.massAction()" ng-model="massCheckbox">
                                 </label>
                             </th>
-                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('id')">
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('increment_id')">
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
-                                        ng-show="query.orderBy=='id'">
+                                        ng-show="query.orderBy=='increment_id'">
                                     <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
                                 </button>
                                 Order #
                             </th>
-                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('fullname')">
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('status')">
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
-                                        ng-show="query.orderBy=='fullname'">
+                                        ng-show="query.orderBy=='status'">
                                     <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
                                 </button>
                                 Status
                             </th>
-                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('email')">
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('createdAt.date')">
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
-                                        ng-show="query.orderBy=='email'">
+                                        ng-show="query.orderBy=='createdAt.date'">
                                     <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
                                 </button>
                                 Created At
+                            </th>
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('customer_name')">
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                        ng-show="query.orderBy=='customer_name'">
+                                    <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
+                                </button>
+                                Ship To Name
+                            </th>
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('grand_total')">
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                        ng-show="query.orderBy=='grand_total'">
+                                    <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
+                                </button>
+                                Total
+                            </th>
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('qty')">
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                        ng-show="query.orderBy=='qty'">
+                                    <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
+                                </button>
+                                Qty
+                            </th>
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('coupon_code')">
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                        ng-show="query.orderBy=='coupon_code'">
+                                    <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
+                                </button>
+                                Coupon
+                            </th>
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('payment_method')">
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
+                                        ng-show="query.orderBy=='payment_method'">
+                                    <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
+                                </button>
+                                Pay Method
                             </th>
 
                         </tr>
@@ -60,9 +95,14 @@
                             <td class="narrow checkbox-data-holder" data-holder="<% item.id %>">
                                 <div data-mdl-checkbox el="item"></div>
                             </td>
-                            <td class="mdl-data-table__cell--non-numeric"><% item.id %></td>
-                            <td class="mdl-data-table__cell--non-numeric"><% item.firstname %></td>
+                            <td class="mdl-data-table__cell--non-numeric"><% item.increment_id %></td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.status %></td>
+                            <td class="mdl-data-table__cell--non-numeric"><% item.createdAt.date %></td>
+                            <td class="mdl-data-table__cell--non-numeric"><% item.customer_name %></td>
+                            <td class="mdl-data-table__cell--non-numeric">$<% item.grand_total %></td>
+                            <td class="mdl-data-table__cell--non-numeric"><% item.qty %></td>
+                            <td class="mdl-data-table__cell--non-numeric"><% item.coupon_code %></td>
+                            <td class="mdl-data-table__cell--non-numeric"><% item.payment_method %></td>
 
                         </tr>
                         </tbody>

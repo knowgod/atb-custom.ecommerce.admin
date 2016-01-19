@@ -6,7 +6,9 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             page: 1,
             orderBy: 'id',
             orderDirection: 'DESC',
-            filterBy: {}
+            filterBy: {
+                'website':'nume'
+            }
         };
 
         $scope.massCheckbox = false;
@@ -72,10 +74,6 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             });
         };
 
-        sharedMessageService.onDataUpdate('onClose', $scope, function (message, data) {
-            $scope.getItems();
-        });
-
         $scope.getItems = function () {
             sharedMessageService.emitDataUpdate('onShowHorizontalLoader');
             var req = {
@@ -92,6 +90,10 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                 sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
             });
 
+        };
+
+        $scope.rowSelected = function (id) {
+            return $scope.checkboxData.indexOf(id.toString()) > -1;
         };
 
         $scope.massAction = function (action) {
@@ -142,10 +144,10 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                 sharedMessageService.emitDataUpdate('onSelectionGrid', $scope.checkboxData);
             },
 
-            massAction: function () {
+            /*massAction: function () {
                 $scope.checkbox.updateChildren();
                 (!$scope.massCheckbox) && $scope.checkbox.clearSelection();
-            },
+            },*/
 
             clearSelection: function () {
                 var checkboxGrid = document.querySelector('.mdl-checkbox-grid');
@@ -169,14 +171,6 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                 }
                 sharedMessageService.emitDataUpdate('onSelectionGrid', $scope.checkboxData);
             }
-        };
-
-        $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
-            componentHandler.upgradeDom();
-        });
-
-        $scope.rowSelected = function (id) {
-            return $scope.checkboxData.indexOf(id.toString()) > -1;
         };
 
         $scope.navigation = {
@@ -209,6 +203,10 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                     $scope.query[data.action] = data.param;
                     $scope.getItems();
                     break;
+                case 'website':
+                    $scope.query.filterBy[data.action] = data.param;
+                    $scope.getItems();
+                    break;
                 default:
                     $scope.getItems();
                     break;
@@ -216,8 +214,15 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         });
 
         sharedMessageService.onDataUpdate('onMassAction', $scope, function (message, data) {
-
             $scope.massAction(data.action);
+        });
+
+        $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
+            componentHandler.upgradeDom();
+        });
+
+        sharedMessageService.onDataUpdate('onClose', $scope, function (message, data) {
+            $scope.getItems();
         });
 
     }]).controller('GridBottomController', ['$scope', '$http', 'sharedMessageService', 'helperGeneralService',
@@ -248,6 +253,31 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         sharedMessageService.onDataUpdate('onSelectionGrid', $scope, function (message, data) {
             $scope.checkboxData = data;
         });
+
+    }]).controller('GridLeftController', ['$scope', 'sharedMessageService',
+    function ($scope, sharedMessageService) {
+
+        $scope.filter = {
+            'website':'',
+            'status':''
+        };
+
+        $scope.websites = {
+            'nume':'Nume Products',
+            'belletto': 'Belletto Studio',
+            'nutika': 'Nutika'
+        };
+
+        $scope.invokeNavAction = function(action, param){
+            sharedMessageService.emitDataUpdate('onNavAction', {'action':action, 'param': param});
+            switch(action){
+                case 'website':
+                    $scope.filter.website = param;
+                    break;
+                default:
+                    break;
+            }
+        };
 
     }]).controller('GridPopController', ['$scope', '$http', 'sharedMessageService', '$sce',
     function ($scope, $http, sharedMessageService, $sce) {
