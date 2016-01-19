@@ -57,6 +57,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
 
             };
             $http(req).then(function (response) {
+                setTimeout(componentHandler.upgradeDom, 100);
                 sharedMessageService.emitDataUpdate('onShow', response.data);
             }, function () {
             });
@@ -99,7 +100,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             $http(req).then(function (response) {
                 $scope.checkbox.clearSelection();
                 $scope.updateGrid(response.data.collection);
-                //setTimeout(componentHandler.upgradeDom, 100);
+                setTimeout(componentHandler.upgradeDom, 100);
                 sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
 
             }, function () {
@@ -345,13 +346,15 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         $scope.formDataErrors = {};
 
         $scope.dataSubmit = function () {
+            sharedMessageService.emitDataUpdate('onShowHorizontalLoader');
             $scope.formDataErrors = {};
             $http.post($scope.formUrl, $scope.formData).success(function (data) {
                 $scope.formData = {};
                 sharedMessageService.emitDataUpdate('onClose');
-
+                sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
             }).error(function (data) {
                 $scope.formDataErrors = data;
+                sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
             });
         };
 
