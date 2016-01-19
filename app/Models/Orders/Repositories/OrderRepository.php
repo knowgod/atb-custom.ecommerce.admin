@@ -37,7 +37,7 @@ class OrderRepository extends EntityRepository {
 
         foreach ($filterParams as $fieldName => $filterValue){
             if ($filterValue){
-                $qb->where($qb->expr()->like($this->_defaultAlias . '.' . $fieldName, $qb->expr()->literal('%' . $filterValue. '%')));
+                $qb->andWhere($qb->expr()->like($this->_defaultAlias . '.' . $fieldName, $qb->expr()->literal('%' . $filterValue. '%')));
             }
         }
         if($order){
