@@ -6,9 +6,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             page: 1,
             orderBy: 'id',
             orderDirection: 'DESC',
-            filterBy: {
-                'website':'nume'
-            }
+            filterBy: { }
         };
 
         $scope.massCheckbox = false;

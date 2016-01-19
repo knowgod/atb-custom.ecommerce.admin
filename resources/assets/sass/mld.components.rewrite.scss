@@ -15,9 +15,7 @@
     td{
         border-top: 1px solid rgba(0,0,0,.12) !important;
         border-bottom: 0 !important;
-        &.narrow{
-            width: 5%;
-        }
+
         &.actions{
             padding-top: 7px;
         }
@@ -29,6 +27,18 @@
                 .material-icons{
                     font-size: 15px;
                 }
+            }
+        }
+        th,td{
+            &.narrow{
+                padding-right: 0;
+            }
+            &.narrow-all{
+                padding-left: 0;
+                padding-right: 0;
+            }
+            &.narrow-flag{
+                padding-top:6px;
             }
         }
         &:last-child {

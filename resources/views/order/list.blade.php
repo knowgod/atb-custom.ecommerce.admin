@@ -52,6 +52,7 @@
                                 </button>
                                 Created At
                             </th>
+                            <th class="narrow-all"></th>
                             <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('customer_name')">
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
                                         ng-show="query.orderBy=='customer_name'">
@@ -98,6 +99,9 @@
                             <td class="mdl-data-table__cell--non-numeric"><% item.increment_id %></td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.status %></td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.createdAt.date %></td>
+                            <td class="mdl-data-table__cell--non-numeric narrow-all narrow-flag">
+                                <flag-image code="item"></flag-image>
+                            </td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.customer_name %></td>
                             <td class="mdl-data-table__cell--non-numeric">$<% item.grand_total %></td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.qty %></td>
