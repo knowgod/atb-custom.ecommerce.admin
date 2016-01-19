@@ -9,6 +9,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\Users\Repositories\UserRepository;
+use App\Models\Users\Entities\User;
+
 use App\Http\Requests;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -60,15 +62,17 @@ class UserController extends Controller {
                     $request, $validator
             );
         }
-        $this->userRepo->create(
-                ['fullname'        => $request->input('firstname') . ' ' . $request->input('lastname'),
-                 'firstname'       => $request->input('firstname'),
-                 'lastname'        => $request->input('lastname'),
-                 'email'           => $request->input('email'),
-                 'password'        => bcrypt($request->input('password')),
-                 'register_source' => 'manual',
-                ]
-        );
+        $user = new User();
+
+        $user->setEmail($request->input('email'))
+                ->setFirstname($request->input('firstname'))
+                ->setLastname($request->input('lastname'))
+                ->setFullname($request->input('firstname') . ' ' . $request->input('lastname'))
+                ->setRegisterSource('manual')
+                ->setPassword(bcrypt($request->input('password')));
+
+        $user->save();
+
         return redirect($this->redirectTo);
     }
 
