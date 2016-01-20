@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use App\Models\Orders\Entities\Order as Order;
+use Mockery\CountValidator\Exception;
 
 class CreateOrder extends Job implements ShouldQueue
 {
@@ -36,7 +37,27 @@ class CreateOrder extends Job implements ShouldQueue
      */
 
     public function fire(\Illuminate\Contracts\Queue\Job $job, $data){
-        var_dump($data);
-        throw new \Exception('test');
+        $orderData = $data['order'];
+        $paymentData = $data['order_payment'];
+        try{
+            $order = new Order();
+            $order->setEmail($orderData['customer_email'])
+                    ->setIncrementId($orderData['increment_id'])
+                    ->setCustomerName($orderData['customer_firstname'] . ' ' . $data['order']['customer_lastname'])
+                    ->setQty($orderData['total_qty_ordered'])
+                    ->setStatus($orderData['status'])
+                    ->setGrandTotal($orderData['grand_total'])
+                    ->setDiscountAmount($orderData['discount_amount'])
+                    ->setTotalPaid($orderData['grand_total'])
+                    ->setShippingCountryCode('US')
+                    ->setPaymentMethod($paymentData['method'])
+                    ->setCouponCode($orderData['coupon_code'])
+                    ->setWebsite('nume');
+            //created and updated at
+            $order->save();
+            echo 'OK!';
+        }catch (\Exception $e){
+            Log::error($e->getMessage());
+        }
     }
 }
