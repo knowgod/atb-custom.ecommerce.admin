@@ -39,6 +39,7 @@ class CreateOrder extends Job implements ShouldQueue
     public function fire(\Illuminate\Contracts\Queue\Job $job, $data){
         $orderData = $data['order'];
         $paymentData = $data['order_payment'];
+        $this->setJob($job);
         try{
             $order = new Order();
             $order->setEmail($orderData['customer_email'])
@@ -55,6 +56,7 @@ class CreateOrder extends Job implements ShouldQueue
                     ->setWebsite('nume');
             //created and updated at
             $order->save();
+            $this->delete();
             echo 'OK!';
         }catch (\Exception $e){
             Log::error($e->getMessage());
