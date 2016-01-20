@@ -54,7 +54,7 @@ return [
             'key'    => 'AKIAI2VBNXDWERCSBLMA',
             'secret' => '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',
             'prefix' => 'https://sqs.eu-west-1.amazonaws.com/941091166904',
-            'queue'  => 'TestQueue',
+            'queue'  => env('QUEUE_NAME','TestQueue'),
             'region' => 'eu-west-1',
         ],
 
