@@ -1,3 +1,7 @@
+<script>
+    window['gridOrderStatusCollection'] = <?php echo json_encode($order_statuses_count); ?>;
+
+</script>
 <div class="mdl-layout__drawer" ng-controller="GridLeftController">
     <nav class="mdl-navigation">
 

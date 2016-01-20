@@ -170,6 +170,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                 var checkboxGrid = document.querySelector('.mdl-checkbox-grid');
                 checkboxGrid.MaterialCheckbox.uncheck();
                 $scope.checkboxData = [];
+                $scope.checkbox.updateChildren();
                 sharedMessageService.emitDataUpdate('onSelectionGrid', $scope.checkboxData);
             },
 
@@ -306,6 +307,9 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             sharedMessageService.emitDataUpdate('onHtmlAction', url);
         };
 
+        sharedMessageService.onDataUpdate('onUpdateGrid', $scope, function (message, data) {
+            $scope.data = data;
+        });
 
 
     }]).controller('GridPopController', ['$scope', '$http', 'sharedMessageService', '$sce',
