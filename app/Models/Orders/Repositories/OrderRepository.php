@@ -48,9 +48,15 @@ class OrderRepository extends EntityRepository {
     }
 
     public function getOrdersStatusesCount(){
-        $query = $this->_em->createQuery('SELECT u.status, COUNT(u.id) as cnt FROM ' . $this->getEntityName() . ' u GROUP BY u.status');
-        return $query->getResult();
+        $result = array();
 
+        $query = $this->_em->createQuery('SELECT u.status, COUNT(u.id) as cnt FROM ' . $this->getEntityName() . ' u GROUP BY u.status');
+        $rows = $query->getResult();
+
+        foreach($rows as $item){
+            $result[$item['status']] = $item['cnt'];
+        }
+        return $result;
     }
 
     /**

@@ -6,7 +6,9 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             page: 1,
             orderBy: 'id',
             orderDirection: 'DESC',
-            filterBy: { }
+            filterBy: { },
+            search: '',
+            searchBy: {}
         };
 
         $scope.massCheckbox = false;
@@ -47,7 +49,6 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             });
         };
 
-        //this method should replace openCreate and openUpdate
         $scope.invokeHtmlAction = function (url) {
             var req = {
                 method: 'GET',
@@ -58,34 +59,6 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             };
             $http(req).then(function (response) {
                 setTimeout(componentHandler.upgradeDom, 100);
-                sharedMessageService.emitDataUpdate('onShow', response.data);
-            }, function () {
-            });
-        };
-
-
-        $scope.openCreate = function () {
-            var req = {
-                method: 'GET',
-                url: '/' + $scope.urlBase + '/create?' + $scope.helper.parseGridStateToQueryString($scope.query),
-                loader: 'round',
-                headers: {'Accept': 'text/html, */*'}
-            };
-            $http(req).then(function (response) {
-                sharedMessageService.emitDataUpdate('onShow', response.data);
-            }, function () {
-            });
-        };
-
-        $scope.openUpdate = function (url) {
-            var req = {
-                method: 'GET',
-                loader: 'round',
-                url: url + '?' + $scope.helper.parseGridStateToQueryString($scope.query),
-                headers: {'Accept': 'text/html, */*'}
-
-            };
-            $http(req).then(function (response) {
                 sharedMessageService.emitDataUpdate('onShow', response.data);
             }, function () {
             });
@@ -169,6 +142,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             clearSelection: function () {
                 var checkboxGrid = document.querySelector('.mdl-checkbox-grid');
                 checkboxGrid.MaterialCheckbox.uncheck();
+                $scope.massCheckbox = false;
                 $scope.checkboxData = [];
                 $scope.checkbox.updateChildren();
                 sharedMessageService.emitDataUpdate('onSelectionGrid', $scope.checkboxData);
@@ -285,7 +259,18 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         });
 
     }]).controller('GridLeftController', ['$scope', 'sharedMessageService',
+
     function ($scope, sharedMessageService) {
+
+        $scope.data = {};
+
+        $scope.init = function(data){
+            for(var item in data){
+                if(data.hasOwnProperty(item)){
+                    $scope.data[item] = window[data[item]];
+                }
+            }
+        };
 
         $scope.filter = {
             'website':'',
@@ -307,9 +292,10 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             sharedMessageService.emitDataUpdate('onHtmlAction', url);
         };
 
-        sharedMessageService.onDataUpdate('onUpdateGrid', $scope, function (message, data) {
-            $scope.data = data;
-        });
+        //not used for now
+        //sharedMessageService.onDataUpdate('onUpdateGrid', $scope, function (message, data) {
+        //    $scope.data.gridItems = data;
+        //});
 
 
     }]).controller('GridPopController', ['$scope', '$http', 'sharedMessageService', '$sce',

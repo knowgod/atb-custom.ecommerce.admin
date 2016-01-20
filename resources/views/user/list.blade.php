@@ -13,7 +13,7 @@
             <div >
                 <div class="mdl-cell mdl-cell--12-col mdl-shadow--2dp mdl-color--white mdl-data-table--container">
 
-                    <table class="mdl-data-table wide-table mdl-data-table--selectable">
+                    <table class="mdl-data-table wide-table mdl-data-table--selectable" ng-cloak>
                         <thead>
                         <tr>
                             <th class="narrow">
@@ -54,7 +54,7 @@
                             <td class="mdl-data-table__cell--non-numeric"><% item.firstname %> <% item.lastname %></td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.email %></td>
                             <td class="actions">
-                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white" ng-click="openUpdate('/user/update/id/'+item.id)">
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white" ng-click="invokeHtmlAction('/user/update/id/'+item.id)">
                                     <i class="material-icons">create</i>
                                 </button>
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white" ng-click="invokeAction('/user/delete/id/'+item.id)">

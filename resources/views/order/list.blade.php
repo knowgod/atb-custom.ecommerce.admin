@@ -23,7 +23,7 @@
             <div>
                 <div class="mdl-cell mdl-cell--12-col mdl-shadow--2dp mdl-color--white mdl-data-table--container">
 
-                    <table class="mdl-data-table wide-table mdl-data-table--selectable">
+                    <table class="mdl-data-table wide-table mdl-data-table--selectable" ng-cloak>
                         <thead>
                         <tr>
                             <th class="narrow">
