@@ -9,7 +9,7 @@
                 </button>
             </div>
 
-            <form class="form-horizontal" role="form" method="POST" action="{{ url('/user/create') }}" ng-controller="GridFormController" ng-init="formUrl='{{ url("/user/create") }}';">
+            <form class="form-horizontal" role="form" method="POST" action="{{ url('/user/create') }}" ng-controller="GridFormController" ng-init="formUrl='{{ url("/user/create") }}';" onsubmit="return false;">
 
                 <input type="hidden" name="_token" ng-model="formData._token" id="csrf-token" value="{{ csrf_token() }}" />
 

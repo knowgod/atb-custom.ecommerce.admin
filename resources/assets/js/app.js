@@ -1,6 +1,6 @@
 var atypicalApp = angular.module('atypical.app',
 
-    ['ngSanitize', 'ngAnimate'],
+    ['ngSanitize'],
 
     function ($interpolateProvider, $httpProvider) {
         $interpolateProvider.startSymbol('<%');

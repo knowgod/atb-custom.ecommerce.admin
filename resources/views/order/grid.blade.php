@@ -9,7 +9,8 @@
             </button>
         </div>
 
-        <form class="form-horizontal" role="form" method="POST" action="{{ url('/order/update') }}" ng-controller="GridFormController" ng-init="formUrl='{{ url("/order/update") }}';" onsubmit="return false;">
+        <form class="form-horizontal" role="form" method="POST" action="{{ url('/order/update') }}" ng-controller="GridFormController"
+              ng-init="formUrl='{{ url("/order/update") }}'; formData._token='{{ csrf_token() }}';" onsubmit="return false;">
 
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.sample}">
                 <input class="mdl-textfield__input" name="sample" ng-model="formData.sample" type="text" id="sample" value="" >
@@ -18,9 +19,9 @@
             </div>
 
             <input type="hidden" name="_token" ng-model="formData._token" id="csrf-token" value="{{ csrf_token() }}" />
+            <input type="hidden" name="ids" ng-model="formData.ids" id="ids" value="<% formData.checkboxData.join() %>" />
 
             <div class="grid-ctrl" ng-controller='GridSecondaryController' ng-init='init("order", ["101","98"]);'>
-                <input type="hidden" name="ids" ng-model="formData.ids" id="ids" value="<% checkboxData.join() %>" />
                 <div class="mdl-data-table--container">
                 <table class="mdl-data-table wide-table mdl-data-table--selectable" ng-cloak>
                     <thead>

@@ -212,6 +212,12 @@ input:-webkit-autofill {
                 background: #F44336;
             }
         }
+        &.success{
+            color:#fff;
+            span{
+                background: #66BB6A;
+            }
+        }
         &.warning{
             span{
                 background: #CDDC39;
