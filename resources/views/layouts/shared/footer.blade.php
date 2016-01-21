@@ -1,6 +1,7 @@
 <script src="/assets/js/angular.min.js"></script>
+<script src="/assets/js/angular-sanitize.js"></script>
 <script src="/assets/js/material.min.js"></script>
-<script src="/assets/js/angular-sanitize.min.js"></script>
+<script src="/assets/js/angular-animate.min.js"></script>
 <script src="/assets/js/app.js"></script>
 <script src="/assets/js/app.controllers.js"></script>
 <script src="/assets/js/app.directives.js"></script>
@@ -9,3 +10,8 @@
 </div>
 <div id="horisontal-loader-ctrl" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" ng-controller="HorizontalLoaderController" ng-class="{'is-visible':isVisible}"></div>
 
+<ul class="main-notification-ctrl" ng-controller="NotificationController" ng-cloack>
+    <li ng-repeat="message in messages track by message.hash" class="<% message.type %> animate-repeat" ng-click="removeMessage(message.hash)">
+        <span><% message.text %></span>
+    </li>
+</ul>

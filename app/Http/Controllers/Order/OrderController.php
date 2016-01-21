@@ -40,8 +40,12 @@ class OrderController extends Controller {
 
         $orderStatusesCount = $this->orderRepo->getOrdersStatusesCount();
 
+        $this->addNotify('success', 'Order collection is loaded!');
+
         return view('order.list', ['collection'           => $orders,
-                                   'order_statuses_count' => $orderStatusesCount]);
+                                   'notifications'        => $this->_notifications,
+                                   'order_statuses_count' => $orderStatusesCount]
+        );
     }
 
     public function view(Request $request, $id){

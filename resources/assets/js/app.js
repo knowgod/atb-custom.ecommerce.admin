@@ -1,6 +1,6 @@
 var atypicalApp = angular.module('atypical.app',
 
-    ['ngSanitize'],
+    ['ngSanitize', 'ngAnimate'],
 
     function ($interpolateProvider, $httpProvider) {
         $interpolateProvider.startSymbol('<%');
@@ -18,6 +18,9 @@ var atypicalApp = angular.module('atypical.app',
                 'response': function(response) {
                     sharedMessageService.emitDataUpdate('onCloseOverlay');
                     setTimeout(componentHandler.upgradeDom, 100);
+                    if(typeof response.data != 'undefined' && typeof response.data.notifications != 'undefined'){
+                        sharedMessageService.emitDataUpdate('onNotification',response.data.notifications);
+                    }
                     return response;
                 }
             };

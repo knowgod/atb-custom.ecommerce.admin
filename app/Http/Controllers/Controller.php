@@ -13,6 +13,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    protected $_notifications = [];
+
     protected function prepareGridCollectionParams(Request $request){
         //TODO: create a separate class to hold grid params and move this...
 
@@ -40,5 +42,10 @@ class Controller extends BaseController
 
         $gridParams['perPage'] = ($request->has('perPage') ? $request->input('perPage') : $this->_itemsPerPage);
         return $gridParams;
+    }
+
+    protected function addNotify($type, $text){
+        array_push($this->_notifications, ['type'=>$type, 'text'=>$text]);
+        return;
     }
 }
