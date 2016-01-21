@@ -165,6 +165,7 @@ return [
         LaravelDoctrine\Extensions\GedmoExtensionsServiceProvider::class,
         LaravelDoctrine\ORM\Auth\Passwords\PasswordResetServiceProvider::class,
         LaravelDoctrine\Migrations\MigrationsServiceProvider::class,
+        LaravelDoctrine\ACL\AclServiceProvider::class
     ],
 
     /*
