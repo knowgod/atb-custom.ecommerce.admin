@@ -80,7 +80,7 @@ class Order extends DoctrineModel{
     protected $shipping_country_code;
 
     /**
-     * @ORM\Column(type="string", length=32, nullable=false)
+     * @ORM\Column(type="string", length=32, nullable=true)
      */
     protected $coupon_code;
 
