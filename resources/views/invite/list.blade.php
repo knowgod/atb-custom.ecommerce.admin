@@ -54,9 +54,7 @@
                         <tbody class="mdl-data-table--body">
                         <tr ng-repeat="item in data.data track by item.id">
                             <td class="narrow">
-                                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-grid-<% item.id %>">
-                                    <input type="checkbox" ng-click="checkbox.action(item.id, $event)" id="checkbox-grid-<% item.id %>" value="<% item.id %>" class="mdl-checkbox__input">
-                                </label>
+                                <div data-mdl-checkbox el="item" prefix="checkbox-grid"></div>
                             </td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.email %></td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.created_at %></td>

@@ -94,7 +94,7 @@
                         <tbody class="mdl-data-table--body">
                         <tr ng-repeat="item in data.data track by item.id"  on-finish-render="ngRepeatFinished" ng-class="{'is-selected' : rowSelected(item.id)}">
                             <td class="narrow checkbox-data-holder" data-holder="<% item.id %>">
-                                <div data-mdl-checkbox el="item"></div>
+                                <div data-mdl-checkbox el="item" prefix="checkbox-grid"></div>
                             </td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.increment_id %></td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.status %></td>

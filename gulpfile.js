@@ -19,9 +19,10 @@ gulp.task('copy', function () {
         .pipe(rename('material.min.css'))
         .pipe(gulp.dest('public/assets/css/'));
 
-    gulp.src('node_modules/material-design-lite/material.min.js')
-        .pipe(gulp.dest('public/assets/js/'));
-    gulp.src('node_modules/angular/angular.min.js')
+    gulp.src([
+        'node_modules/material-design-lite/material.min.js',
+        'node_modules/angular/angular.min.js'
+    ])
         .pipe(gulp.dest('public/assets/js/'));
 });
 

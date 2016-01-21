@@ -26,12 +26,15 @@ atypicalApp.directive('compileTemplate', function($compile, $parse){
         return {
             restrict: 'EA',
             scope: {
-                el: '='
+                el: '=',
+                prefix: '='
             },
             replace: true,
-            template: '<label  class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-grid-<% el.id %>">' +
-            '<input type="checkbox" ng-click="$parent.checkbox.action(el.id, $event)" id="checkbox-grid-<% el.id %>" value="<% el.id %>" class="mdl-checkbox__input">'+
-            '</label>',
+            template: function(element, attributes){
+                return '<label  class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="'+attributes.prefix+'-<% el.id %>">' +
+                '<input type="checkbox" ng-click="$parent.checkbox.action(el.id, $event)" id="'+attributes.prefix+'-<% el.id %>" value="<% el.id %>" class="mdl-checkbox__input">'+
+                '</label>'
+            },
             compile: function() {
                 return {
                     pre: function() { },
@@ -40,7 +43,6 @@ atypicalApp.directive('compileTemplate', function($compile, $parse){
                     }
                 };
             }
-
         };
     }).directive('flagImage', function() {
         return {
@@ -56,7 +58,6 @@ atypicalApp.directive('compileTemplate', function($compile, $parse){
                     post: function() { }
                 };
             }
-
         };
     });
 

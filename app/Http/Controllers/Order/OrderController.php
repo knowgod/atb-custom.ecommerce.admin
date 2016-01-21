@@ -65,6 +65,18 @@ class OrderController extends Controller {
         return view('order.create');
     }
 
+    public function showGrid(Request $request){
+        $collectionParams = $this->prepareGridCollectionParams($request);
+
+        $orders = $this->orderRepo->getOrderGridCollection(
+            $collectionParams['filterBy'],
+            $collectionParams['orderBy'],
+            $collectionParams['perPage']
+        );
+
+        return view('order.grid',['collection' => $orders]);
+    }
+
     public function massDelete(Request $request){
         /**
          * @var $item User

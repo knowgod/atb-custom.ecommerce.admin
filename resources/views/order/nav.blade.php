@@ -58,6 +58,7 @@
         <span class="mdl-navigation__separator"></span>
 
         <a class="mdl-navigation__link" href=""><i class="material-icons target">add</i>Create</a>
+        <a class="mdl-navigation__link" href="" ng-click="invokeHtmlAction('{{ url("/order/grid")}}')"><i class="material-icons target">edit</i>Sample grid</a>
         <a class="mdl-navigation__link" href=""><i class="material-icons target">call_made</i>Import</a>
         <a class="mdl-navigation__link" href=""><i class="material-icons target">call_received</i>Export</a>
 

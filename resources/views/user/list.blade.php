@@ -48,7 +48,7 @@
                         <tbody class="mdl-data-table--body">
                         <tr ng-repeat="item in data.data track by item.id" ng-class="{'is-selected' : rowSelected(item.id)}" ng-cloak>
                             <td class="narrow">
-                                <div data-mdl-checkbox el="item" parent="checkbox"></div>
+                                <div data-mdl-checkbox el="item" prefix="checkbox-grid"></div>
                             </td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.id %></td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.firstname %> <% item.lastname %></td>

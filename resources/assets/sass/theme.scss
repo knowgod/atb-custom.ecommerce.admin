@@ -167,6 +167,9 @@ input:-webkit-autofill {
         text-align: right;
         border-top: 1px solid rgba(0,0,0,.1);
         padding-top: 8px;
+        button{
+            margin-left: 16px;
+        }
     }
     .grid-pop-header{
         margin: -8px -8px 10px -8px;

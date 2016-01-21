@@ -170,6 +170,9 @@
     background: #fff;
     padding: 0;
     max-height: 0;
+    &.grid-bottom-secondary{
+        max-height: 100px;
+    }
     &.is-shown {
         max-height: 500px;
         transition: max-height 0.5s ease-out;

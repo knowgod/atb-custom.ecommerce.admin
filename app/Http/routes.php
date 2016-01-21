@@ -54,6 +54,7 @@ Route::group(['middleware' => 'web'], function (){
 
             Route::get('order/list', 'OrderController@index');
             Route::get('order/create', 'OrderController@showCreateForm');
+            Route::get('order/grid', 'OrderController@showGrid');
             Route::post('order/create', 'OrderController@create');
             Route::get('order/view/id/{id}', 'OrderController@view');
 

@@ -17,6 +17,7 @@ var atypicalApp = angular.module('atypical.app',
 
                 'response': function(response) {
                     sharedMessageService.emitDataUpdate('onCloseOverlay');
+                    setTimeout(componentHandler.upgradeDom, 100);
                     return response;
                 }
             };
