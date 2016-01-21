@@ -7,8 +7,6 @@ use Doctrine\ORM\Mapping AS ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use LaravelDoctrine\Extensions\Timestamps\Timestamps;
 
-use App\Contracts\Entities;
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="orders")

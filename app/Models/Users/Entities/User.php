@@ -221,7 +221,6 @@ class User extends DoctrineModel implements
 
     public function getRoles()
     {
-        $a = 1;
         return $this->roles;
     }
 
