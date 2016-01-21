@@ -71,5 +71,11 @@ Route::group(['middleware' => 'web'], function (){
             Route::get('invite/resend/id/{id}', 'InviteController@resend');
 
         });
+
+        Route::group(['namespace' => 'Acl'], function () {
+            Route::get('permission/list', 'PermissionController@listAll');
+            Route::get('role/list', 'RoleController@listAll');
+
+        });
     });
 });

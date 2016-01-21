@@ -13,9 +13,6 @@ use LaravelDoctrine\ORM\Serializers;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
-use ArrayAccess;
-use Exception;
-use Illuminate\Contracts\Events\Dispatcher;
 
 
 

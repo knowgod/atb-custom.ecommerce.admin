@@ -3,10 +3,8 @@
 namespace App\Models\Users\Repositories;
 
 use App\Models\Users\Entities\User as User;
-use Doctrine\ORM\EntityRepository;
-use LaravelDoctrine\ORM\Pagination\Paginatable;
-use LaravelDoctrine\ORM\Pagination\PaginatorAdapter;
 use Doctrine\ORM\Query;
+use App\Contracts\DoctrineRepository;
 
 /**
  * @category Atypicalbrands
@@ -14,13 +12,7 @@ use Doctrine\ORM\Query;
  * Date: 05.01.16
  *
  */
-class UserRepository extends EntityRepository {
-    use Paginatable;
-
-    protected $_defaultAlias = 'tbl';
-
-    protected $_defaultSortBy = 'id';
-    protected $_defaultSortOrder = 'DESC';
+class UserRepository extends DoctrineRepository {
     /**
      * Get filtered, ordered and paginated collection
      *
@@ -46,53 +38,5 @@ class UserRepository extends EntityRepository {
 
         return $this->paginate($qb->getQuery(), $perPage);
     }
-
-    /**
-     * Finds an entity by its primary key / identifier.
-     *
-     * @param mixed    $id          The identifier.
-     * @param int|null $lockMode    One of the \Doctrine\DBAL\LockMode::* constants
-     *                              or NULL if no specific lock mode should be used
-     *                              during the search.
-     * @param int|null $lockVersion The lock version.
-     *
-     * @return User|null The User instance or NULL if the entity can not be found.
-     */
-    public function find($id, $lockMode = null, $lockVersion = null)
-    {
-        return parent::find($id, $lockMode, $lockVersion);
-    }
-
-    /**
-     * Finds a single entity by a set of criteria.
-     *
-     * @param array $criteria
-     * @param array|null $orderBy
-     *
-     * @return User|null The User instance or NULL if the entity can not be found.
-     */
-    public function findOneBy(array $criteria, array $orderBy = null)
-    {
-        return parent::findOneBy($criteria, $orderBy);
-    }
-
-    /**
-     * @param Query  $query
-     * @param int    $perPage
-     * @param bool   $fetchJoinCollection
-     * @param string $pageName
-     *
-     * @return \Illuminate\Pagination\LengthAwarePaginator
-     */
-    public function paginate(Query $query, $perPage, $pageName = 'page', $fetchJoinCollection = false)
-    {
-        return (new PaginatorAdapter())->make(
-            $query,
-            $perPage,
-            $pageName,
-            $fetchJoinCollection
-        );
-    }
-
 }
 

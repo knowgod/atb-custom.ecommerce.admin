@@ -4,19 +4,19 @@ namespace App\Models\Users\Entities;
 
 use App\Contracts\DoctrineModel;
 use Doctrine\ORM\Mapping AS ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 use LaravelDoctrine\ORM\Auth\Authenticatable;
 use LaravelDoctrine\Extensions\Timestamps\Timestamps;
 
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use LaravelDoctrine\ACL\Roles\HasRoles;
 
-
+use LaravelDoctrine\ACL\Mappings as ACL;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use App\Contracts\Entities;
+use LaravelDoctrine\ACL\Contracts\HasRoles as HasRolesContract;
 
 
 
@@ -27,8 +27,10 @@ use App\Contracts\Entities;
 class User extends DoctrineModel implements
         AuthenticatableContract,
         AuthorizableContract,
-        CanResetPasswordContract {
-    use Authenticatable, Authorizable, CanResetPassword, Timestamps;
+        CanResetPasswordContract,
+        HasRolesContract
+    {
+    use Authenticatable, Authorizable, CanResetPassword, Timestamps, HasRoles;
 
     /**
      * @ORM\Id
@@ -76,6 +78,12 @@ class User extends DoctrineModel implements
      */
 
     protected $fullname;
+
+    /**
+     * @ACL\HasRoles()
+     * @var \Doctrine\Common\Collections\ArrayCollection|\LaravelDoctrine\ACL\Contracts\Role[]
+     */
+    protected $roles;
 
     protected $hidden = ['password'];
 
@@ -205,6 +213,16 @@ class User extends DoctrineModel implements
     public function setFullname($fullname){
         $this->fullname = $fullname;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+
+    public function getRoles()
+    {
+        $a = 1;
+        return $this->roles;
     }
 
 }
