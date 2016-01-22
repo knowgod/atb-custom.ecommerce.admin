@@ -11,6 +11,7 @@ namespace App\Models\Acl\Entities;
 
 use App\Contracts\DoctrineModel;
 use Doctrine\ORM\Mapping as ORM;
+use LaravelDoctrine\ACL\Contracts\Permission;
 use LaravelDoctrine\ACL\Mappings as ACL;
 use LaravelDoctrine\ACL\Contracts\Role as RoleContract;
 use LaravelDoctrine\ACL\Permissions\HasPermissions;
@@ -40,7 +41,7 @@ class Role extends DoctrineModel implements RoleContract {
      * @ACL\HasPermissions
      */
 
-     public $permissions;
+    public $permissions;
 
 
     public function __construct(){
@@ -60,10 +61,29 @@ class Role extends DoctrineModel implements RoleContract {
     public function getName(){
         return $this->name;
     }
+
     /**
      * @return ArrayCollection|Permission[]
      */
     public function getPermissions(){
         return $this->permissions;
     }
+
+    /**
+     * @return $this
+     */
+
+    public function setPermissions($permissions){
+        $this->permissions = $permissions;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function setName($name){
+        $this->name = $name;
+        return $this;
+    }
+
 }

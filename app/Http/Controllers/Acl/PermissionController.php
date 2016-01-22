@@ -22,11 +22,8 @@ class PermissionController extends Controller {
 
     public function listAll(){
         $m = new PermissionManager(app());
-
         $m->getDefaultDriver();
-        $perm =$m->getAllPermissions();
-
-        var_dump($perm);
+        $perm =$m->getPermissionsWithDotNotation();
     }
 
 }

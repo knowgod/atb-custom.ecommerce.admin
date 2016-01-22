@@ -75,8 +75,9 @@ Route::group(['middleware' => 'web'], function (){
 
         Route::group(['namespace' => 'Acl'], function () {
             Route::get('permission/list', 'PermissionController@listAll');
-            Route::get('role/list', 'RoleController@listAll');
+            Route::get('role/list', 'RoleController@index');
 
+            Route::get('role/create', 'RoleController@create');
         });
     });
 });

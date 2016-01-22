@@ -11,6 +11,7 @@ namespace App\Http\Controllers\User;
 use App\Models\Users\Repositories\UserRepository;
 use App\Models\Users\Entities\User;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -29,6 +30,8 @@ class UserController extends Controller {
     }
 
     public function index(Request $request){
+
+        $this->authorize(new User());
 
         $collectionParams = $this->prepareGridCollectionParams($request);
 

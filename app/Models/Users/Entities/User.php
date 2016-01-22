@@ -3,8 +3,10 @@
 namespace App\Models\Users\Entities;
 
 use App\Contracts\DoctrineModel;
+use App\Models\Acl\Entities\Role;
 use Doctrine\ORM\Mapping AS ORM;
 
+use LaravelDoctrine\ACL\Contracts\HasPermissions;
 use LaravelDoctrine\ORM\Auth\Authenticatable;
 use LaravelDoctrine\Extensions\Timestamps\Timestamps;
 
@@ -222,6 +224,25 @@ class User extends DoctrineModel implements
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    /**
+     * @param Role $role
+     * @return $this
+     */
+
+    public function grantRole(Role $role)
+    {
+        $this->roles[] = $role;
+        return $this;
+    }
+
+    public function revokeRole(Role $role)
+    {
+        if($this->hasRole($role)){
+            //remove it here
+        }
+        return $this;
     }
 
 }

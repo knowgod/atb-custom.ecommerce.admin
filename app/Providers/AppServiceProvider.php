@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Acl\Entities\Role;
+use App\Models\Acl\Repositories\RoleRepository;
+
 use App\Models\Users\Entities\User;
 use App\Models\Users\Repositories\UserRepository;
 
@@ -44,6 +47,13 @@ class AppServiceProvider extends ServiceProvider {
             return new OrderRepository(
                     $app['em'],
                     $app['em']->getClassMetaData(Order::class)
+            );
+        });
+
+        $this->app->bind(RoleRepository::class, function ($app){
+            return new RoleRepository(
+                    $app['em'],
+                    $app['em']->getClassMetaData(Role::class)
             );
         });
     }
