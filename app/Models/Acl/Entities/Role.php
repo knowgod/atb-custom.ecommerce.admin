@@ -15,6 +15,7 @@ use LaravelDoctrine\ACL\Contracts\Permission;
 use LaravelDoctrine\ACL\Mappings as ACL;
 use LaravelDoctrine\ACL\Contracts\Role as RoleContract;
 use LaravelDoctrine\ACL\Permissions\HasPermissions;
+use App\Mappings;
 
 use App\Contracts\Entities;
 

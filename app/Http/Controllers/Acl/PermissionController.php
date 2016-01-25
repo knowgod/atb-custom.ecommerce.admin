@@ -19,12 +19,8 @@ use LaravelDoctrine\ACL\Permissions\PermissionManager;
 
 class PermissionController extends Controller {
 
-
-    public function listAll(){
-        $m = new PermissionManager(app());
-        $m->getDefaultDriver();
-        $perm =$m->getPermissionsWithDotNotation();
+    public function listAll(PermissionManager $m){
+        return $m->getPermissionsWithDotNotation();
     }
-
 }
 

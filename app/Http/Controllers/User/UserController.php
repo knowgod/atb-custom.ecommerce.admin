@@ -16,6 +16,7 @@ use App\Http\Requests;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Policies\UserPolicy as AclPolicy;
 
 class UserController extends Controller {
 
@@ -31,7 +32,7 @@ class UserController extends Controller {
 
     public function index(Request $request){
 
-        $this->authorize(new User());
+        $this->authorize('index', new AclPolicy());
 
         $collectionParams = $this->prepareGridCollectionParams($request);
 
@@ -56,6 +57,9 @@ class UserController extends Controller {
      */
 
     public function create(Request $request){
+
+        $this->authorize('create', new AclPolicy());
+
         $validator = $this->createValidator($request->all());
 
         if ($validator->fails()){
@@ -78,6 +82,9 @@ class UserController extends Controller {
     }
 
     public function update(Request $request){
+
+        $this->authorize('update', new AclPolicy());
+
         $validator = $this->updateValidator($request->all());
 
         if ($validator->fails()){
@@ -101,6 +108,9 @@ class UserController extends Controller {
     }
 
     public function delete($id){
+
+        $this->authorize('delete', new AclPolicy());
+
         $user = $this->userRepo->find($id);
         $user->remove();
         return redirect($this->redirectTo);
@@ -110,6 +120,8 @@ class UserController extends Controller {
         /**
          * @var $item User
          */
+
+        $this->authorize('massDelete', new AclPolicy());
 
         if (!$request->has('items')){
             return redirect($this->redirectTo);

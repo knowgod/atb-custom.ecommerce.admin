@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Mappings\HasAnnotatedPermissions;
 use App\Models\Acl\Entities\Role;
 use App\Models\Acl\Repositories\RoleRepository;
 
@@ -15,6 +16,7 @@ use App\Http\Controllers\Auth\Social;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use LaravelDoctrine\ACL\Mappings\HasPermissions;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider {
@@ -27,6 +29,10 @@ class AppServiceProvider extends ServiceProvider {
         $this->app->bind(
                 'Illuminate\View\ViewServiceProvider',
                 'App\Providers\JsonAwareViewProvider'
+        );
+        $this->app->bind(
+                'LaravelDoctrine\ACL\Permissions\PermissionManager',
+                'App\Models\Acl\Permissions\PermissionManager'
         );
     }
 

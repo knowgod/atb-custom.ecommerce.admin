@@ -20,7 +20,7 @@ return [
     |
     */
         'permissions' => [
-                'driver' => 'config',
+                'driver' => 'policy',
                 'entity' => LaravelDoctrine\ACL\Permissions\Permission::class,
                 'list'   => [
                         [

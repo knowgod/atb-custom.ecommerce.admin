@@ -11,7 +11,6 @@ class InvitationPolicy
 
     /**
      * Create a new policy instance.
-     *
      * @return void
      */
     public function __construct()
@@ -22,6 +21,7 @@ class InvitationPolicy
 
     /**
      * @param  User  $user
+     * @Policy\PermissionMethod
      * @return bool
      */
     public function index(User $user)

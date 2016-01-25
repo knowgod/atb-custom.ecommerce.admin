@@ -6,7 +6,7 @@ use App\Contracts\DoctrineModel;
 use App\Models\Acl\Entities\Role;
 use Doctrine\ORM\Mapping AS ORM;
 
-use LaravelDoctrine\ACL\Contracts\HasPermissions;
+use LaravelDoctrine\ACL\Contracts\HasPermissions as HasPermissionsContract;
 use LaravelDoctrine\ORM\Auth\Authenticatable;
 use LaravelDoctrine\Extensions\Timestamps\Timestamps;
 
@@ -19,6 +19,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use LaravelDoctrine\ACL\Contracts\HasRoles as HasRolesContract;
+use LaravelDoctrine\ACL\Permissions\HasPermissions;
 
 
 
@@ -32,7 +33,7 @@ class User extends DoctrineModel implements
         CanResetPasswordContract,
         HasRolesContract
     {
-    use Authenticatable, Authorizable, CanResetPassword, Timestamps, HasRoles;
+    use Authenticatable, Authorizable, CanResetPassword, Timestamps, HasRoles, HasPermissions;
 
     /**
      * @ORM\Id

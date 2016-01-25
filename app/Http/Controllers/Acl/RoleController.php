@@ -11,10 +11,10 @@ namespace App\Http\Controllers\Acl;
 use App\Http\Requests;
 use App\Models\Acl\Entities\Role as Role;
 use App\Models\Acl\Repositories\RoleRepository;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use LaravelDoctrine\ACL\Permissions\PermissionManager;
 
 
@@ -47,8 +47,7 @@ class RoleController extends Controller {
         /**
          * @var $r Role
          */
-
-        $r = $this->roleRepo->findOneBy(['name'=>'Some Awesome Role'], null, 1);
+        $r = $this->roleRepo->findOneBy(['name'=>'Some T1est Role'], null, 1);
         if($r){
             $r->hasPermissionTo(['user.update']);
             $r->hasPermissionTo(['waka']);
@@ -59,7 +58,7 @@ class RoleController extends Controller {
 
         $role = new Role();
         $role->setName('Some Test Role');
-        $role->setPermissions(['invitation.*','user.update']);
+        $role->setPermissions(['UserPolicy.create','UserPolicy.update']);
         $role->save();
         return 'OK';
     }
