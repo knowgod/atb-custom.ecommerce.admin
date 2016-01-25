@@ -47,7 +47,7 @@ class RoleController extends Controller {
         /**
          * @var $r Role
          */
-        $r = $this->roleRepo->findOneBy(['name'=>'Some T1est Role'], null, 1);
+        $r = $this->roleRepo->findOneBy(['name'=>'Some Test Role'], null, 1);
         if($r){
             $r->hasPermissionTo(['user.update']);
             $r->hasPermissionTo(['waka']);

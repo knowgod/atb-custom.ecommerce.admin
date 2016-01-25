@@ -19,6 +19,9 @@ final class HasAnnotatedPermissions extends RelationAnnotation
      */
     public function getTargetEntity(Repository $config)
     {
+        if($config->get('acl.permissions.driver') === 'policy'){
+            return false;
+        }
         // Config driver has no target entity
         if ($config->get('acl.permissions.driver', 'config') === 'config') {
             return false;

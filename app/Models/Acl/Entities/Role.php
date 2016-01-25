@@ -39,7 +39,7 @@ class Role extends DoctrineModel implements RoleContract {
     protected $name;
 
     /**
-     * @ACL\HasPermissions
+     * @App\Mappings\HasAnnotatedPermissions
      */
 
     public $permissions;

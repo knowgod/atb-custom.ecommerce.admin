@@ -16,7 +16,6 @@ use App\Http\Controllers\Auth\Social;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use LaravelDoctrine\ACL\Mappings\HasPermissions;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider {
@@ -33,6 +32,10 @@ class AppServiceProvider extends ServiceProvider {
         $this->app->bind(
                 'LaravelDoctrine\ACL\Permissions\PermissionManager',
                 'App\Models\Acl\Permissions\PermissionManager'
+        );
+        $this->app->bind(
+                'LaravelDoctrine\ACL\Mappings\Subscribers\HasPermissionsSubscriber',
+                'App\Mappings\Subscribers\HasPermissionsSubscriber'
         );
     }
 
