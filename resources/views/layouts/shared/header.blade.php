@@ -30,8 +30,9 @@
     </button>
     <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
         <li class="mdl-menu__item"><a href="{{ url('/') }}"><i class="material-icons">assessment</i>Dashboard</a></li>
-        <li class="mdl-menu__item"><a href="{{ url('/user/list') }}"><i class="material-icons">supervisor_account</i>Users</a></li>
         <li class="mdl-menu__item"><a href="{{ url('/order/list') }}"><i class="material-icons">inbox</i>Orders</a></li>
+        <li class="mdl-menu__item"><a href="{{ url('/user/list') }}"><i class="material-icons">supervisor_account</i>Users</a></li>
+        <li class="mdl-menu__item"><a href="{{ url('/role/list') }}"><i class="material-icons">group</i>User Roles</a></li>
         <li class="mdl-menu__item"><a href="{{ url('/invite/list') }}"><i class="material-icons">add_box</i>Invitations</a></li>
     </ul>
     <span class="mdl-layout__header--notification material-icons mdl-badge" data-badge="0">notifications</span>
