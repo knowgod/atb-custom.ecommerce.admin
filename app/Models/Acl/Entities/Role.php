@@ -12,7 +12,7 @@ namespace App\Models\Acl\Entities;
 use App\Contracts\DoctrineModel;
 use Doctrine\ORM\Mapping as ORM;
 use LaravelDoctrine\ACL\Contracts\Permission;
-use LaravelDoctrine\ACL\Mappings as ACL;
+use App\Mappings as ACL;
 use LaravelDoctrine\ACL\Contracts\Role as RoleContract;
 use LaravelDoctrine\ACL\Permissions\HasPermissions;
 use App\Mappings;
@@ -39,7 +39,7 @@ class Role extends DoctrineModel implements RoleContract {
     protected $name;
 
     /**
-     * @App\Mappings\HasAnnotatedPermissions
+     * @ACL\HasAnnotatedPermissions
      */
 
     public $permissions;

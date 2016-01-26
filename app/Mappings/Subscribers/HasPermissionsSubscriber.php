@@ -8,7 +8,7 @@ use LaravelDoctrine\ACL\Mappings\Builders\JsonArrayBuilder;
 use LaravelDoctrine\ACL\Mappings\Builders\ManyToManyBuilder;
 use LaravelDoctrine\ACL\Mappings\ConfigAnnotation;
 use LaravelDoctrine\ACL\Mappings\Subscribers\MappedEventSubscriber;
-use App\Mappings\HasAnnotatedPermissions as HasPermissions;
+use App\Mappings\HasAnnotatedPermissions;
 
 class HasPermissionsSubscriber extends MappedEventSubscriber
 {
@@ -27,7 +27,7 @@ class HasPermissionsSubscriber extends MappedEventSubscriber
      */
     public function getAnnotationClass()
     {
-        return HasPermissions::class;
+        return HasAnnotatedPermissions::class;
     }
 
     /**

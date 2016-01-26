@@ -14,9 +14,9 @@ use App\Models\Orders\Repositories\OrderRepository;
 
 use App\Http\Controllers\Auth\Social;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Illuminate\Support\ServiceProvider;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+
 
 class AppServiceProvider extends ServiceProvider {
     /**
@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot(){
+        AnnotationRegistry::registerFile(__DIR__ . '/../Mappings/HasAnnotatedPermissions.php');
+
         $this->app->bind(
                 'Illuminate\View\ViewServiceProvider',
                 'App\Providers\JsonAwareViewProvider'

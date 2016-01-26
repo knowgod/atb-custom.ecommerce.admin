@@ -1,21 +1,9 @@
 <?php
 
 namespace App\Policies;
+use App\Contracts\PolicyContract;
 
-use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Models\Users\Entities\User as User;
-
-
-class InvitationPolicy {
-    use HandlesAuthorization;
-
-    /**
-     * Create a new policy instance.
-     * @return void
-     */
-    public function __construct(){
-    }
-
+class InvitationPolicy extends PolicyContract{
     /**
      * @param  User $user
      * @Policy\PermissionMethod

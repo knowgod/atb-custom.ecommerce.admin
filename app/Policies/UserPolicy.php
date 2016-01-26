@@ -1,14 +1,9 @@
 <?php
 
 namespace App\Policies;
+use App\Contracts\PolicyContract;
 
-use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Models\Users\Entities\User as User;
-
-
-class UserPolicy {
-    use HandlesAuthorization;
-
+class UserPolicy extends PolicyContract{
     /**
      * @param  User $user
      * @return bool

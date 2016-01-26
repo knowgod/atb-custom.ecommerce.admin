@@ -2,29 +2,15 @@
 
 namespace App\Policies;
 
-use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Models\Users\Entities\User as User;
+use App\Contracts\PolicyContract;
 
-class OrderPolicy
-{
-    use HandlesAuthorization;
-
-    /**
-     * Create a new policy instance.
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
+class OrderPolicy extends PolicyContract {
     /**
      * @param User $user
      * @return bool
      * @Policy\PermissionMethod
      */
-    public function index(User $user)
-    {
+    public function index(User $user){
         return $user->hasPermissionTo(__CLASS__ . '.' . __METHOD__);
     }
 }

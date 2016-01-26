@@ -2,6 +2,7 @@
 
 namespace App\Mappings;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\Annotation;
 use Illuminate\Contracts\Config\Repository;
 use LaravelDoctrine\ACL\Mappings\RelationAnnotation;
