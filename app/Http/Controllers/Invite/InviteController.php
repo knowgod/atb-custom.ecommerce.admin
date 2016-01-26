@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Validator;
+use App\Policies\InvitationPolicy as AclPolicy;
+
 
 
 class InviteController extends Controller {
@@ -27,6 +29,9 @@ class InviteController extends Controller {
     }
 
     public function index(Request $request){
+
+        $this->authorize('index', new AclPolicy());
+
         if ($request->has('filterBy')){
             $this->inviteRepo->applyFilters($request->input('filterBy'));
         }
@@ -47,6 +52,8 @@ class InviteController extends Controller {
     }
 
     public function store(Request $request){
+
+        $this->authorize('sendEmail', new AclPolicy());
 
         $validator = $this->createValidator($request->all());
         if ($validator->fails()){

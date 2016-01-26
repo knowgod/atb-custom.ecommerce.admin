@@ -15,10 +15,7 @@ class UserPolicy {
      * @Policy\PermissionMethod
      */
     public function index(User $user){
-
         return $user->hasPermissionTo(__CLASS__ . '.' . __METHOD__);
-        //check here
-        return true;
     }
 
     /**
@@ -28,9 +25,7 @@ class UserPolicy {
      */
 
     public function create(User $user){
-        $u = $user;
-        //check here
-        return true;
+        return $user->hasPermissionTo(__CLASS__ . '.' . __METHOD__);
     }
 
     /**
@@ -40,9 +35,7 @@ class UserPolicy {
      */
 
     public function update(User $user){
-        $u = $user;
-        //check here
-        return true;
+        return $user->hasPermissionTo(__CLASS__ . '.' . __METHOD__);
     }
 
     /**
@@ -52,9 +45,7 @@ class UserPolicy {
      */
 
     public function delete(User $user){
-        $u = $user;
-        //check here
-        return true;
+        return $user->hasPermissionTo(__CLASS__ . '.' . __METHOD__);
     }
 
     /**
@@ -64,16 +55,6 @@ class UserPolicy {
      */
 
     public function massDelete(User $user){
-        $u = $user;
-        //check here
-        return true;
-    }
-
-    /**
-     * @param $policyName
-     * @param $permissionName
-     */
-    public function isAllowed($policyName, $permissionName){
-
+        return $user->hasPermissionTo(__CLASS__ . '.' . __METHOD__);
     }
 }

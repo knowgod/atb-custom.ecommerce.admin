@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Models\Users\Entities\User as User;
 
 class OrderPolicy
 {
@@ -24,16 +25,6 @@ class OrderPolicy
      */
     public function index(User $user)
     {
-        //check here
-        return true;
-    }
-
-    /**
-     * @param User $user
-     * @Policy\PermissionMethod
-     */
-
-    public function whoop(User $user){
-
+        return $user->hasPermissionTo(__CLASS__ . '.' . __METHOD__);
     }
 }

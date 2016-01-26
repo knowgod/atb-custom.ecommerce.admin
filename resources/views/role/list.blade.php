@@ -4,8 +4,9 @@
 
 @section('content')
 
-    <?php var_dump($collection) ?>
-
+    @foreach ($collection->all() as $role)
+        <div class="mdl-color-text--red-500"><?php var_dump($role) ?></div>
+    @endforeach
 @endsection
 
 @section('bodyend')
