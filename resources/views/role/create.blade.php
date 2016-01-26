@@ -9,43 +9,28 @@
                 </button>
             </div>
 
-            <form class="form-horizontal" role="form" method="POST" action="{{ url('/user/create') }}" ng-controller="GridFormController" ng-init="formUrl='{{ url("/user/create") }}';">
+            <form class="form-horizontal" role="form" method="POST" action="{{ url('/role/create') }}" ng-controller="GridFormController" ng-init="formUrl='{{ url("/role/create") }}';">
 
                 <input type="hidden" name="_token" ng-model="formData._token" id="csrf-token" value="{{ csrf_token() }}" />
 
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.firstname}">
-                    <input class="mdl-textfield__input" name="firstname" ng-model="formData.firstname" type="text" id="firstname" value="{{ old('firstname') }}" >
-                    <label class="mdl-textfield__label" for="firstname">First Name</label>
-                    <span class="mdl-textfield__error"><% formDataErrors.firstname[0] %></span>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.name}">
+                    <input class="mdl-textfield__input" name="name" ng-model="formData.name" type="text" id="name" value="{{ old('name') }}" >
+                    <label class="mdl-textfield__label" for="name">Role Name</label>
+                    <span class="mdl-textfield__error"><% formDataErrors.name[0] %></span>
                 </div>
-
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.lastname}">
-                    <input class="mdl-textfield__input" name="lastname" ng-model="formData.lastname" type="text" id="lastname" value="{{ old('lastname') }}" >
-                    <label class="mdl-textfield__label" for="lastname">Last Name</label>
-                    <span class="mdl-textfield__error"><% formDataErrors.lastname[0] %></span>
-                </div>
-
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.email }">
-                    <input class="mdl-textfield__input" name="email" ng-model="formData.email" type="text" id="email" value="" >
-                    <label class="mdl-textfield__label" for="email">E-Mail Address</label>
-                    <span class="mdl-textfield__error"><% formDataErrors.email[0] %></span>
-                </div>
-
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.password}">
-                    <input class="mdl-textfield__input" name="password" ng-model="formData.password" type="password" id="password" value="" >
-                    <label class="mdl-textfield__label" for="password">Password</label>
-                    <span class="mdl-textfield__error"><% formDataErrors.password[0] %></span>
-                </div>
-
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.password_confirmation}">
-                    <input class="mdl-textfield__input" name="password_confirmation" ng-model="formData.password_confirmation" type="password" id="password_confirmation" value="" >
-                    <label class="mdl-textfield__label" for="password_confirmation">Confirm Password</label>
-                    <span class="mdl-textfield__error"><% formDataErrors.password_confirmation[0] %></span>
-                </div>
+                @foreach($permissions as $policy=>$policyPermissions)
+                    <h6>{{$policy}}</h6>
+                    @foreach($policyPermissions as $perm)
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{$policy}}.{{$perm}}">
+                          <input type="checkbox" id="{{$policy}}.{{$perm}}" name="{{$policy}}.{{$perm}}" class="mdl-checkbox__input">
+                          <span class="mdl-checkbox__label">{{$perm}}</span>
+                        </label>
+                    @endforeach
+                @endforeach
 
                 <div class="buttons">
                     <button ng-click="dataSubmit()" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                        Create User
+                        Create Role
                     </button>
                 </div>
             </form>

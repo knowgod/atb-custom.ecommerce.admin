@@ -18,7 +18,6 @@ use LaravelDoctrine\ACL\Permissions\PermissionManager;
 
 
 class PermissionController extends Controller {
-
     public function listAll(PermissionManager $m){
         return $m->getPermissionsWithDotNotation();
     }

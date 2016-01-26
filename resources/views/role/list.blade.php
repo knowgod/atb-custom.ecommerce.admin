@@ -72,5 +72,5 @@
 @endsection
 
 @section('navigation')
-    @include('user.nav')
+    @include('role.nav')
 @endsection

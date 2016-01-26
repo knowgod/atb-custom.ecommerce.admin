@@ -43,24 +43,100 @@ class RoleController extends Controller {
         return view('role.list', array('collection' => $roles));
     }
 
-    public function create(){
+    public function create(Request $request){
         /**
-         * @var $r Role
+         * @var $role Role
          */
-        $r = $this->roleRepo->findOneBy(['name'=>'Some Test Role'], null, 1);
-        if($r){
-            $r->hasPermissionTo(['user.update']);
-            $r->hasPermissionTo(['waka']);
-            var_dump($r);
-            die;
+        //$this->authorize('create', new AclPolicy());
+
+        $validator = $this->createValidator($request->all());
+
+        if ($validator->fails()){
+            $this->throwValidationException(
+                    $request, $validator
+            );
+        }
+        $role = new Role();
+        $role->setName('Some Test Role')
+                ->setPermissions(['UserPolicy.create', 'UserPolicy.update'])
+                ->save();
+        return redirect($this->redirectTo);
+    }
+
+    public function update(Request $request){
+
+        //$this->authorize('update', new AclPolicy());
+
+        $validator = $this->updateValidator($request->all());
+
+        if ($validator->fails()){
+            $this->throwValidationException(
+                    $request, $validator
+            );
+            return;
+        }
+        /**
+         * @var $role Role
+         */
+        $role = $this->roleRepo->find($request->input('id'));
+
+        $role->setName()
+                ->setPermissions(['*'])
+                ->save();;
+        return redirect($this->redirectTo);
+
+    }
+
+    public function delete($id){
+
+        $this->authorize('delete', new AclPolicy());
+
+        $user = $this->roleRepo->find($id);
+        $user->remove();
+        return redirect($this->redirectTo);
+    }
+
+    public function massDelete(Request $request){
+        /**
+         * @var $item Role
+         */
+
+        //$this->authorize('massDelete', new AclPolicy());
+
+        if (!$request->has('items')){
+            return redirect($this->redirectTo);
+        }
+        $items = $this->roleRepo->findBy(array('id' => $request->get('items')));
+        foreach ($items as $item){
+            $item->remove();
         }
 
+        return redirect($this->redirectTo)->with('grid_collection_query', $request->get('query'));
+    }
 
-        $role = new Role();
-        $role->setName('Some Test Role');
-        $role->setPermissions(['UserPolicy.create','UserPolicy.update']);
-        $role->save();
-        return 'OK';
+    public function showCreateForm(PermissionManager $m){
+        $permissions = $m->getAllPermissions();
+        return view('role.create', ['permissions'=>$permissions]);
+    }
+
+    public function showUpdateForm(Request $request, $id, PermissionManager $m){
+        $role = $this->roleRepo->find($id);
+        $permissions = $m->getAllPermissions();
+
+        return view('role.update', array('role' => $role,'permissions'=>$permissions));
+    }
+
+    protected function createValidator(array $data){
+        return Validator::make($data, [
+                'name' => 'required|max:255|unique:roles',
+        ]);
+    }
+
+    protected function updateValidator(array $data){
+        $rulesSet = [
+                'name' => 'required|max:255|unique:roles,' ,
+        ];
+        return Validator::make($data, $rulesSet);
     }
 }
 

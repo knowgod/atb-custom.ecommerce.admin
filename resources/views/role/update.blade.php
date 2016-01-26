@@ -8,44 +8,31 @@
                     <i class="material-icons">close</i>
                 </button>
             </div>
-            <form class="form-horizontal" role="form" method="POST" action="{{ url('/user/update') }}" ng-controller="GridFormController"
-                  ng-init="formUrl='{{ url('/user/update') }}'; formData={{ $user->toJson() }}">
+            <form class="form-horizontal" role="form" method="POST" action="{{ url('/role/update') }}" ng-controller="GridFormController"
+                  ng-init="formUrl='{{ url('/role/update') }}'; formData={{ $role->toJson() }}">
 
                 <input type="hidden" name="_token" ng-model="formData._token" id="csrf-token" value="{{ csrf_token() }}" />
 
-                <input type="hidden" class="form-control" ng-model="formData.id" name="id" value="{{$user->getId()}}">
+                <input type="hidden" class="form-control" ng-model="formData.id" name="id" value="{{$role->getId()}}">
 
-
-
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.firstname}">
-                    <input class="mdl-textfield__input" name="firstname" ng-model="formData.firstname" type="text" id="firstname" value="{{$user->getFirstname()}}" >
-                    <label class="mdl-textfield__label" for="firstname">First Name</label>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.name}">
+                    <input class="mdl-textfield__input" name="name" ng-model="formData.name" type="text" id="name" value="{{$role->getName()}}" >
+                    <label class="mdl-textfield__label" for="name">Role Name</label>
                     <span class="mdl-textfield__error"><% formDataErrors.firstname[0] %></span>
                 </div>
 
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.lastname}">
-                    <input class="mdl-textfield__input" name="lastname" ng-model="formData.lastname" type="text" id="lastname" value="{{$user->getLastname()}}" >
-                    <label class="mdl-textfield__label" for="lastname">Last Name</label>
-                    <span class="mdl-textfield__error"><% formDataErrors.lastname[0] %></span>
-                </div>
 
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.email}">
-                    <input disabled class="mdl-textfield__input" name="email" ng-model="formData.email" type="text" id="email" value="{{$user->getEmail()}}" >
-                    <label class="mdl-textfield__label" for="email">E-Mail Address</label>
-                    <span class="mdl-textfield__error"><% formDataErrors.email[0] %></span>
-                </div>
 
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.password}">
-                    <input class="mdl-textfield__input" name="password" ng-model="formData.password" type="password" id="password" value="" >
-                    <label class="mdl-textfield__label" for="password">Password</label>
-                    <span class="mdl-textfield__error"><% formDataErrors.password[0] %></span>
-                </div>
 
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.password_confirmation}">
-                    <input class="mdl-textfield__input" name="password_confirmation" ng-model="formData.password_confirmation" type="password" id="password_confirmation" value="" >
-                    <label class="mdl-textfield__label" for="password_confirmation">Confirm Password</label>
-                    <span class="mdl-textfield__error"><% formDataErrors.password_confirmation[0] %></span>
-                </div>
+                @foreach($permissions as $policy=>$policyPermissions)
+                    <h6>{{$policy}}</h6>
+                    @foreach($policyPermissions as $perm)
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{$policy}}.{{$perm}}">
+                          <input type="checkbox" id="{{$policy}}.{{$perm}}" name="{{$policy}}.{{$perm}}" @if(in_array($policy . '.' . $perm, $role->getPermissions())) checked @endif() class="mdl-checkbox__input">
+                          <span class="mdl-checkbox__label">{{$perm}}</span>
+                        </label>
+                    @endforeach
+                @endforeach
 
                 <div class="buttons">
                     <button ng-click="dataSubmit()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
