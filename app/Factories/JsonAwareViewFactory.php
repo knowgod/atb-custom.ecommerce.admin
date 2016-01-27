@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class JsonAwareViewFactory extends Factory {
     public function make($view, $data = array(), $mergeData = array()){
         //check for view is a hack, need to find another solution
-        if (Request::capture()->wantsJson() && $view != 'invite.email'){
+        if (Request::capture()->wantsJson() && $view != 'invitation.email'){
             return json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS);
         }
         return parent::make($view, $data, $mergeData);

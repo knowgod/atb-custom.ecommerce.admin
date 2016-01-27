@@ -24,7 +24,7 @@ $factory->define(App\Models\Users\Entities\User::class, function (Faker\Generato
 });
 
 
-$factory->define(App\Models\Invitations\Entities\Invite::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Invitations\Entities\Invitation::class, function (Faker\Generator $faker) {
 
     return [
         'email' => $faker->email,

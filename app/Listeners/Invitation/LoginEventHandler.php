@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Listeners\Invite;
+namespace App\Listeners\Invitation;
 
 use Illuminate\Auth\Events\Login;
-use App\Models\Invitations\Repositories\InviteRepository;
+use App\Models\Invitations\Repositories\InvitationRepository;
 
 class LoginEventHandler
 {
     public $inviteRepo = null;
 
-    public function __construct(InviteRepository $inviteRepository)
+    public function __construct(InvitationRepository $inviteRepository)
     {
         $this->inviteRepo = $inviteRepository;
     }

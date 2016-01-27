@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Auth\Social;
 
 use App\Models\Users\Entities\User;
 use App\Models\Users\Repositories\UserRepository;
-use App\Models\Invitations\Repositories\InviteRepository;
+use App\Models\Invitations\Repositories\InvitationRepository;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -33,7 +33,7 @@ class GoogleController extends AuthController {
      *
      * @return void
      */
-    public function handleProviderCallback(UserRepository $userRepository, InviteRepository $inviteRepository){
+    public function handleProviderCallback(UserRepository $userRepository, InvitationRepository $inviteRepository){
 
         $googleUser = Socialite::driver('google')->user();
 

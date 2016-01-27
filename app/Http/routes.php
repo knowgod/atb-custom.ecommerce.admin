@@ -65,11 +65,11 @@ Route::group(['middleware' => 'web'], function (){
             Route::post('order/mass/delete', 'OrderController@massDelete');
         });
 
-        Route::group(['namespace' => 'Invite'], function () {
-            Route::get('invite/create', ['as' => 'invite/create', 'uses' => 'InviteController@create']);
-            Route::post('invite/store', ['as' => 'invite/store', 'uses' => 'InviteController@store']);
-            Route::get('invite/list',  'InviteController@index');
-            Route::get('invite/resend/id/{id}', 'InviteController@resend');
+        Route::group(['namespace' => 'Invitation'], function () {
+            Route::get('invitation/create', ['as' => 'invite/create', 'uses' => 'InvitationController@create']);
+            Route::post('invitation/store', ['as' => 'invite/store', 'uses' => 'InvitationController@store']);
+            Route::get('invitation/list',  'InvitationController@index');
+            Route::get('invitation/resend/id/{id}', 'InvitationController@resend');
 
         });
     });

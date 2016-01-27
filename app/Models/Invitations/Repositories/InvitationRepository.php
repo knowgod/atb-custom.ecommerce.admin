@@ -3,9 +3,9 @@
 namespace App\Models\Invitations\Repositories;
 
 use App\Contracts\Repository;
-use App\Models\Invitations\Entities\Invite as Invite;
+use App\Models\Invitations\Entities\Invitation as Invitation;
 
-class InviteRepository extends Repository {
+class InvitationRepository extends Repository {
 
     /**
      * Sets the model name
@@ -13,7 +13,7 @@ class InviteRepository extends Repository {
      */
 
     public function getModel(){
-        return Invite::class;
+        return Invitation::class;
     }
 
     /**

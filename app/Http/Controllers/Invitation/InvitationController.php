@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Invite;
+namespace App\Http\Controllers\Invitation;
 
-use App\Models\Invitations\Repositories\InviteRepository;
+use App\Models\Invitations\Repositories\InvitationRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Mail;
 use Validator;
 
 
-class InviteController extends Controller {
+class InvitationController extends Controller {
     public $inviteRepo = null;
     protected $_itemsPerPage = 10;
 
-    protected $redirectTo = '/invite/list';
+    protected $redirectTo = '/invitation/list';
 
     protected $_invitationSuccessMessage = 'Invitation has been sent successfully!';
     protected $_invitationDuplicateMessage = 'Invitation to this email has already been sent!';
@@ -22,7 +22,7 @@ class InviteController extends Controller {
 
     protected $_invitationSubjectMessage = 'Invitation!';
 
-    public function __construct(InviteRepository $inviteRepository){
+    public function __construct(InvitationRepository $inviteRepository){
         $this->inviteRepo = $inviteRepository;
     }
 
@@ -39,11 +39,11 @@ class InviteController extends Controller {
         }
 
         $invitations = $this->inviteRepo->getPaginatedInvitations($this->_itemsPerPage);
-        return view('invite.list', array('collection' => $invitations));
+        return view('invitation.list', array('collection' => $invitations));
     }
 
     public function create(){
-        return view('invite.form');
+        return view('invitation.form');
     }
 
     public function store(Request $request){
@@ -79,7 +79,7 @@ class InviteController extends Controller {
     }
 
     protected function sendEmail($fromEmail, $toEmail){
-        Mail::send('invite.email', ['email' => $toEmail], function ($message) use ($fromEmail, $toEmail){
+        Mail::send('invitation.email', ['email' => $toEmail], function ($message) use ($fromEmail, $toEmail){
             $message->from($fromEmail, 'NuMe');
             $message->to($toEmail, 'name')->subject($this->_invitationSubjectMessage);
         });
@@ -96,7 +96,7 @@ class InviteController extends Controller {
 
     protected function createValidator(array $data){
 
-        $rules = ['email' => 'required|email|max:255|unique:invites'];
+        $rules = ['email' => 'required|email|max:255|unique:invitations'];
         $customMessages = ['email.unique' => 'Such invitation already exists.'];
         return Validator::make($data, $rules, $customMessages);
     }
