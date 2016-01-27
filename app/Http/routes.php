@@ -72,5 +72,21 @@ Route::group(['middleware' => 'web'], function (){
             Route::get('invitation/resend/id/{id}', 'InvitationController@resend');
 
         });
+
+        Route::group(['namespace' => 'Acl'], function () {
+            Route::get('permission/list', 'PermissionController@listAll');
+            Route::get('role/list', 'RoleController@index');
+
+            Route::get('role/create', 'RoleController@showCreateForm');
+            Route::post('role/create', 'RoleController@create');
+
+            Route::get('role/view/{id}', 'RoleController@view');
+
+            Route::get('role/update/id/{id}', 'RoleController@showUpdateForm');
+            Route::post('role/update', 'RoleController@update');
+
+            Route::get('role/delete/id/{id}', 'RoleController@delete');
+            Route::post('role/mass/delete', 'RoleController@massDelete');
+        });
     });
 });

@@ -8,13 +8,16 @@
  */
 namespace App\Http\Controllers\User;
 
+use App\Models\Acl\Repositories\RoleRepository;
 use App\Models\Users\Repositories\UserRepository;
 use App\Models\Users\Entities\User;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Policies\UserPolicy as AclPolicy;
 
 class UserController extends Controller {
 
@@ -29,6 +32,8 @@ class UserController extends Controller {
     }
 
     public function index(Request $request){
+
+        $this->authorize('index', new AclPolicy());
 
         $collectionParams = $this->prepareGridCollectionParams($request);
 
@@ -53,6 +58,9 @@ class UserController extends Controller {
      */
 
     public function create(Request $request){
+
+        $this->authorize('create', new AclPolicy());
+
         $validator = $this->createValidator($request->all());
 
         if ($validator->fails()){
@@ -75,6 +83,9 @@ class UserController extends Controller {
     }
 
     public function update(Request $request){
+
+        $this->authorize('update', new AclPolicy());
+
         $validator = $this->updateValidator($request->all());
 
         if ($validator->fails()){
@@ -98,6 +109,9 @@ class UserController extends Controller {
     }
 
     public function delete($id){
+
+        $this->authorize('delete', new AclPolicy());
+
         $user = $this->userRepo->find($id);
         $user->remove();
         return redirect($this->redirectTo);
@@ -107,6 +121,8 @@ class UserController extends Controller {
         /**
          * @var $item User
          */
+
+        $this->authorize('massDelete', new AclPolicy());
 
         if (!$request->has('items')){
             return redirect($this->redirectTo);
@@ -119,13 +135,13 @@ class UserController extends Controller {
         return redirect($this->redirectTo)->with('grid_collection_query', $request->get('query'));
     }
 
-    public function showCreateForm(){
-        return view('user.create');
+    public function showCreateForm(RoleRepository $rolesRepo){
+        return view('user.create', ['roles_list' => $rolesRepo->findAll()]);
     }
 
-    public function showUpdateForm(Request $request, $id){
+    public function showUpdateForm(Request $request, $id, RoleRepository $rolesRepo){
         $user = $this->userRepo->find($id);
-        return view('user.update', array('user' => $user));
+        return view('user.update', array('user' => $user, 'user_role' => $user->getRole(), 'roles_list' => $rolesRepo->findAll()));
     }
 
     protected function createValidator(array $data){

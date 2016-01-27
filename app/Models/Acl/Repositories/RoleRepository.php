@@ -1,26 +1,22 @@
 <?php
 
-namespace App\Models\Users\Repositories;
-
-use App\Models\Users\Entities\User as User;
-use Doctrine\ORM\Query;
-use App\Contracts\DoctrineRepository;
-
 /**
  * @category Atypicalbrands
  * Written by: vyatsyuk@atypicalbrands.com
- * Date: 05.01.16
+ * Date: 21.01.16
  *
  */
-class UserRepository extends DoctrineRepository {
-    /**
-     * Get filtered, ordered and paginated collection
-     *
-     * @param  $perPage
-     * @return \Illuminate\Pagination\LengthAwarePaginator
-     */
 
-    public function getUserGridCollection($filterParams, $order, $perPage){
+namespace App\Models\Acl\Repositories;
+
+use App\Models\Acl\Entities\Role as Role;
+use Doctrine\ORM\Query;
+
+use App\Contracts\DoctrineRepository;
+
+class RoleRepository extends DoctrineRepository {
+
+    public function getGridCollection($filterParams, $order, $perPage){
         $qb = $this->_em->createQueryBuilder();
 
         $qb->select($this->_defaultAlias)
@@ -39,4 +35,3 @@ class UserRepository extends DoctrineRepository {
         return $this->paginate($qb->getQuery(), $perPage);
     }
 }
-

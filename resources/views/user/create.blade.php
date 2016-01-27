@@ -43,6 +43,16 @@
                     <span class="mdl-textfield__error"><% formDataErrors.password_confirmation[0] %></span>
                 </div>
 
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.user_role}">
+                    <label class="mdl-select__label" for="user_role">User Role</label>
+                        <select class="mdl-select__input" id="user_role" name="user_role">
+                          <option value="">Please Select</option>
+                            @foreach($roles_list as $role)
+                                <option value="{{$role->getId()}}">{{$role->getName()}}</option>
+                            @endforeach
+                        </select>
+                      </div>
+
                 <div class="buttons">
                     <button ng-click="dataSubmit()" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
                         Create User

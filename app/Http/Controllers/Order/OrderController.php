@@ -17,6 +17,8 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Policies\OrderPolicy as AclPolicy;
+
 class OrderController extends Controller {
 
     protected $redirectTo = '/order/list';
@@ -29,6 +31,8 @@ class OrderController extends Controller {
     }
 
     public function index(Request $request){
+
+        $this->authorize('index', new AclPolicy());
 
         $collectionParams = $this->prepareGridCollectionParams($request);
 
