@@ -8,6 +8,7 @@
  */
 namespace App\Http\Controllers\User;
 
+use App\Models\Acl\Repositories\RoleRepository;
 use App\Models\Users\Repositories\UserRepository;
 use App\Models\Users\Entities\User;
 
@@ -134,13 +135,13 @@ class UserController extends Controller {
         return redirect($this->redirectTo)->with('grid_collection_query', $request->get('query'));
     }
 
-    public function showCreateForm(){
-        return view('user.create');
+    public function showCreateForm(RoleRepository $rolesRepo){
+        return view('user.create', ['roles_list' => $rolesRepo->findAll()]);
     }
 
-    public function showUpdateForm(Request $request, $id){
+    public function showUpdateForm(Request $request, $id, RoleRepository $rolesRepo){
         $user = $this->userRepo->find($id);
-        return view('user.update', array('user' => $user));
+        return view('user.update', array('user' => $user, 'user_role' => $user->getRole(), 'roles_list' => $rolesRepo->findAll()));
     }
 
     protected function createValidator(array $data){

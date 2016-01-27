@@ -90,6 +90,11 @@ class User extends DoctrineModel implements
 
     protected $hidden = ['password'];
 
+    public function __construct()
+     {
+         $this->roles = new ArrayCollection();
+     }
+
     /**
      * @return mixed
      */
@@ -216,6 +221,11 @@ class User extends DoctrineModel implements
     public function setFullname($fullname){
         $this->fullname = $fullname;
         return $this;
+    }
+
+    public function getRole()
+    {
+        return $this->getRoles()->current();
     }
 
     /**

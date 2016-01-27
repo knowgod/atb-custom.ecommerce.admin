@@ -14,6 +14,8 @@ class RolesTableSeeder extends Seeder {
      * @return void
      */
     public function run(){
+
+
         $superAdminRole = new Role();
         $superAdminRole->setName('SuperAdmin');
         $superAdminRole->setPermissions(['*']);
@@ -35,8 +37,7 @@ class RolesTableSeeder extends Seeder {
 
         $rep = EntityManager::getRepository(User::class);
         foreach ($rep->findAll() as $user){
-            $user->grantRole($superAdminRole);
-            $user->save();
+            $user->grantRole($superAdminRole)->save();
         }
     }
 }
