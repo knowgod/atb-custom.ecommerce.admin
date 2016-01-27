@@ -21,8 +21,10 @@
                     <span class="mdl-textfield__error"><% formDataErrors.firstname[0] %></span>
                 </div>
 
-
-
+                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="super_admin">
+                  <input type="checkbox" id="super_admin" name="super_admin" class="mdl-checkbox__input" @if(in_array('*', $role->getPermissions())) checked @endif()>
+                  <span class="mdl-checkbox__label">Allow Everything (Super Admin)</span>
+                </label>
 
                 @foreach($permissions as $policy=>$policyPermissions)
                     <h6>{{$policy}}</h6>

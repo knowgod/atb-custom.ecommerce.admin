@@ -82,7 +82,7 @@ class RoleController extends Controller {
 
         $role->setName()
                 ->setPermissions(['*'])
-                ->save();;
+                ->save();
         return redirect($this->redirectTo);
 
     }

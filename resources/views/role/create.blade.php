@@ -18,6 +18,12 @@
                     <label class="mdl-textfield__label" for="name">Role Name</label>
                     <span class="mdl-textfield__error"><% formDataErrors.name[0] %></span>
                 </div>
+
+                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="super_admin">
+                      <input type="checkbox" id="super_admin" name="super_admin" class="mdl-checkbox__input">
+                      <span class="mdl-checkbox__label">Allow Everything (Super Admin)</span>
+                    </label>
+
                 @foreach($permissions as $policy=>$policyPermissions)
                     <h6>{{$policy}}</h6>
                     @foreach($policyPermissions as $perm)
