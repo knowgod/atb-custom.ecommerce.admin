@@ -12,6 +12,6 @@
 
 <ul class="main-notification-ctrl" ng-controller="NotificationController" ng-cloack>
     <li ng-repeat="message in messages track by message.hash" class="<% message.type %> animate-repeat" ng-click="removeMessage(message.hash)">
-        <span><% message.text %></span>
+        <span ng-bind="message.text"></span>
     </li>
 </ul>

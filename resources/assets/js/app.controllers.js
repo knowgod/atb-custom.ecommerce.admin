@@ -328,6 +328,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                 if (elIndex == -1) {
                     $scope.checkboxData.push(id.toString());
                 }
+                sharedMessageService.emitDataUpdate('onSecondarySelectionGrid', $scope.checkboxData);
             },
 
             remove: function (id) {
@@ -335,12 +336,14 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                 if (elIndex >= 0) {
                     $scope.checkboxData.splice(elIndex, 1);
                 }
+                sharedMessageService.emitDataUpdate('onSecondarySelectionGrid', $scope.checkboxData);
             },
 
             action: function (id, event) {
                 (event.target.checked)
                     ? $scope.checkbox.add(id)
                     : $scope.checkbox.remove(id);
+                sharedMessageService.emitDataUpdate('onSecondarySelectionGrid', $scope.checkboxData);
             },
 
             massAction: function () {
@@ -367,6 +370,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                         }
                     }
                 }
+                sharedMessageService.emitDataUpdate('onSecondarySelectionGrid', $scope.checkboxData);
             },
 
             updateChildren: function () {
@@ -383,6 +387,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                         }
                     }
                 }
+                sharedMessageService.emitDataUpdate('onSecondarySelectionGrid', $scope.checkboxData);
             }
         };
 
@@ -526,6 +531,11 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                 sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
             });
         };
+
+        sharedMessageService.onDataUpdate('onSecondarySelectionGrid', $scope, function (message, data) {
+            $scope.formData.checkboxData = data;
+        });
+
 
     }]).controller('OverlayController', ['$scope', '$http', 'sharedMessageService',
     function ($scope, $http, sharedMessageService) {
