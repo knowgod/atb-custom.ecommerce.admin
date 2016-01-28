@@ -38,7 +38,7 @@ class GoogleController extends AuthController {
         $googleUser = Socialite::driver('google')->user();
 
         $user = $userRepository->findOneBy(array('email' => $googleUser->getEmail()));
-        $inviteExist = $inviteRepository->findBy('email', ['=' => $googleUser->getEmail()], ['id'])->first();
+        $inviteExist = $inviteRepository->findOneBy(array('email' => $googleUser->getEmail()));
 
         if (!$inviteExist) {
             return redirect('/login/');

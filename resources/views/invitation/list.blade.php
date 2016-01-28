@@ -5,7 +5,7 @@
 @section('content')
     <script>
         window['gridCollection'] = <?php echo json_encode($collection); ?>;
-        window['gridCollection'].urlBase = 'invite';
+        window['gridCollection'].urlBase = 'invitation';
     </script>
     <div class="main-content">
         <div class="grid-ctrl" ng-controller='GridController' ng-init='init("gridCollection");'>
@@ -27,14 +27,14 @@
                                 </button>
                                 Email
                             </th>
-                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('created_at')">
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('createdAt')">
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
                                         ng-show="query.orderBy=='created_at'">
                                     <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
                                 </button>
                                 Created At
                             </th>
-                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('updated_at')">
+                            <th class="mdl-data-table__cell--non-numeric mdl-data-table__cell--buttons filter-field" ng-click="updateSortOrder('updatedAt')">
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white"
                                         ng-show="query.orderBy=='updated_at'">
                                     <i class="material-icons"><% query.orderDirection=='DESC' ? 'arrow_downward' : 'arrow_upward' %></i>
@@ -57,8 +57,8 @@
                                 <div data-mdl-checkbox el="item" prefix="checkbox-grid"></div>
                             </td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.email %></td>
-                            <td class="mdl-data-table__cell--non-numeric"><% item.created_at %></td>
-                            <td class="mdl-data-table__cell--non-numeric"><% item.updated_at %></td>
+                            <td class="mdl-data-table__cell--non-numeric"><% item.createdAt.date %></td>
+                            <td class="mdl-data-table__cell--non-numeric"><% item.updatedAt.date %></td>
                             <td class="mdl-data-table__cell--non-numeric"><% (item.status==0) ? 'Pending':'Complete' %></td>
                             <td class="actions">
                                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-button-on-white" ng-click="invokeAction('/invitation/resend/id/'+item.id)">

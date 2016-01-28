@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Invitation;
 
+use App\Models\Invitations\Entities\Invitation;
 use App\Models\Invitations\Repositories\InvitationRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -32,18 +33,14 @@ class InvitationController extends Controller {
 
         $this->authorize('index', new AclPolicy());
 
-        if ($request->has('filterBy')){
-            $this->inviteRepo->applyFilters($request->input('filterBy'));
-        }
-        if ($request->has(['orderBy', 'orderDirection'])){
-            $this->inviteRepo->orderBy($request->input('orderBy'), $request->input('orderDirection'));
-        }
+        $collectionParams = $this->prepareGridCollectionParams($request);
 
-        if ($request->has(['orderBy', 'orderDirection'])){
-            $this->inviteRepo->orderBy($request->input('orderBy'), $request->input('orderDirection'));
-        }
+        $invitations = $this->inviteRepo->getInvitationsGridCollection(
+                $collectionParams['filterBy'],
+                $collectionParams['orderBy'],
+                $collectionParams['perPage']
+        );
 
-        $invitations = $this->inviteRepo->getPaginatedInvitations($this->_itemsPerPage);
         return view('invitation.list', array('collection' => $invitations));
     }
 
@@ -63,25 +60,19 @@ class InvitationController extends Controller {
         }
 
         $this->sendEmail($request->user()->getEmail(), $request->input('email'));
-        $this->inviteRepo->create(
-                [
-                        'email'  => $request->input('email'),
-                        'status' => '0',
-                ]
-        );
+        $invitation = new Invitation();
+        $invitation
+            ->setEmail($request->input('email'))
+            ->setStatus(0)
+            ->save();
+
         return redirect($this->redirectTo)->with('message', $this->_invitationSuccessMessage);;
     }
 
     public function resend(Request $request){
-        $invite = $this->inviteRepo->find($request->id, ['email']);
-
-        $this->sendEmail($request->user()->getEmail(), $invite->email);
-
-        $this->inviteRepo->update(
-                ['status' => 0],
-                $invite->email,
-                'email'
-        );
+        $invite = $this->inviteRepo->find($request->id);
+        $this->sendEmail($request->user()->getEmail(), $invite->getEmail());
+        $invite->setStatus(0)->save();
         return redirect($this->redirectTo)->with('message', $this->_invitationSuccessMessage);;
     }
 
@@ -93,7 +84,7 @@ class InvitationController extends Controller {
     }
 
     public function delete(Request $request){
-        $this->inviteRepo->find($request->id, ['email'])->delete();
+        $this->inviteRepo->find($request->id)->remove();
         return redirect($this->redirectTo)->with('message', $this->_invitationSuccessMessage);;
     }
 

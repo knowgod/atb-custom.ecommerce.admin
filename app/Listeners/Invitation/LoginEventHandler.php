@@ -23,10 +23,12 @@ class LoginEventHandler
     public function handle(Login $event)
     {
         $userEmail = $event->user->getEmail();
-        $invite = $this->inviteRepo->findBy('email', ['=' => $userEmail], ['status'])->first();
+
+        $invite = $this->inviteRepo->findOneBy(array('email' => $userEmail));
+
         if($invite){
             if ($invite->status == 0) {
-                $this->inviteRepo->update(['status'=>1], $userEmail, 'email');
+                $invite->setStatus(1)->save();
             }
         }
         return;

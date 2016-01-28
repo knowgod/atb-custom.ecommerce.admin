@@ -14,7 +14,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'Illuminate\Auth\Events\Login' => [
-            'App\Listeners\Invite\LoginEventHandler',
+            'App\Listeners\Invitation\LoginEventHandler',
         ],
     ];
 

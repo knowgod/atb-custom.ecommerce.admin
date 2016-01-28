@@ -12,6 +12,9 @@ use App\Models\Users\Repositories\UserRepository;
 use App\Models\Orders\Entities\Order;
 use App\Models\Orders\Repositories\OrderRepository;
 
+use App\Models\Invitations\Entities\Invitation;
+use App\Models\Invitations\Repositories\InvitationRepository;
+
 use App\Http\Controllers\Auth\Social;
 
 use Illuminate\Support\ServiceProvider;
@@ -46,6 +49,7 @@ class AppServiceProvider extends ServiceProvider {
      *
      * @return void
      */
+
     public function register(){
         $this->app->bind(UserRepository::class, function ($app){
             return new UserRepository(
@@ -65,6 +69,13 @@ class AppServiceProvider extends ServiceProvider {
             return new RoleRepository(
                     $app['em'],
                     $app['em']->getClassMetaData(Role::class)
+            );
+        });
+
+        $this->app->bind(InvitationRepository::class, function ($app){
+            return new InvitationRepository(
+                    $app['em'],
+                    $app['em']->getClassMetaData(Invitation::class)
             );
         });
     }

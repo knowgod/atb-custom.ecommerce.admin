@@ -2,46 +2,36 @@
 
 namespace App\Models\Invitations\Repositories;
 
-use App\Contracts\Repository;
+use App\Contracts\DoctrineRepository;
 use App\Models\Invitations\Entities\Invitation as Invitation;
 
-class InvitationRepository extends Repository {
+class InvitationRepository extends DoctrineRepository {
 
     /**
-     * Sets the model name
-     * @return mixed
-     */
+      * Get filtered, ordered and paginated collection
+      *
+      * @param  $perPage
+      * @return \Illuminate\Pagination\LengthAwarePaginator
+      */
 
-    public function getModel(){
-        return Invitation::class;
-    }
+     public function getInvitationsGridCollection($filterParams, $order, $perPage){
+         $qb = $this->_em->createQueryBuilder();
 
-    /**
-     * Get paginated collection
-     *
-     * @param  $perPage
-     * @return \Illuminate\Pagination\LengthAwarePaginator
-     */
+         $qb->select($this->_defaultAlias)
+                 ->from($this->getEntityName(), $this->_defaultAlias)
+                 ->orderBy($this->_defaultAlias . '.' . $this->_defaultSortBy, $this->_defaultSortOrder);
 
-    public function getPaginatedInvitations($perPage){
-        return $this->getQueryBuilder()
-            ->orderBy('id', 'desc')
-            ->paginate($perPage);
-    }
+         foreach ($filterParams as $fieldName => $filterValue){
+             if ($filterValue){
+                 $qb->andWhere($qb->expr()->like($this->_defaultAlias . '.' . $fieldName, $qb->expr()->literal('%' . $filterValue. '%')));
+             }
+         }
+         if($order){
+             $qb->orderBy($this->_defaultAlias . '.' . $order['orderBy'], $order['orderDirection']);
+         }
 
-    public function orderBy($field, $direction){
-        $this->getQueryBuilder()->orderBy($field, $direction);
-        return $this;
-    }
-
-    public function applyFilters($filterData){
-        foreach ($filterData as $fieldName => $filterValue){
-            if ($filterValue){
-                $this->findBy($fieldName, ['like' => $filterValue]);
-            }
-        }
-        return $this;
-    }
+         return $this->paginate($qb->getQuery(), $perPage);
+     }
 
     public function getInvitationByEmail($email)
     {
