@@ -1,5 +1,7 @@
 <?php
 
+use App\Testing\DoctrineDatabaseTransactions;
+
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
     /**
@@ -21,5 +23,16 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
         return $app;
+    }
+
+    protected function setUpTraits()
+    {
+        parent::setUpTraits();
+        $uses = array_flip(class_uses_recursive(get_class($this)));
+
+        if (isset($uses[DoctrineDatabaseTransactions::class])) {
+            $this->beginDatabaseTransaction();
+        }
+
     }
 }
