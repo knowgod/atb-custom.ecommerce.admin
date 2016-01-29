@@ -13,6 +13,8 @@ use Doctrine\ORM\EntityManager;
 
 trait OperatesAsUser
 {
+    public $user;
+
     protected function _prepareUserData(){
         $user = new User();
         $user->setEmail('someguy@example.com')
