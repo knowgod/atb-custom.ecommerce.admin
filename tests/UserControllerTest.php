@@ -8,15 +8,12 @@
  */
 
 use Mockery as M;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Testing\DoctrineDatabaseTransactions;
-
-use App\Models\Users\Repositories\UserRepository;
-use App\Models\Users\Entities\User;
+use App\Testing\OperatesAsUser;
 
 class UserControllerTest extends TestCase {
-    use DoctrineDatabaseTransactions;
+    use DoctrineDatabaseTransactions,
+            OperatesAsUser;
 
     /**
      * @var $userRepositoryMock Mockery\MockInterface
@@ -80,21 +77,4 @@ class UserControllerTest extends TestCase {
                  'password_confirmation' => "1111111"]
         )->assertResponseStatus(302);
     }
-
-    protected function _prepareUserData(){
-        $user = new User();
-        $user->setEmail('someguy@example.com')
-                ->setFirstname('Seva')
-                ->setLastname('Yatsyuk')
-                ->setFullname('Seva' . ' ' . 'Yatsyuk')
-                ->setRegisterSource('manual')
-                ->setPassword(bcrypt('abcABC123'));
-
-        $rolesRepo = EntityManager::getRepository(\App\Models\Acl\Entities\Role::class);
-        $superAdminRole = $rolesRepo->findOneBy(array('name' => 'SuperAdmin'));
-        $user->grantRole($superAdminRole);
-        $this->user = $user->save();
-        $this->be($this->user);
-    }
-
 }
