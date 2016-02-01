@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Users\Repositories\UserRepository;
 use App\Models\Users\Entities\User;
 
+use \LaravelDoctrine\ORM\Facades\EntityManager;
 use App\Models\Acl\Entities\Role;
 
 
@@ -14,6 +15,11 @@ class RolesTableSeeder extends Seeder {
      * @return void
      */
     public function run(){
+
+        $rep = EntityManager::getRepository(Role::class);
+        foreach ($rep->findAll() as $role){
+            $role->remove();
+        }
 
 
         $superAdminRole = new Role();
