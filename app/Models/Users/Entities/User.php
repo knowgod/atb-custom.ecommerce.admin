@@ -4,6 +4,7 @@ namespace App\Models\Users\Entities;
 
 use App\Contracts\DoctrineModel;
 use App\Models\Acl\Entities\Role;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping AS ORM;
 
 use LaravelDoctrine\ACL\Contracts\HasPermissions as HasPermissionsContract;
