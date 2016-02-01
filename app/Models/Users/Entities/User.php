@@ -54,7 +54,7 @@ class User extends DoctrineModel implements
     protected $lastname;
 
     /**
-     * @ORM\Column(type="string", length=32, nullable=false, unique=true)
+     * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      */
     protected $email;
 

@@ -32,6 +32,7 @@ class UsersTableSeeder extends Seeder {
                     ->setPassword(bcrypt('abcABC123'));
             $user->save();
         }catch (\Exception $e){
+            echo $e->getMessage();
             return;
         }
     }
