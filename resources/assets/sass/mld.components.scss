@@ -1,0 +1,170 @@
+@import "_palette.scss";
+@import "../../../node_modules/material-design-lite/src/variables";
+@import "../../../node_modules/material-design-lite/src/mixins";
+
+.mdl-select{
+    display: inline-block;
+    max-width: 300px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    margin: 0;
+    padding: 20px 0;
+}
+
+.mdl-select__select{
+   display: none;
+}
+
+.mdl-select__label {
+    bottom: 0;
+    color: $input-text-label-color;
+    font-size : $input-text-floating-label-fontsize;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    position: absolute;
+    display: block;
+    top: $input-text-vertical-spacing - ($input-text-floating-label-fontsize + $input-text-padding);
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: left;
+
+    .mdl-select.is-dirty & {
+//        visibility: hidden;
+    }
+
+    // Floating Label
+    .mdl-select--floating-label & {
+        @include material-animation-default();
+    }
+
+    .mdl-select.is-disabled.is-disabled & {
+        color: $input-text-disabled-text-color;
+    }
+
+    .mdl-select--floating-label.is-focused &,
+    .mdl-select--floating-label.is-dirty & {
+        color: $primary-color;
+        font-size : $input-text-floating-label-fontsize;
+        top: $input-text-vertical-spacing - ($input-text-floating-label-fontsize + $input-text-padding);
+        visibility: visible;
+    }
+
+    .mdl-select--floating-label.is-invalid & {
+        color: $input-text-error-color;
+        font-size: $input-text-floating-label-fontsize;
+    }
+
+    // The after label is the colored underline for the TextField.
+    &:after {
+        background-color: $primary-color;
+        bottom: $input-text-vertical-spacing;
+        content: '';
+        height: 2px;
+        left: 45%;
+        position: absolute;
+        @include material-animation-default();
+        visibility: hidden;
+        width: 10px;
+    }
+
+    .mdl-select.is-focused &:after {
+        left: 0;
+        visibility: visible;
+        width: 100%;
+    }
+
+    .mdl-select.is-invalid &:after {
+        background-color: $input-text-error-color;
+    }
+}
+.mdl-select__container{
+    position: relative;
+    cursor: pointer;
+    &:after{
+        display: block;
+        content: '\25BC';
+        position: absolute;
+        top: 3px;
+        right: 2px;
+        speak: none;
+        -webkit-transform: scaleY(.6) scaleX(1);
+        transform: scaleY(.6) scaleX(1);
+        color: $primary-text-color;
+        z-index: 1;
+    }
+
+
+}
+.mdl-select__menu{
+    z-index: 999;
+    position: absolute;
+    top:24px;
+    left: 0;
+    background: #fff;
+    max-height: 240px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: auto;
+    transform: scale(0);
+    transition: transform .3s cubic-bezier(.4,0,.2,1), opacity .2s cubic-bezier(.4,0,.2,1);
+    opacity: 0;
+    width: 100%;
+    &.is-visible{
+        transform: scale(1);
+        z-index: 999;
+        opacity: 1;
+    }
+    .mdl-menu__item{
+        opacity: 1;
+    }
+    &.bottom{
+        top:auto;
+        bottom: 0;
+    }
+}
+.mdl-select__input {
+    cursor: pointer;
+    border: none;
+    border-bottom: 1px solid $input-text-bottom-border-color;
+    display: block;
+    font-size: $input-text-font-size;
+    margin: 0;
+    padding: $input-text-padding 0;
+    text-align: left;
+    color: inherit;
+    user-select: none;
+    position: relative;
+    width: 100%;
+    background: none;
+    z-index: 2;
+
+    .mdl-select.is-focused & {
+        outline: none;
+    }
+
+    .mdl-select.is-invalid & {
+        border-color: $input-text-error-color;
+        box-shadow: none;
+    }
+
+    .mdl-select.is-disabled & {
+        background-color: transparent;
+        border-bottom: 1px dotted $input-text-disabled-color;
+        color: $input-text-disabled-text-color;
+    }
+}
+
+.mdl-select__error {
+    color: $input-text-error-color;
+    position: absolute;
+    font-size: $input-text-floating-label-fontsize;
+    margin-top: 3px;
+    visibility: hidden;
+    display: block;
+
+    .mdl-select.is-invalid & {
+        visibility: visible;
+    }
+}

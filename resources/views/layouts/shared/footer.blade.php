@@ -1,6 +1,7 @@
 <script src="/assets/js/angular.min.js"></script>
 <script src="/assets/js/angular-sanitize.js"></script>
 <script src="/assets/js/material.min.js"></script>
+<script src="/assets/js/mdl.components.js"></script>
 <script src="/assets/js/angular-animate.min.js"></script>
 <script src="/assets/js/app.js"></script>
 <script src="/assets/js/app.controllers.js"></script>
