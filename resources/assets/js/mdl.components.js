@@ -184,10 +184,42 @@
 
     //END OF: MaterialSelect
 
+    var MaterialDatePicker = function MaterialDatePicker(element) {
+        this.element_ = element;
+        this.init();
+    };
+    window['MaterialDatePicker'] = MaterialDatePicker;
+
+    MaterialDatePicker.prototype.CssClasses_ = {
+        LABEL: 'mdl-datepicker__label',
+        INPUT: 'mdl-datepicker__input',
+        IS_DIRTY: 'is-dirty',
+        IS_FOCUSED: 'is-focused',
+        IS_DISABLED: 'is-disabled',
+        IS_INVALID: 'is-invalid',
+        IS_UPGRADED: 'is-upgraded'
+    };
+
+    MaterialDatePicker.prototype.init = function() {
+        if (this.element_) {
+            this.label_ = this.element_.querySelector('.' + this.CssClasses_.LABEL);
+            this.input_ = this.element_.querySelector('.' + this.CssClasses_.INPUT);
+        }
+    };
+
+    //END OF: MaterialDatePicker
+
     componentHandler.register({
         constructor: MaterialSelect,
         classAsString: 'MaterialSelect',
         cssClass: 'mdl-js-select',
+        widget: true
+    });
+
+    componentHandler.register({
+        constructor: MaterialDatePicker,
+        classAsString: 'MaterialDatePicker',
+        cssClass: 'mdl-js-datepicker',
         widget: true
     });
 
