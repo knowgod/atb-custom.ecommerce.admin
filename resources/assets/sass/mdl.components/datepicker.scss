@@ -1,0 +1,159 @@
+.mdl-datepicker{
+    display: inline-block;
+    max-width: 300px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    margin: 0;
+    padding: 20px 0;
+    .mdl-datepicker__input{
+        padding: 4px 30px;
+        box-sizing: border-box;
+        width: 100%;
+    }
+    .mdl-datepicker__label {
+        padding-left: 30px;
+        box-sizing: border-box;
+        width: 100%;
+    }
+    .mdl-datepicker__icon{
+        position: absolute;
+        top:20px;
+        left: 0;
+        color: $input-text-label-color;
+
+    }
+    &.is-focused .mdl-datepicker__icon,
+    &.is-dirty .mdl-datepicker__icon {
+        color: $primary-color;
+    }
+    &.is-invalid .mdl-datepicker__icon {
+        color: $input-text-error-color;
+    }
+
+    .mdl-datepicker__button{
+        position: static;
+    }
+}
+
+.datepickr-wrapper {
+    position: absolute;
+    top:14px;
+    right: 0;
+}
+
+.datepickr-calendar {
+    color: #333;
+    border-radius: 2px;
+    padding: 6px;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 100;
+    transform: scale(0);
+    transition: transform .3s cubic-bezier(.4,0,.2,1), opacity .2s cubic-bezier(.4,0,.2,1);
+    opacity: 0;
+    background: #fff;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+
+    .open & {
+        transform: scale(1);
+        z-index: 999;
+        opacity: 1;
+    }
+}
+
+.datepickr-calendar {
+    *{
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+    }
+    .datepickr-months {
+        color: $primary-text-color;
+        padding: 5px 2px;
+        text-align: center;
+    }
+    .datepickr-prev-month, .datepickr-next-month {
+        text-decoration: none;
+        padding: 0;
+        cursor: pointer;
+        font-family: 'Material Icons';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+        border-radius: 50%;
+    }
+    .datepickr-prev-month {
+        float: left;
+    }
+    .datepickr-next-month {
+        float: right;
+    }
+    .datepickr-current-month {
+        padding: 0 1.5em;
+        line-height: 30px;
+    }
+    .datepickr-prev-month:hover,
+    .datepickr-next-month:hover {
+        background-color: $divider-color;
+        color: #fff;
+    }
+    table {
+        border-collapse: collapse;
+        padding: 0;
+        width: 100%;
+    }
+
+    thead {
+        font-size: 100%;
+    }
+    th, td {
+        width: 14.3%;
+    }
+    th {
+        text-align: center;
+        padding: 5px;
+    }
+    td {
+        text-align: center;
+        padding: 1px;
+    }
+    .datepickr-day {
+        display: block;
+        color: $secondary-text-color;
+        padding: 5px;
+        cursor: pointer;
+        border-radius: 50%;
+        line-height: 30px;
+        width: 30px;
+        height: 30px;
+        &:hover {
+            background-color: $divider-color;
+        }
+    }
+    .today .datepickr-day {
+        background-color: $divider-color;
+        color: #363636;
+    }
+    .selected .datepickr-day {
+        background-color: $primary-color;
+        color: #f6f6f6;
+    }
+    .disabled .datepickr-day {
+        background-color: #eee;
+        color: #bbb;
+        cursor: default;
+        &:hover {
+            background-color: #eee;
+            color: #bbb;
+            cursor: default;
+        }
+    }
+}
