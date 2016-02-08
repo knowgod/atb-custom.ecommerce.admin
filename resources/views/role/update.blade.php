@@ -9,7 +9,7 @@
                 </button>
             </div>
             <form class="form-horizontal" role="form" method="POST" action="{{ url('/role/update') }}" ng-controller="GridFormController"
-                  ng-init="formUrl='{{ url('/role/update') }}'; formData={{ $role->toJson() }}">
+                  ng-init="formUrl='{{ url('/role/update') }}'; formData={{ $role->toJson() }}"  onsubmit="return false;">
 
                 <input type="hidden" name="_token" ng-model="formData._token" id="csrf-token" value="{{ csrf_token() }}" />
 
@@ -22,15 +22,15 @@
                 </div>
 
                 <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="super_admin">
-                  <input type="checkbox" id="super_admin" name="super_admin" class="mdl-checkbox__input" @if(in_array('*', $role->getPermissions())) checked @endif()>
+                  <input type="checkbox" id="super_admin" name="super_admin" ng-model="formData.super_admin" class="mdl-checkbox__input" @if(in_array('*', $role->getPermissions())) checked @endif()>
                   <span class="mdl-checkbox__label">Allow Everything (Super Admin)</span>
                 </label>
 
                 @foreach($permissions as $policy=>$policyPermissions)
-                    <h6>{{$policy}}</h6>
+                    <h5>{{$policy}}</h5>
                     @foreach($policyPermissions as $perm)
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{$policy}}.{{$perm}}">
-                          <input type="checkbox" id="{{$policy}}.{{$perm}}" name="{{$policy}}.{{$perm}}" @if(in_array($policy . '.' . $perm, $role->getPermissions())) checked @endif() class="mdl-checkbox__input">
+                          <input type="checkbox" id="{{$policy}}.{{$perm}}" name="{{$policy}}.{{$perm}}" ng-model="formData.{{$policy}}.{{$perm}}" @if(in_array($policy . '.' . $perm, $role->getPermissions())) checked @endif() class="mdl-checkbox__input">
                           <span class="mdl-checkbox__label">{{$perm}}</span>
                         </label>
                     @endforeach

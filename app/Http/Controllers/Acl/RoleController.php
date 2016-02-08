@@ -57,7 +57,7 @@ class RoleController extends Controller {
             );
         }
         $role = new Role();
-        $role->setName('Some Test Role')
+        $role->setName($request->input('name'))
                 ->setPermissions(['UserPolicy.create', 'UserPolicy.update'])
                 ->save();
         return redirect($this->redirectTo);
@@ -80,7 +80,7 @@ class RoleController extends Controller {
          */
         $role = $this->roleRepo->find($request->input('id'));
 
-        $role->setName()
+        $role->setName($request->input('name'))
                 ->setPermissions(['*'])
                 ->save();
         return redirect($this->redirectTo);
