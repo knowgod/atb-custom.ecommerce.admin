@@ -292,30 +292,6 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             return $scope.checkboxData.indexOf(id.toString()) > -1;
         };
 
- /*       $scope.massAction = function (action) {
-
-            if (!$scope.checkboxData.length) return;
-
-            var req = {
-                method: 'POST',
-                url: '/' + $scope.urlBase + '/mass/' + action,
-                loader: 'round',
-                headers: {},
-                data: {
-                    action: action,
-                    items: $scope.checkboxData,
-                    query: $scope.query
-                }
-            };
-            $http(req).then(function (response) {
-                $scope.checkbox.clearSelection();
-                $scope.updateGrid(response.data.collection);
-                setTimeout(componentHandler.upgradeDom, 10);
-            }, function () {
-            });
-
-        };
-*/
         $scope.setPerPage = function(count){
             $scope.query.page = 1;
             $scope.query['perPage'] = count;
@@ -494,7 +470,6 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
 
         $scope.clickInner = function ($event) {
             $event.stopPropagation();
-            //$event.preventDefault();
         };
 
         $scope.onClose = function () {
@@ -504,13 +479,11 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         sharedMessageService.onDataUpdate('onShow', $scope, function (message, data) {
             $scope.isVisible = true;
             $scope.htmlContent = $sce.trustAsHtml(data);
-            //setTimeout(componentHandler.upgradeDom, 400);
         });
 
         sharedMessageService.onDataUpdate('onClose', $scope, function (message, data) {
             $scope.isVisible = false;
             $scope.htmlContent = $sce.trustAsHtml('');
-            //setTimeout(componentHandler.upgradeDom, 400);
         });
 
     }]).controller('GridFormController', ['$scope', '$http', 'sharedMessageService',
@@ -536,84 +509,5 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             $scope.formData.checkboxData = data;
         });
 
-
-    }]).controller('OverlayController', ['$scope', '$http', 'sharedMessageService',
-    function ($scope, $http, sharedMessageService) {
-
-        $scope.isVisible = false;
-
-        sharedMessageService.onDataUpdate('onShowOverlay', $scope, function (message, data) {
-            $scope.isVisible = true;
-        });
-
-        sharedMessageService.onDataUpdate('onCloseOverlay', $scope, function (message, data) {
-            $scope.isVisible = false;
-        });
-
-    }]).controller('HorizontalLoaderController', ['$scope', '$http', 'sharedMessageService',
-    function ($scope, $http, sharedMessageService) {
-
-        $scope.isVisible = false;
-
-        sharedMessageService.onDataUpdate('onShowHorizontalLoader', $scope, function (message, data) {
-            $scope.isVisible = true;
-        });
-
-        sharedMessageService.onDataUpdate('onCloseHorizontalLoader', $scope, function (message, data) {
-            $scope.isVisible = false;
-        });
-
-    }]).controller('NotificationController', ['$scope', '$http', '$interval', 'sharedMessageService',
-    function ($scope, $http, $interval, sharedMessageService) {
-
-        var stop;
-        $scope.messages = [];
-
-        $scope.removeMessage = function(hash){
-            console.log(hash)
-            for(var m in $scope.messages){
-                if($scope.messages.hasOwnProperty(m) && $scope.messages[m].hash == hash){
-                    $scope.messages.splice (m, 1);
-                }
-            }
-        };
-
-        $scope.addMessages = function(data){
-            var date=new Date();
-
-            for(var i=0; i<data.length; i++){
-                $scope.messages.push({
-                    type:data[i].type,
-                    text:data[i].text,
-                    hash:date.getTime()+Math.random()
-                })
-            }
-        };
-
-        sharedMessageService.onDataUpdate('onNotification', $scope, function (message, data) {
-
-            $scope.stopInterval();
-
-            $scope.addMessages(data);
-
-            stop = $interval(function(){
-                if($scope.messages.length){
-                    $scope.messages.splice (0, 1);
-                }else{
-                    $scope.stopInterval();
-                }
-            },2000);
-        });
-
-        $scope.stopInterval = function() {
-            if (angular.isDefined(stop)) {
-                $interval.cancel(stop);
-                stop = undefined;
-            }
-        };
-
-        $scope.$on('$destroy', function() {
-           $scope.stopInterval();
-        });
 
     }]);

@@ -1,11 +1,12 @@
-<script src="/assets/js/angular.min.js"></script>
+<script src="/assets/js/lib/angular.min.js"></script>
 <script src="/assets/js/lib/angular-sanitize.min.js"></script>
 <script src="/assets/js/lib/angular-animate.min.js"></script>
 <script src="/assets/js/lib/datepickr.js"></script>
-<script src="/assets/js/material.min.js"></script>
+<script src="/assets/js/lib/material.min.js"></script>
 <script src="/assets/js/mdl.components.js"></script>
 <script src="/assets/js/app.js"></script>
-<script src="/assets/js/app.controllers.js"></script>
+<script src="/assets/js/app.controllers.common.js"></script>
+<script src="/assets/js/app.controllers.grid.js"></script>
 <script src="/assets/js/app.directives.js"></script>
 <div class="main-loader-ctrl" ng-controller="OverlayController" ng-class="{'is-visible':isVisible}">
     <div class="mdl-spinner mdl-js-spinner is-active"></div>
