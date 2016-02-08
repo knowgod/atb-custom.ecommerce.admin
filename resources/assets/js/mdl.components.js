@@ -176,18 +176,172 @@
 
             this.updateClasses_();
             this.element_.classList.add(this.CssClasses_.IS_UPGRADED);
-            this.inputSelect.addEventListener('change', function(event){
-                console.log(this.value)
-            });
         }
     };
 
     //END OF: MaterialSelect
 
+    var MaterialDatePicker = function MaterialDatePicker(element) {
+        this.element_ = element;
+        this.init();
+    };
+    window['MaterialDatePicker'] = MaterialDatePicker;
+
+    MaterialDatePicker.prototype.CssClasses_ = {
+        LABEL: 'mdl-datepicker__label',
+        INPUT: 'mdl-datepicker__input',
+        ERROR: 'mdl-datepicker__error',
+        ICON: 'mdl-datepicker__icon',
+        BUTTON: 'mdl-datepicker__button',
+        IS_DIRTY: 'is-dirty',
+        IS_FOCUSED: 'is-focused',
+        IS_DISABLED: 'is-disabled',
+        IS_INVALID: 'is-invalid',
+        IS_UPGRADED: 'is-upgraded'
+    };
+
+    MaterialDatePicker.prototype.updateClasses_ = function() {
+        this.checkDisabled();
+        this.checkValidity();
+        this.checkDirty();
+    };
+
+    MaterialDatePicker.prototype.change = function(value) {
+        this.input_.value = value || '';
+        this.updateClasses_();
+    };
+    MaterialDatePicker.prototype['change'] = MaterialDatePicker.prototype.change;
+
+    MaterialDatePicker.prototype.checkDisabled = function() {
+        if (this.input_.disabled) {
+            this.element_.classList.add(this.CssClasses_.IS_DISABLED);
+        } else {
+            this.element_.classList.remove(this.CssClasses_.IS_DISABLED);
+        }
+    };
+    MaterialDatePicker.prototype['checkDisabled'] = MaterialDatePicker.prototype.checkDisabled;
+
+    MaterialDatePicker.prototype.checkValidity = function() {
+        if(this.input_.value && this.input_.value.length > 0) {
+            if (this.isValidDate(this.input_.value)) {
+               this.setValid();
+            } else {
+                this.element_.classList.add(this.CssClasses_.IS_INVALID);
+                this.error_.innerHTML = 'Date is not valid';
+            }
+        }else{
+            this.setValid();
+        }
+    };
+    MaterialDatePicker.prototype['checkValidity'] = MaterialDatePicker.prototype.checkValidity;
+
+    MaterialDatePicker.prototype.setValid = function() {
+        this.element_.classList.remove(this.CssClasses_.IS_INVALID);
+        this.error_.innerHTML = '';
+    };
+
+    MaterialDatePicker.prototype.checkDirty = function() {
+        if (this.input_.value && this.input_.value.length > 0) {
+            this.element_.classList.add(this.CssClasses_.IS_DIRTY);
+        } else {
+            this.element_.classList.remove(this.CssClasses_.IS_DIRTY);
+        }
+    };
+    MaterialDatePicker.prototype['checkDirty'] = MaterialDatePicker.prototype.checkDirty;
+
+    MaterialDatePicker.prototype.disable = function() {
+        this.input_.disabled = true;
+        this.updateClasses_();
+    };
+    MaterialDatePicker.prototype['disable'] = MaterialDatePicker.prototype.disable;
+
+    MaterialDatePicker.prototype.enable = function() {
+        this.input_.disabled = false;
+        this.updateClasses_();
+    };
+    MaterialDatePicker.prototype['enable'] = MaterialDatePicker.prototype.enable;
+
+
+    MaterialDatePicker.prototype.onFocus_ = function(event) {
+        this.element_.classList.add(this.CssClasses_.IS_FOCUSED);
+    };
+
+    MaterialDatePicker.prototype.onClick_ = function(event) {
+        this.element_.classList.add(this.CssClasses_.IS_FOCUSED);
+    };
+
+    MaterialDatePicker.prototype.onBlur_ = function(event) {
+        this.element_.classList.remove(this.CssClasses_.IS_FOCUSED);
+    };
+
+    MaterialDatePicker.prototype.onInput_ = function(event) {
+
+        this.updateClasses_();
+    };
+
+    MaterialDatePicker.prototype.isValidDate = function()
+    {
+        var matches = /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/.exec(this.input_.value);
+        if (matches == null) return false;
+        var d = matches[2];
+        var m = matches[1] - 1;
+        var y = matches[3];
+        var composedDate = new Date(y, m, d);
+
+        return composedDate.getDate() == d && composedDate.getMonth() == m && composedDate.getFullYear() == y;
+    };
+
+    MaterialDatePicker.prototype.initCalendar = function() {
+
+        datepickr('.' + this.CssClasses_.BUTTON, {
+            altInput: this.input_,
+            dateFormat: 'm/d/Y'
+        });
+        var prev = this.element_.querySelector('.datepickr-prev-month'),
+            next = this.element_.querySelector('.datepickr-next-month');
+
+        prev.innerHTML = 'keyboard_arrow_left';
+        next.innerHTML = 'keyboard_arrow_right';
+
+    };
+
+    MaterialDatePicker.prototype.init = function() {
+        if (this.element_) {
+            this.label_ = this.element_.querySelector('.' + this.CssClasses_.LABEL);
+            this.input_ = this.element_.querySelector('.' + this.CssClasses_.INPUT);
+            this.error_ = this.element_.querySelector('.' + this.CssClasses_.ERROR);
+
+            this.boundUpdateClassesHandler = this.updateClasses_.bind(this);
+            this.boundUpdateHandler = this.onInput_.bind(this);
+            this.boundInputOnFocus = this.onFocus_.bind(this);
+            this.boundInputOnBlur = this.onBlur_.bind(this);
+            this.boundInputOnClick = this.onClick_.bind(this);
+
+            this.input_.addEventListener('change', this.boundUpdateClassesHandler);
+            this.input_.addEventListener('input', this.boundUpdateHandler);
+            this.input_.addEventListener('focus', this.boundInputOnFocus);
+            this.input_.addEventListener('blur', this.boundInputOnBlur);
+            this.input_.addEventListener('click', this.boundInputOnClick);
+
+            this.initCalendar();
+            this.updateClasses_();
+            this.element_.classList.add(this.CssClasses_.IS_UPGRADED);
+        }
+    };
+
+    //END OF: MaterialDatePicker
+
     componentHandler.register({
         constructor: MaterialSelect,
         classAsString: 'MaterialSelect',
         cssClass: 'mdl-js-select',
+        widget: true
+    });
+
+    componentHandler.register({
+        constructor: MaterialDatePicker,
+        classAsString: 'MaterialDatePicker',
+        cssClass: 'mdl-js-datepicker',
         widget: true
     });
 
