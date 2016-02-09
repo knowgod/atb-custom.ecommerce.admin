@@ -14,6 +14,8 @@ var atypicalApp = angular.module('atypical.app',
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
 
+        $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
         $httpProvider.interceptors.push(function($q, sharedMessageService) {
             return {
                 'request': function(config) {
@@ -28,6 +30,13 @@ var atypicalApp = angular.module('atypical.app',
                     setTimeout(componentHandler.upgradeDom, 100);
                     if(typeof response.data != 'undefined' && typeof response.data.notifications != 'undefined'){
                         sharedMessageService.emitDataUpdate('onNotification',response.data.notifications);
+                    }
+                    return response;
+                },
+
+                'responseError': function(response){
+                    if(response.status == 401){
+                        window.location.href = '/login';
                     }
                     return response;
                 }
