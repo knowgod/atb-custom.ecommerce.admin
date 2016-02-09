@@ -70,6 +70,7 @@ Route::group(['middleware' => 'web'], function (){
             Route::post('invitation/store', 'InvitationController@store');
             Route::get('invitation/list',  'InvitationController@index');
             Route::get('invitation/resend/id/{id}', 'InvitationController@resend');
+            Route::get('invitation/delete/id/{id}', 'InvitationController@delete');
 
         });
 
