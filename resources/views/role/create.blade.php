@@ -28,7 +28,7 @@
                     <h5>{{$policy}}</h5>
                     @foreach($policyPermissions as $perm)
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{$policy}}.{{$perm}}">
-                          <input type="checkbox" id="{{$policy}}.{{$perm}}" name="{{$policy}}.{{$perm}}" ng-model="formData.{{$policy}}.{{$perm}}" class="mdl-checkbox__input">
+                          <input type="checkbox" id="{{$policy}}.{{$perm}}" name="{{$policy}}.{{$perm}}" ng-model="formData.policies.{{$policy}}.{{$perm}}" class="mdl-checkbox__input">
                           <span class="mdl-checkbox__label">{{$perm}}</span>
                         </label>
                     @endforeach

@@ -57,8 +57,14 @@ class RoleController extends Controller {
             );
         }
         $role = new Role();
+        $permissions = $this->parsePermissions($request->input());
+
+        if (empty($permissions)) {
+            return;
+        }
+
         $role->setName($request->input('name'))
-                ->setPermissions(['UserPolicy.create', 'UserPolicy.update'])
+                ->setPermissions($permissions)
                 ->save();
         return redirect($this->redirectTo);
     }
@@ -79,9 +85,14 @@ class RoleController extends Controller {
          * @var $role Role
          */
         $role = $this->roleRepo->find($request->input('id'));
+        $permissions = $this->parsePermissions($request->input());
+
+        if (empty($permissions)) {
+            return;
+        }
 
         $role->setName($request->input('name'))
-                ->setPermissions(['*'])
+                ->setPermissions($permissions)
                 ->save();
         return redirect($this->redirectTo);
 
@@ -128,15 +139,35 @@ class RoleController extends Controller {
 
     protected function createValidator(array $data){
         return Validator::make($data, [
-                'name' => 'required|max:255|unique:roles',
+                'name' => 'required|max:255|unique:App\Models\Acl\Entities\Role',
         ]);
     }
 
     protected function updateValidator(array $data){
         $rulesSet = [
-                'name' => 'required|max:255|unique:roles,' ,
+                'name' => 'required|max:255',
         ];
         return Validator::make($data, $rulesSet);
+    }
+
+    protected function parsePermissions($params)
+    {
+        $permissions = [];
+
+        if (isset($params['super_admin']) && $params['super_admin'] === true) {
+            return ['*'];
+        }
+
+        foreach ($params['policies'] as $policyName => $policyAction) {
+            if (is_array($policyAction)) {
+                foreach ($policyAction as $name => $action) {
+                    if ($action == false) continue;
+                    $permissions[] = $policyName.'.'.$name;
+                }
+            }
+        }
+
+        return $permissions;
     }
 }
 

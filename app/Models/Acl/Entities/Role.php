@@ -84,4 +84,23 @@ class Role extends DoctrineModel implements RoleContract {
         return $this;
     }
 
+    public function toJson($options = 0)
+    {
+        if (!$options){
+            $options = JSON_HEX_TAG | JSON_HEX_APOS;
+        }
+
+        $serializedData = $this->jsonSerialize();
+        foreach ($serializedData['permissions'] as $element) {
+            $permArr = explode('.', $element);
+            if ($element == "*") {
+                $serializedData['super_admin'] = true;
+            } else {
+                $serializedData['policies'][$permArr[0]][$permArr[1]] = true;
+            }
+        }
+
+        return json_encode($serializedData, $options);
+    }
+
 }
