@@ -16,6 +16,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use LaravelDoctrine\ACL\Permissions\PermissionManager;
+use App\Policies\PermissionPolicy as AclPolicy;
 
 
 class RoleController extends Controller {
@@ -47,7 +48,7 @@ class RoleController extends Controller {
         /**
          * @var $role Role
          */
-        //$this->authorize('create', new AclPolicy());
+        $this->authorize('create', new AclPolicy());
 
         $validator = $this->createValidator($request->all());
 
@@ -71,7 +72,7 @@ class RoleController extends Controller {
 
     public function update(Request $request){
 
-        //$this->authorize('update', new AclPolicy());
+        $this->authorize('update', new AclPolicy());
 
         $validator = $this->updateValidator($request->all());
 
@@ -112,7 +113,7 @@ class RoleController extends Controller {
          * @var $item Role
          */
 
-        //$this->authorize('massDelete', new AclPolicy());
+        $this->authorize('massDelete', new AclPolicy());
 
         if (!$request->has('items')){
             return redirect($this->redirectTo);

@@ -18,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider {
             Policies\UserPolicy::class  => Policies\UserPolicy::class,
             Policies\OrderPolicy::class       => Policies\OrderPolicy::class,
             Policies\InvitationPolicy::class => Policies\InvitationPolicy::class,
+            Policies\PermissionPolicy::class => Policies\PermissionPolicy::class,
     ];
 
     /**
