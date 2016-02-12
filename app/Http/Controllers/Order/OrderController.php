@@ -36,7 +36,7 @@ class OrderController extends Controller {
 
         $collectionParams = $this->prepareGridCollectionParams($request);
 
-        $orders = $this->orderRepo->getOrderGridCollection(
+        $orders = $this->orderRepo->getGridCollection(
                 $collectionParams['filterBy'],
                 $collectionParams['orderBy'],
                 $collectionParams['perPage']
@@ -76,7 +76,7 @@ class OrderController extends Controller {
     public function showGrid(Request $request){
         $collectionParams = $this->prepareGridCollectionParams($request);
 
-        $orders = $this->orderRepo->getOrderGridCollection(
+        $orders = $this->orderRepo->getGridCollection(
             $collectionParams['filterBy'],
             $collectionParams['orderBy'],
             $collectionParams['perPage']

@@ -37,7 +37,7 @@ class UserController extends Controller {
 
         $collectionParams = $this->prepareGridCollectionParams($request);
 
-        $users = $this->userRepo->getUserGridCollection(
+        $users = $this->userRepo->getGridCollection(
                 $collectionParams['filterBy'],
                 $collectionParams['orderBy'],
                 $collectionParams['perPage']
