@@ -34,12 +34,8 @@ class OrderController extends Controller {
 
         $this->authorize('index', new AclPolicy());
 
-        $collectionParams = $this->prepareGridCollectionParams($request);
-
         $orders = $this->orderRepo->getGridCollection(
-                $collectionParams['filterBy'],
-                $collectionParams['orderBy'],
-                $collectionParams['perPage']
+                $this->prepareGridCollectionParams($request)
         );
 
         $orderStatusesCount = $this->orderRepo->getOrdersStatusesCount();

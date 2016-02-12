@@ -46,7 +46,11 @@ abstract class DoctrineRepository extends EntityRepository{
       * @return \Illuminate\Pagination\LengthAwarePaginator
       */
 
-     public function getGridCollection($filterParams, $order, $perPage){
+     public function getGridCollection(RepositoryFilterContract $repoFilter){
+         $filterParams = $repoFilter->getFilterBy();
+         $order = $repoFilter->getOrderBy();
+         $perPage = $repoFilter->getPerPage();
+
          $qb = $this->_em->createQueryBuilder();
 
          $qb->select($this->_defaultAlias)

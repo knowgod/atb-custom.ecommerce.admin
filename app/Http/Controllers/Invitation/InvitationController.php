@@ -33,12 +33,8 @@ class InvitationController extends Controller {
 
         $this->authorize('index', new AclPolicy());
 
-        $collectionParams = $this->prepareGridCollectionParams($request);
-
         $invitations = $this->inviteRepo->getGridCollection(
-                $collectionParams['filterBy'],
-                $collectionParams['orderBy'],
-                $collectionParams['perPage']
+                $this->prepareGridCollectionParams($request)
         );
 
         return view('invitation.list', array('collection' => $invitations));
