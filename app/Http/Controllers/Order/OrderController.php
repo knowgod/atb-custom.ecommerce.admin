@@ -57,7 +57,7 @@ class OrderController extends Controller {
         return view('order.view', ['order' => $order]);
     }
 
-    public function create(Request $request){
+    public function store(Request $request){
         return redirect($this->redirectTo);
     }
 
@@ -69,7 +69,7 @@ class OrderController extends Controller {
         return redirect($this->redirectTo);
     }
 
-    public function showCreateForm(){
+    public function create(){
         return view('order.create');
     }
 
@@ -85,7 +85,7 @@ class OrderController extends Controller {
         return view('order.grid',['collection' => $orders]);
     }
 
-    public function massDelete(Request $request){
+    public function bulkDelete(Request $request){
         /**
          * @var $item User
          */

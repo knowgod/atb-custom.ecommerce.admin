@@ -57,9 +57,9 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
 
-    public function create(Request $request){
+    public function store(Request $request){
 
-        $this->authorize('create', new AclPolicy());
+        $this->authorize('store', new AclPolicy());
 
         $validator = $this->createValidator($request->all());
 
@@ -117,12 +117,12 @@ class UserController extends Controller {
         return redirect($this->redirectTo);
     }
 
-    public function massDelete(Request $request){
+    public function bulkDelete(Request $request){
         /**
          * @var $item User
          */
 
-        $this->authorize('massDelete', new AclPolicy());
+        $this->authorize('bulkDelete', new AclPolicy());
 
         if (!$request->has('items')){
             return redirect($this->redirectTo);
@@ -135,11 +135,11 @@ class UserController extends Controller {
         return redirect($this->redirectTo)->with('grid_collection_query', $request->get('query'));
     }
 
-    public function showCreateForm(RoleRepository $rolesRepo){
+    public function create(RoleRepository $rolesRepo){
         return view('user.create', ['roles_list' => $rolesRepo->findAll()]);
     }
 
-    public function showUpdateForm(Request $request, $id, RoleRepository $rolesRepo){
+    public function edit(Request $request, $id, RoleRepository $rolesRepo){
         $user = $this->userRepo->find($id);
         return view('user.update', array('user' => $user, 'user_role' => $user->getRole(), 'roles_list' => $rolesRepo->findAll()));
     }
