@@ -43,11 +43,11 @@ class RoleController extends Controller {
         return view('role.list', array('collection' => $roles));
     }
 
-    public function create(Request $request){
+    public function store(Request $request){
         /**
          * @var $role Role
          */
-        //$this->authorize('create', new AclPolicy());
+        //$this->authorize('store', new AclPolicy());
 
         $validator = $this->createValidator($request->all());
 
@@ -114,12 +114,12 @@ class RoleController extends Controller {
         return redirect($this->redirectTo)->with('grid_collection_query', $request->get('query'));
     }
 
-    public function showCreateForm(PermissionManager $m){
+    public function create(PermissionManager $m){
         $permissions = $m->getAllPermissions();
         return view('role.create', ['permissions'=>$permissions]);
     }
 
-    public function showUpdateForm(Request $request, $id, PermissionManager $m){
+    public function edit(Request $request, $id, PermissionManager $m){
         $role = $this->roleRepo->find($id);
         $permissions = $m->getAllPermissions();
 

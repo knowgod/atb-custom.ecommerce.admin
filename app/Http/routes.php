@@ -39,10 +39,10 @@ Route::group(['middleware' => 'web'], function (){
 
         Route::group(['namespace' => 'User'], function (){
             Route::get('user/list', 'UserController@index');
-            Route::get('user/create', 'UserController@showCreateForm');
-            Route::post('user/create', 'UserController@create');
+            Route::get('user/create', 'UserController@create');
+            Route::post('user/create', 'UserController@store');
             Route::get('user/view/{id}', 'UserController@view');
-            Route::get('user/update/id/{id}', 'UserController@showUpdateForm');
+            Route::get('user/update/id/{id}', 'UserController@edit');
             Route::post('user/update', 'UserController@update');
             Route::get('user/delete/id/{id}', 'UserController@delete');
             Route::post('user/bulk/delete', 'UserController@bulkDelete');
@@ -50,18 +50,18 @@ Route::group(['middleware' => 'web'], function (){
 
         Route::group(['namespace' => 'Order'], function (){
             Route::get('order/list', 'OrderController@index');
-            Route::get('order/create', 'OrderController@showCreateForm');
+            Route::get('order/create', 'OrderController@create');
             Route::get('order/grid', 'OrderController@showGrid');
-            Route::post('order/create', 'OrderController@create');
+            Route::post('order/create', 'OrderController@store');
             Route::get('order/view/id/{id}', 'OrderController@view');
-            Route::get('order/update/id/{id}', 'OrderController@showUpdateForm');
+            Route::get('order/update/id/{id}', 'OrderController@edit');
             Route::post('order/update', 'OrderController@update');
             Route::get('order/delete/id/{id}', 'OrderController@delete');
             Route::post('order/bulk/delete', 'OrderController@bulkDelete');
         });
 
         Route::group(['namespace' => 'Invitation'], function (){
-            Route::get('invitation/create', 'InvitationController@create');
+            Route::get('invitation/create', 'InvitationController@store');
             Route::post('invitation/store', 'InvitationController@store');
             Route::get('invitation/list', 'InvitationController@index');
             Route::get('invitation/resend/id/{id}', 'InvitationController@resend');
@@ -70,10 +70,10 @@ Route::group(['middleware' => 'web'], function (){
         Route::group(['namespace' => 'Acl'], function (){
             Route::get('permission/list', 'PermissionController@listAll');
             Route::get('role/list', 'RoleController@index');
-            Route::get('role/create', 'RoleController@showCreateForm');
-            Route::post('role/create', 'RoleController@create');
+            Route::get('role/create', 'RoleController@create');
+            Route::post('role/create', 'RoleController@store');
             Route::get('role/view/{id}', 'RoleController@view');
-            Route::get('role/update/id/{id}', 'RoleController@showUpdateForm');
+            Route::get('role/update/id/{id}', 'RoleController@edit');
             Route::post('role/update', 'RoleController@update');
             Route::get('role/delete/id/{id}', 'RoleController@delete');
             Route::post('role/bulk/delete', 'RoleController@bulkDelete');
