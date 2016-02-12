@@ -32,12 +32,8 @@ class RoleController extends Controller {
 
     public function index(Request $request){
 
-        $collectionParams = $this->prepareGridCollectionParams($request);
-
         $roles = $this->roleRepo->getGridCollection(
-                $collectionParams['filterBy'],
-                $collectionParams['orderBy'],
-                $collectionParams['perPage']
+                $this->prepareGridCollectionParams($request)
         );
 
         return view('role.list', array('collection' => $roles));

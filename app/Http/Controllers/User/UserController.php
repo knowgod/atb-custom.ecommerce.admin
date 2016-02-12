@@ -35,12 +35,8 @@ class UserController extends Controller {
 
         $this->authorize('index', new AclPolicy());
 
-        $collectionParams = $this->prepareGridCollectionParams($request);
-
         $users = $this->userRepo->getGridCollection(
-                $collectionParams['filterBy'],
-                $collectionParams['orderBy'],
-                $collectionParams['perPage']
+                $this->prepareGridCollectionParams($request)
         );
 
         return view('user.list', array('collection' => $users));
