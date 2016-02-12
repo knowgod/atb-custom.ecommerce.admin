@@ -35,7 +35,7 @@ class InvitationController extends Controller {
 
         $collectionParams = $this->prepareGridCollectionParams($request);
 
-        $invitations = $this->inviteRepo->getInvitationsGridCollection(
+        $invitations = $this->inviteRepo->getGridCollection(
                 $collectionParams['filterBy'],
                 $collectionParams['orderBy'],
                 $collectionParams['perPage']
