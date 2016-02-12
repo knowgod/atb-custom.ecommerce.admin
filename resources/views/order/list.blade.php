@@ -133,3 +133,7 @@
 @section('navigation')
     @include('order.nav')
 @endsection
+
+@section('content.detail')
+    @include('order.detail')
+@endsection

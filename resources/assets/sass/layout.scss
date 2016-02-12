@@ -310,3 +310,16 @@
 
     }
 }
+
+.right-content{
+    position: absolute;
+    top:64px;
+    right: 0;
+    height: calc(100% - 64px);
+    max-width: 400px;
+    width: 100%;
+    background: #fff;
+    z-index: 2;
+
+
+}
