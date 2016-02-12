@@ -117,12 +117,12 @@ class UserController extends Controller {
         return redirect($this->redirectTo);
     }
 
-    public function massDelete(Request $request){
+    public function bulkDelete(Request $request){
         /**
          * @var $item User
          */
 
-        $this->authorize('massDelete', new AclPolicy());
+        $this->authorize('bulkDelete', new AclPolicy());
 
         if (!$request->has('items')){
             return redirect($this->redirectTo);

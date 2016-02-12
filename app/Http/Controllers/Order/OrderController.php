@@ -85,7 +85,7 @@ class OrderController extends Controller {
         return view('order.grid',['collection' => $orders]);
     }
 
-    public function massDelete(Request $request){
+    public function bulkDelete(Request $request){
         /**
          * @var $item User
          */
