@@ -12,8 +12,8 @@ namespace App\Http\Controllers\Order;
 use App\Models\Orders\Repositories\OrderRepository;
 use App\Models\Orders\Entities\Order;
 
+use App\Http\RepositoryFilter;
 use App\Http\Requests;
-use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -22,12 +22,14 @@ use App\Policies\OrderPolicy as AclPolicy;
 class OrderController extends Controller {
 
     protected $redirectTo = '/order/list';
-    protected $_itemsPerPage = 15;
 
     public $orderRepo = null;
 
-    public function __construct(OrderRepository $orderRepo){
+    public $repositoryFilter;
+
+    public function __construct(OrderRepository $orderRepo, RepositoryFilter $repositoryFilter){
         $this->orderRepo = $orderRepo;
+        $this->repositoryFilter = $repositoryFilter;
     }
 
     public function index(Request $request){
@@ -35,7 +37,7 @@ class OrderController extends Controller {
         $this->authorize('index', new AclPolicy());
 
         $orders = $this->orderRepo->getGridCollection(
-                $this->prepareGridCollectionParams($request)
+                $this->repositoryFilter->prepareFromRequest($request)
         );
 
         $orderStatusesCount = $this->orderRepo->getOrdersStatusesCount();

@@ -12,6 +12,7 @@ use App\Http\Requests;
 use App\Models\Acl\Entities\Role as Role;
 use App\Models\Acl\Repositories\RoleRepository;
 use Illuminate\Support\Facades\Auth;
+use App\Http\RepositoryFilter;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -22,18 +23,19 @@ class RoleController extends Controller {
 
     protected $redirectTo = '/role/list';
 
-    protected $_itemsPerPage = 20;
-
     public $roleRepo = null;
 
-    public function __construct(RoleRepository $roleRepo){
+    public $repositoryFilter;
+
+    public function __construct(RoleRepository $roleRepo, RepositoryFilter $repositoryFilter){
         $this->roleRepo = $roleRepo;
+        $this->repositoryFilter = $repositoryFilter;
     }
 
     public function index(Request $request){
 
         $roles = $this->roleRepo->getGridCollection(
-                $this->prepareGridCollectionParams($request)
+                $this->repositoryFilter->prepareFromRequest($request)
         );
 
         return view('role.list', array('collection' => $roles));

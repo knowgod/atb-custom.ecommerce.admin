@@ -13,6 +13,7 @@ use App\Models\Users\Repositories\UserRepository;
 use App\Models\Users\Entities\User;
 
 use Illuminate\Support\Facades\Auth;
+use App\Http\RepositoryFilter;
 use App\Http\Requests;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -23,12 +24,13 @@ class UserController extends Controller {
 
     protected $redirectTo = '/user/list';
 
-    protected $_itemsPerPage = 15;
-
     public $userRepo = null;
 
-    public function __construct(UserRepository $userRepo){
+    public $repositoryFilter;
+
+    public function __construct(UserRepository $userRepo, RepositoryFilter $repositoryFilter){
         $this->userRepo = $userRepo;
+        $this->repositoryFilter = $repositoryFilter;
     }
 
     public function index(Request $request){
@@ -36,7 +38,7 @@ class UserController extends Controller {
         $this->authorize('index', new AclPolicy());
 
         $users = $this->userRepo->getGridCollection(
-                $this->prepareGridCollectionParams($request)
+                $this->repositoryFilter->prepareFromRequest($request)
         );
 
         return view('user.list', array('collection' => $users));
