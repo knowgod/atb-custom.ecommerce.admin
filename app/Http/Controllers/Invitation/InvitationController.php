@@ -85,7 +85,7 @@ class InvitationController extends Controller {
 
     public function delete(Request $request){
         $this->inviteRepo->find($request->id)->remove();
-        return redirect($this->redirectTo)->with('message', $this->_invitationSuccessMessage);;
+        return redirect($this->redirectTo)->with('message', $this->_invitationDeleteMessage);;
     }
 
     public function massResend(){
@@ -94,7 +94,7 @@ class InvitationController extends Controller {
 
     protected function createValidator(array $data){
 
-        $rules = ['email' => 'required|email|max:255|unique:invitations'];
+        $rules = ['email' => 'required|email|max:255'];
         $customMessages = ['email.unique' => 'Such invitation already exists.'];
         return Validator::make($data, $rules, $customMessages);
     }
