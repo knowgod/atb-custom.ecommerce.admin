@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Invitation;
 
+use App\Http\RepositoryFilter;
 use App\Models\Invitations\Entities\Invitation;
 use App\Models\Invitations\Repositories\InvitationRepository;
 use Illuminate\Http\Request;
@@ -15,7 +16,8 @@ use App\Policies\InvitationPolicy as AclPolicy;
 
 class InvitationController extends Controller {
     public $inviteRepo = null;
-    protected $_itemsPerPage = 10;
+
+    public $repositoryFilter;
 
     protected $redirectTo = '/invitation/list';
 
@@ -25,20 +27,17 @@ class InvitationController extends Controller {
 
     protected $_invitationSubjectMessage = 'Invitation!';
 
-    public function __construct(InvitationRepository $inviteRepository){
+    public function __construct(InvitationRepository $inviteRepository, RepositoryFilter $repositoryFilter){
         $this->inviteRepo = $inviteRepository;
+        $this->repositoryFilter = $repositoryFilter;
     }
 
     public function index(Request $request){
 
         $this->authorize('index', new AclPolicy());
 
-        $collectionParams = $this->prepareGridCollectionParams($request);
-
-        $invitations = $this->inviteRepo->getInvitationsGridCollection(
-                $collectionParams['filterBy'],
-                $collectionParams['orderBy'],
-                $collectionParams['perPage']
+        $invitations = $this->inviteRepo->getGridCollection(
+                $this->repositoryFilter->prepareFromRequest($request)
         );
 
         return view('invitation.list', array('collection' => $invitations));
