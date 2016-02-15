@@ -16,6 +16,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use LaravelDoctrine\ACL\Permissions\PermissionManager;
+use App\Policies\PermissionPolicy as AclPolicy;
 
 
 class RoleController extends Controller {
@@ -47,7 +48,7 @@ class RoleController extends Controller {
         /**
          * @var $role Role
          */
-        //$this->authorize('create', new AclPolicy());
+        $this->authorize('create', new AclPolicy());
 
         $validator = $this->createValidator($request->all());
 
@@ -57,15 +58,21 @@ class RoleController extends Controller {
             );
         }
         $role = new Role();
-        $role->setName('Some Test Role')
-                ->setPermissions(['UserPolicy.create', 'UserPolicy.update'])
+        $permissions = $this->parsePermissions($request->input());
+
+        if (empty($permissions)) {
+            return;
+        }
+
+        $role->setName($request->input('name'))
+                ->setPermissions($permissions)
                 ->save();
         return redirect($this->redirectTo);
     }
 
     public function update(Request $request){
 
-        //$this->authorize('update', new AclPolicy());
+        $this->authorize('update', new AclPolicy());
 
         $validator = $this->updateValidator($request->all());
 
@@ -79,9 +86,14 @@ class RoleController extends Controller {
          * @var $role Role
          */
         $role = $this->roleRepo->find($request->input('id'));
+        $permissions = $this->parsePermissions($request->input());
 
-        $role->setName()
-                ->setPermissions(['*'])
+        if (empty($permissions)) {
+            return;
+        }
+
+        $role->setName($request->input('name'))
+                ->setPermissions($permissions)
                 ->save();
         return redirect($this->redirectTo);
 
@@ -101,7 +113,7 @@ class RoleController extends Controller {
          * @var $item Role
          */
 
-        //$this->authorize('massDelete', new AclPolicy());
+        $this->authorize('massDelete', new AclPolicy());
 
         if (!$request->has('items')){
             return redirect($this->redirectTo);
@@ -128,15 +140,35 @@ class RoleController extends Controller {
 
     protected function createValidator(array $data){
         return Validator::make($data, [
-                'name' => 'required|max:255|unique:roles',
+                'name' => 'required|max:255|unique:App\Models\Acl\Entities\Role',
         ]);
     }
 
     protected function updateValidator(array $data){
         $rulesSet = [
-                'name' => 'required|max:255|unique:roles,' ,
+                'name' => 'required|max:255',
         ];
         return Validator::make($data, $rulesSet);
+    }
+
+    protected function parsePermissions($params)
+    {
+        $permissions = [];
+
+        if (isset($params['super_admin']) && $params['super_admin'] === true) {
+            return ['*'];
+        }
+
+        foreach ($params['policies'] as $policyName => $policyAction) {
+            if (is_array($policyAction)) {
+                foreach ($policyAction as $name => $action) {
+                    if ($action == false) continue;
+                    $permissions[] = $policyName.'.'.$name;
+                }
+            }
+        }
+
+        return $permissions;
     }
 }
 

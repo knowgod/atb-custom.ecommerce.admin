@@ -23,7 +23,7 @@ gulp.task('copy', function () {
         'node_modules/material-design-lite/material.min.js',
         'node_modules/angular/angular.min.js'
     ])
-        .pipe(gulp.dest('public/assets/js/'));
+        .pipe(gulp.dest('public/assets/js/lib/'));
 });
 
 gulp.task('images', function () {
