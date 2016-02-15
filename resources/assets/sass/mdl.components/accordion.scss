@@ -13,6 +13,8 @@
     height          : 48px;
     padding         : 0 0 0 0;
     margin          : 0;
+    position: relative;
+
 }
 
 .mdl-accordion__tab {
@@ -34,6 +36,7 @@
 
     color: $tab-text-color;
     overflow: hidden;
+
 
     .mdl-accordion.is-upgraded &.is-active {
         color: $tab-active-text-color;
@@ -73,16 +76,27 @@
         float: left;
         margin-right: 15px;
     }
-    &:after{
-        content: '1';
+    &:before{
+        content: 'keyboard_arrow_down';
         position: absolute;
-        top: 40px;
-        right: 10px;
+        font-size: 20px;
+        top: 0px;
+        right: 15px;
+        z-index: 1;
+        font-family: 'Material Icons';
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+        text-transform: none;
     }
+    &.is-active:before {
+        content: 'keyboard_arrow_up';
+    }
+
 }
 
 .mdl-accordion__panel {
     display: block;
+    border-bottom: 1px solid $divider-color;
 
     .mdl-accordion.is-upgraded & {
         display: none;
