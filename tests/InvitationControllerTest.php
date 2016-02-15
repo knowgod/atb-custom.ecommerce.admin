@@ -4,6 +4,8 @@ use Mockery as M;
 use App\Testing\DoctrineDatabaseTransactions;
 use App\Testing\OperatesAsUser;
 
+use App\Models\Invitations\Entities\Invitation;
+
 class InvitationControllerTest extends TestCase {
     use DoctrineDatabaseTransactions,
         OperatesAsUser;
@@ -13,6 +15,8 @@ class InvitationControllerTest extends TestCase {
      */
     public $invitationRepositoryMock;
 
+    public $invitation;
+
     /**
      * @var Mock
      */
@@ -21,6 +25,21 @@ class InvitationControllerTest extends TestCase {
     public function setUp(){
         parent::setUp();
         $this->_prepareUserData();
+
+        $this->createAndSendInvitation();
+    }
+
+    protected function createAndSendInvitation()
+    {
+        $this->invitationEmail = 'someguy_invite_test@example.com';
+
+        $this->post('/invitation/store',
+            [
+                'email' =>  $this->invitationEmail
+            ]
+        )->assertResponseStatus(302);
+
+        return;
     }
 
     public function test_invitation_index_action_binds_user_from_repository(){
@@ -55,22 +74,25 @@ class InvitationControllerTest extends TestCase {
             ]);
     }
 
-    public function test_user_send_invitation()
+    public function test_invitation_exists_in_list()
     {
-        $this->post('/invitation/store', ['email'=>'test.123konst1234@gmail.com'])->assertRedirectedTo('/invitation/list', ['message'=>'Invitation has been sent successfully!']);
-        $this->seeInDatabase('invitations', ['email' => 'test.123konst1234@gmail.com', 'status'=>'0']);
+        $this->visit('/invitation/list')
+            ->see($this->invitationEmail);
     }
 
     public function test_user_resend_invitation()
     {
-//        $this->get('/invitation/resend/id/5', ['id'=>'5'])->assertRedirectedTo('/invitation/list', ['message'=>'Invitation has been sent successfully!']);
-//        $this->seeInDatabase('invitations', ['email' => 'test.123konst1234@gmail.com', 'status'=>'0']);
+        $this->seeInDatabase('invitations', ['email' => $this->invitationEmail]);
     }
 
     public function test_user_delete_invitation()
     {
-        $this->get('/invitation/delete/id/3', ['id'=>'3'])->assertRedirectedTo('/invitation/list', ['message'=>'Invitation has been successfully removed']);
-        $this->missingFromDatabase('invitations', ['email' => 'akostyantyn@gmail.com']);
 
     }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+    }
+
 }
