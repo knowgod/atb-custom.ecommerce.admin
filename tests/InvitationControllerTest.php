@@ -80,16 +80,6 @@ class InvitationControllerTest extends TestCase {
             ->see($this->invitationEmail);
     }
 
-    public function test_user_resend_invitation()
-    {
-        $this->seeInDatabase('invitations', ['email' => $this->invitationEmail]);
-    }
-
-    public function test_user_delete_invitation()
-    {
-
-    }
-
     public function tearDown()
     {
         parent::tearDown();
