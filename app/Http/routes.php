@@ -43,7 +43,7 @@ Route::group(['middleware' => 'web'], function (){
             Route::post('user/create', 'UserController@store');
             Route::get('user/view/{id}', 'UserController@view');
             Route::get('user/update/id/{id}', 'UserController@edit');
-            Route::post('user/update', 'UserController@update');
+            Route::post('user/update', ['as' => 'userUpdate', 'uses' => 'UserController@update']);
             Route::get('user/delete/id/{id}', 'UserController@delete');
             Route::post('user/bulk/delete', 'UserController@bulkDelete');
         });
@@ -71,10 +71,10 @@ Route::group(['middleware' => 'web'], function (){
             Route::get('permission/list', 'PermissionController@listAll');
             Route::get('role/list', 'RoleController@index');
             Route::get('role/create', 'RoleController@create');
-            Route::post('role/create', 'RoleController@store');
+            Route::post('role/create', ['as' => 'roleCreate', 'uses' => 'RoleController@store']);
             Route::get('role/view/{id}', 'RoleController@view');
             Route::get('role/update/id/{id}', 'RoleController@edit');
-            Route::post('role/update', 'RoleController@update');
+            Route::post('role/update', ['as' => 'roleUpdate', 'uses' => 'RoleController@update']);
             Route::get('role/delete/id/{id}', 'RoleController@delete');
             Route::post('role/bulk/delete', 'RoleController@bulkDelete');
         });

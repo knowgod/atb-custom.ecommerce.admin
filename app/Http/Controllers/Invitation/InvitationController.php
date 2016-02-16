@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Invitation;
 use App\Http\RepositoryFilter;
 use App\Models\Invitations\Entities\Invitation;
 use App\Models\Invitations\Repositories\InvitationRepository;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
-use Validator;
 use App\Policies\InvitationPolicy as AclPolicy;
 
 
@@ -22,7 +22,6 @@ class InvitationController extends Controller {
     protected $redirectTo = '/invitation/list';
 
     protected $_invitationSuccessMessage = 'Invitation has been sent successfully!';
-    protected $_invitationDuplicateMessage = 'Invitation to this email has already been sent!';
     protected $_invitationDeleteMessage = 'Invitation has been successfully removed';
 
     protected $_invitationSubjectMessage = 'Invitation!';
@@ -47,16 +46,9 @@ class InvitationController extends Controller {
         return view('invitation.form');
     }
 
-    public function store(Request $request){
+    public function store(Requests\Invitation\InvitationFormRequest $request){
 
         $this->authorize('sendEmail', new AclPolicy());
-
-        $validator = $this->createValidator($request->all());
-        if ($validator->fails()){
-            return $this->throwValidationException(
-                    $request, $validator
-            );
-        }
 
         $this->sendEmail($request->user()->getEmail(), $request->input('email'));
         $invitation = new Invitation();
@@ -84,17 +76,10 @@ class InvitationController extends Controller {
 
     public function delete(Request $request){
         $this->inviteRepo->find($request->id)->remove();
-        return redirect($this->redirectTo)->with('message', $this->_invitationDeleteMessage);;
+        return redirect($this->redirectTo)->with('message', $this->_invitationSuccessMessage);;
     }
 
     public function massResend(){
 
-    }
-
-    protected function createValidator(array $data){
-
-        $rules = ['email' => 'required|email|max:255'];
-        $customMessages = ['email.unique' => 'Such invitation already exists.'];
-        return Validator::make($data, $rules, $customMessages);
     }
 }
