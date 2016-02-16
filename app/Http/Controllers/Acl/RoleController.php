@@ -12,6 +12,7 @@ use App\Http\Requests;
 use App\Models\Acl\Entities\Role as Role;
 use App\Models\Acl\Repositories\RoleRepository;
 use Illuminate\Support\Facades\Auth;
+use App\Http\RepositoryFilter;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -22,32 +23,29 @@ class RoleController extends Controller {
 
     protected $redirectTo = '/role/list';
 
-    protected $_itemsPerPage = 20;
-
     public $roleRepo = null;
 
-    public function __construct(RoleRepository $roleRepo){
+    public $repositoryFilter;
+
+    public function __construct(RoleRepository $roleRepo, RepositoryFilter $repositoryFilter){
         $this->roleRepo = $roleRepo;
+        $this->repositoryFilter = $repositoryFilter;
     }
 
     public function index(Request $request){
 
-        $collectionParams = $this->prepareGridCollectionParams($request);
-
         $roles = $this->roleRepo->getGridCollection(
-                $collectionParams['filterBy'],
-                $collectionParams['orderBy'],
-                $collectionParams['perPage']
+                $this->repositoryFilter->prepareFromRequest($request)
         );
 
         return view('role.list', array('collection' => $roles));
     }
 
-    public function create(Request $request){
+    public function store(Request $request){
         /**
          * @var $role Role
          */
-        //$this->authorize('create', new AclPolicy());
+        //$this->authorize('store', new AclPolicy());
 
         $validator = $this->createValidator($request->all());
 
@@ -96,12 +94,12 @@ class RoleController extends Controller {
         return redirect($this->redirectTo);
     }
 
-    public function massDelete(Request $request){
+    public function bulkDelete(Request $request){
         /**
          * @var $item Role
          */
 
-        //$this->authorize('massDelete', new AclPolicy());
+        //$this->authorize('bulkDelete', new AclPolicy());
 
         if (!$request->has('items')){
             return redirect($this->redirectTo);
@@ -114,12 +112,12 @@ class RoleController extends Controller {
         return redirect($this->redirectTo)->with('grid_collection_query', $request->get('query'));
     }
 
-    public function showCreateForm(PermissionManager $m){
+    public function create(PermissionManager $m){
         $permissions = $m->getAllPermissions();
         return view('role.create', ['permissions'=>$permissions]);
     }
 
-    public function showUpdateForm(Request $request, $id, PermissionManager $m){
+    public function edit(Request $request, $id, PermissionManager $m){
         $role = $this->roleRepo->find($id);
         $permissions = $m->getAllPermissions();
 

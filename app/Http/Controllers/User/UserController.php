@@ -13,6 +13,7 @@ use App\Models\Users\Repositories\UserRepository;
 use App\Models\Users\Entities\User;
 
 use Illuminate\Support\Facades\Auth;
+use App\Http\RepositoryFilter;
 use App\Http\Requests;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -23,24 +24,21 @@ class UserController extends Controller {
 
     protected $redirectTo = '/user/list';
 
-    protected $_itemsPerPage = 15;
-
     public $userRepo = null;
 
-    public function __construct(UserRepository $userRepo){
+    public $repositoryFilter;
+
+    public function __construct(UserRepository $userRepo, RepositoryFilter $repositoryFilter){
         $this->userRepo = $userRepo;
+        $this->repositoryFilter = $repositoryFilter;
     }
 
     public function index(Request $request){
 
         $this->authorize('index', new AclPolicy());
 
-        $collectionParams = $this->prepareGridCollectionParams($request);
-
-        $users = $this->userRepo->getUserGridCollection(
-                $collectionParams['filterBy'],
-                $collectionParams['orderBy'],
-                $collectionParams['perPage']
+        $users = $this->userRepo->getGridCollection(
+                $this->repositoryFilter->prepareFromRequest($request)
         );
 
         return view('user.list', array('collection' => $users));
@@ -57,9 +55,9 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
 
-    public function create(Request $request){
+    public function store(Request $request){
 
-        $this->authorize('create', new AclPolicy());
+        $this->authorize('store', new AclPolicy());
 
         $validator = $this->createValidator($request->all());
 
@@ -117,12 +115,12 @@ class UserController extends Controller {
         return redirect($this->redirectTo);
     }
 
-    public function massDelete(Request $request){
+    public function bulkDelete(Request $request){
         /**
          * @var $item User
          */
 
-        $this->authorize('massDelete', new AclPolicy());
+        $this->authorize('bulkDelete', new AclPolicy());
 
         if (!$request->has('items')){
             return redirect($this->redirectTo);
@@ -135,11 +133,11 @@ class UserController extends Controller {
         return redirect($this->redirectTo)->with('grid_collection_query', $request->get('query'));
     }
 
-    public function showCreateForm(RoleRepository $rolesRepo){
+    public function create(RoleRepository $rolesRepo){
         return view('user.create', ['roles_list' => $rolesRepo->findAll()]);
     }
 
-    public function showUpdateForm(Request $request, $id, RoleRepository $rolesRepo){
+    public function edit(Request $request, $id, RoleRepository $rolesRepo){
         $user = $this->userRepo->find($id);
         return view('user.update', array('user' => $user, 'user_role' => $user->getRole(), 'roles_list' => $rolesRepo->findAll()));
     }

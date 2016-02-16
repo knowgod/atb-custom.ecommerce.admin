@@ -19,7 +19,7 @@ class UserPolicy extends PolicyContract{
      * @Policy\PermissionMethod
      */
 
-    public function create(User $user){
+    public function store(User $user){
         return $user->hasPermissionTo(__CLASS__ . '.' . __METHOD__);
     }
 
@@ -49,7 +49,7 @@ class UserPolicy extends PolicyContract{
      * @Policy\PermissionMethod
      */
 
-    public function massDelete(User $user){
+    public function bulkDelete(User $user){
         return $user->hasPermissionTo(__CLASS__ . '.' . __METHOD__);
     }
 }

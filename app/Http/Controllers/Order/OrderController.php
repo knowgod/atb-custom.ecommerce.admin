@@ -12,8 +12,8 @@ namespace App\Http\Controllers\Order;
 use App\Models\Orders\Repositories\OrderRepository;
 use App\Models\Orders\Entities\Order;
 
+use App\Http\RepositoryFilter;
 use App\Http\Requests;
-use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -22,24 +22,22 @@ use App\Policies\OrderPolicy as AclPolicy;
 class OrderController extends Controller {
 
     protected $redirectTo = '/order/list';
-    protected $_itemsPerPage = 15;
 
     public $orderRepo = null;
 
-    public function __construct(OrderRepository $orderRepo){
+    public $repositoryFilter;
+
+    public function __construct(OrderRepository $orderRepo, RepositoryFilter $repositoryFilter){
         $this->orderRepo = $orderRepo;
+        $this->repositoryFilter = $repositoryFilter;
     }
 
     public function index(Request $request){
 
         $this->authorize('index', new AclPolicy());
 
-        $collectionParams = $this->prepareGridCollectionParams($request);
-
-        $orders = $this->orderRepo->getOrderGridCollection(
-                $collectionParams['filterBy'],
-                $collectionParams['orderBy'],
-                $collectionParams['perPage']
+        $orders = $this->orderRepo->getGridCollection(
+                $this->repositoryFilter->prepareFromRequest($request)
         );
 
         $orderStatusesCount = $this->orderRepo->getOrdersStatusesCount();
@@ -57,7 +55,7 @@ class OrderController extends Controller {
         return view('order.view', ['order' => $order]);
     }
 
-    public function create(Request $request){
+    public function store(Request $request){
         return redirect($this->redirectTo);
     }
 
@@ -69,14 +67,14 @@ class OrderController extends Controller {
         return redirect($this->redirectTo);
     }
 
-    public function showCreateForm(){
+    public function create(){
         return view('order.create');
     }
 
     public function showGrid(Request $request){
         $collectionParams = $this->prepareGridCollectionParams($request);
 
-        $orders = $this->orderRepo->getOrderGridCollection(
+        $orders = $this->orderRepo->getGridCollection(
             $collectionParams['filterBy'],
             $collectionParams['orderBy'],
             $collectionParams['perPage']
@@ -85,7 +83,7 @@ class OrderController extends Controller {
         return view('order.grid',['collection' => $orders]);
     }
 
-    public function massDelete(Request $request){
+    public function bulkDelete(Request $request){
         /**
          * @var $item User
          */
