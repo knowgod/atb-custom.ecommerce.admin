@@ -1,87 +1,92 @@
-var isMobile = {
-    Android: function() { return navigator.userAgent.match(/Android/i); },
-    BlackBerry: function() { return navigator.userAgent.match(/BlackBerry/i); },
-    iOS: function() { return navigator.userAgent.match(/iPhone|iPad|iPod/i); },
-    Opera: function() { return navigator.userAgent.match(/Opera Mini/i); },
-    Windows: function() { return navigator.userAgent.match(/IEMobile/i); },
-    any: function() { return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()); } };
+/*jslint
+ multivar: true, browser: true
+ */
+/*global
+ window, angular, componentHandler
+ */
+/*property
+ $emit, $on, Math, common, data, defaults, emitDataUpdate, endSymbol,
+ factory, getNumberAsObject, hasOwnProperty, headers, href, interceptors,
+ join, loader, location, module, notifications, onDataUpdate,
+ parseGridStateToQueryString, push, request, response, responseError,
+ startSymbol, status, upgradeDom
+ */
 
-var atypicalApp = angular.module('atypical.app',
+var atypicalApp;
 
-    ['ngSanitize'],
+(function () {
+    'use strict';
 
-    function ($interpolateProvider, $httpProvider) {
+    atypicalApp = angular.module('atypical.app', ['ngSanitize'], function ($interpolateProvider, $httpProvider) {
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
 
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-        $httpProvider.interceptors.push(function($q, sharedMessageService) {
+        $httpProvider.interceptors.push(function ($q, sharedMessageService) {
             return {
-                'request': function(config) {
-                    if(config.loader && config.loader == 'round'){
+                'request': function (config) {
+                    if (config.loader && config.loader === 'round') {
                         sharedMessageService.emitDataUpdate('onShowOverlay');
                     }
                     return config;
                 },
 
-                'response': function(response) {
+                'response': function (response) {
                     sharedMessageService.emitDataUpdate('onCloseOverlay');
                     setTimeout(componentHandler.upgradeDom, 100);
-                    if(typeof response.data != 'undefined' && typeof response.data.notifications != 'undefined'){
-                        sharedMessageService.emitDataUpdate('onNotification',response.data.notifications);
+                    if (response.data !== 'undefined' && response.data.notifications !== 'undefined') {
+                        sharedMessageService.emitDataUpdate('onNotification', response.data.notifications);
                     }
                     return response;
                 },
 
-                'responseError': function(response){
-                    if(response.status == 401){
+                'responseError': function (response) {
+                    if (response.status === 401) {
                         window.location.href = '/login';
                     }
                     return response;
                 }
             };
         });
-    }
+    });
 
-).factory('sharedMessageService', ['$rootScope',
-        function ($rootScope) {
-            return {
-                emitDataUpdate: function (message, data) {
-                    $rootScope.$emit(message, data);
-                },
-                onDataUpdate: function (message, scope, func) {
-                    var unbind = $rootScope.$on(message, func);
-                    scope.$on('$destroy', unbind);
-                }
-            };
-        }
-]).factory('helperGeneralService', ['$rootScope',
-        function ($rootScope) {
-            return {
-                Math: window.Math,
-                getNumberAsObject: function(num) {
-                    return new Array(num);
-                },
-                parseGridStateToQueryString: function(json) {
-                    var query = [], i=0;
-                    for(var key in json){
-                        if(json.hasOwnProperty(key)){
-                            if(typeof json[key] == 'object'){
-                                var item = json[key];
-                                for(var keyItem in item){
-                                    if(item.hasOwnProperty(keyItem)){
-                                        query.push(encodeURIComponent(key) + '['+encodeURIComponent(keyItem)+']=' + encodeURIComponent(item[keyItem]));
-                                    }
+    atypicalApp.factory('sharedMessageService', ['$rootScope', function ($rootScope) {
+        return {
+            emitDataUpdate: function (message, data) {
+                $rootScope.$emit(message, data);
+            },
+            onDataUpdate: function (message, scope, func) {
+                var unbind = $rootScope.$on(message, func);
+                scope.$on('$destroy', unbind);
+            }
+        };
+    }]);
+
+    atypicalApp.factory('helperGeneralService', ['$rootScope', function () {
+        return {
+            Math: window.Math,
+            getNumberAsObject: function (num) {
+                return [num];
+            },
+            parseGridStateToQueryString: function (json) {
+                var query = [], key, keyItem, item;
+                for (key in json) {
+                    if (json.hasOwnProperty(key)) {
+                        if (typeof json[key] === 'object') {
+                            item = json[key];
+                            for (keyItem in item) {
+                                if (item.hasOwnProperty(keyItem)) {
+                                    query.push(encodeURIComponent(key) + '[' + encodeURIComponent(keyItem) + ']=' + encodeURIComponent(item[keyItem]));
                                 }
-                                i++;
-                            }else{
-                                query.push(encodeURIComponent(key) + '=' + encodeURIComponent(json[key]));
                             }
+                        } else {
+                            query.push(encodeURIComponent(key) + '=' + encodeURIComponent(json[key]));
                         }
                     }
-                    return query.join('&');
                 }
-            };
-        }
-]);
+                return query.join('&');
+            }
+        };
+    }]);
+}());
