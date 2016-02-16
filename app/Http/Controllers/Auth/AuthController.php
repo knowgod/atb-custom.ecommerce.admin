@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\Users\Entities\User;
-use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -40,37 +39,5 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => ['logout', 'dashboard']]);
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'firstname' => 'required|max:255',
-            'lastname' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
-        ]);
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'firstname' => $data['firstname'],
-            'lastname' => $data['firstname'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
     }
 }
