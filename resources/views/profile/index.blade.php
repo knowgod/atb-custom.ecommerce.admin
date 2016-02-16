@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.email}">
-                    <input class="mdl-textfield__input" name="email" ng-model="formData.email" type="text" id="email" value="{{$user->getEmail()}}" >
+                    <input disabled class="mdl-textfield__input" name="email" ng-model="formData.email" type="text" id="email" value="{{$user->getEmail()}}" >
                     <label class="mdl-textfield__label" for="email">E-Mail Address</label>
                     <span class="mdl-textfield__error"><% formDataErrors.email[0] %></span>
                 </div>

@@ -41,19 +41,12 @@ class RoleController extends Controller {
         return view('role.list', array('collection' => $roles));
     }
 
-    public function store(Request $request){
+    public function store(Requests\Acl\RoleFormRequest $request){
         /**
          * @var $role Role
          */
         //$this->authorize('store', new AclPolicy());
 
-        $validator = $this->createValidator($request->all());
-
-        if ($validator->fails()){
-            $this->throwValidationException(
-                    $request, $validator
-            );
-        }
         $role = new Role();
         $role->setName('Some Test Role')
                 ->setPermissions(['UserPolicy.create', 'UserPolicy.update'])
@@ -61,24 +54,16 @@ class RoleController extends Controller {
         return redirect($this->redirectTo);
     }
 
-    public function update(Request $request){
+    public function update(Requests\Acl\RoleFormRequest $request){
 
         //$this->authorize('update', new AclPolicy());
 
-        $validator = $this->updateValidator($request->all());
-
-        if ($validator->fails()){
-            $this->throwValidationException(
-                    $request, $validator
-            );
-            return;
-        }
         /**
          * @var $role Role
          */
         $role = $this->roleRepo->find($request->input('id'));
 
-        $role->setName()
+        $role->setName($request->input('name'))
                 ->setPermissions(['*'])
                 ->save();
         return redirect($this->redirectTo);
@@ -122,19 +107,6 @@ class RoleController extends Controller {
         $permissions = $m->getAllPermissions();
 
         return view('role.update', array('role' => $role,'permissions'=>$permissions));
-    }
-
-    protected function createValidator(array $data){
-        return Validator::make($data, [
-                'name' => 'required|max:255|unique:roles',
-        ]);
-    }
-
-    protected function updateValidator(array $data){
-        $rulesSet = [
-                'name' => 'required|max:255|unique:roles,' ,
-        ];
-        return Validator::make($data, $rulesSet);
     }
 }
 

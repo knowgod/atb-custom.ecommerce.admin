@@ -15,7 +15,6 @@ use App\Models\Users\Entities\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\RepositoryFilter;
 use App\Http\Requests;
-use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Policies\UserPolicy as AclPolicy;
@@ -55,17 +54,10 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
 
-    public function store(Request $request){
+    public function store(Requests\User\UserFormRequest $request){
 
         $this->authorize('store', new AclPolicy());
 
-        $validator = $this->createValidator($request->all());
-
-        if ($validator->fails()){
-            $this->throwValidationException(
-                    $request, $validator
-            );
-        }
         $user = new User();
 
         $user->setEmail($request->input('email'))
@@ -80,17 +72,10 @@ class UserController extends Controller {
         return redirect($this->redirectTo);
     }
 
-    public function update(Request $request){
+    public function update(Requests\User\UserFormRequest $request){
 
         $this->authorize('update', new AclPolicy());
 
-        $validator = $this->updateValidator($request->all());
-
-        if ($validator->fails()){
-            $this->throwValidationException(
-                    $request, $validator
-            );
-        }
         $user = $this->userRepo->find($request->input('id'));
 
         $user->setFirstname($request->input('firstname'))
@@ -141,25 +126,4 @@ class UserController extends Controller {
         $user = $this->userRepo->find($id);
         return view('user.update', array('user' => $user, 'user_role' => $user->getRole(), 'roles_list' => $rolesRepo->findAll()));
     }
-
-    protected function createValidator(array $data){
-        return Validator::make($data, [
-                'firstname' => 'required|max:255',
-                'lastname'  => 'required|max:255',
-                'email'     => 'required|email|max:255|unique:users',
-                'password'  => 'required|confirmed|min:6',
-        ]);
-    }
-
-    protected function updateValidator(array $data){
-        $rulesSet = [
-                'firstname' => 'required|max:255',
-            //'email'     => 'required|email|max:255|unique:users',
-                'lastname'  => 'required|max:255',
-                'password'  => 'sometimes|required|confirmed|min:6'
-        ];
-
-        return Validator::make($data, $rulesSet);
-    }
-
 }

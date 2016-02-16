@@ -8,7 +8,6 @@ use App\Models\Users\Repositories\User;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Validator;
 use Auth;
 
 class ProfileController extends Controller {
@@ -32,14 +31,7 @@ class ProfileController extends Controller {
      * @return Response
      */
 
-    public function update(Request $request){
-        $validator = $this->updateValidator($request->all());
-
-        if ($validator->fails()){
-            $this->throwValidationException(
-                    $request, $validator
-            );
-        }
+    public function update(Requests\Admin\ProfileFormRequest $request){
 
         $user = $this->userRepo->find($request->input('id'));
 
@@ -54,18 +46,5 @@ class ProfileController extends Controller {
         $user->save();
 
         return redirect($this->redirectTo);
-    }
-
-    protected function updateValidator(array $data){
-        $rulesSet = [
-                'firstname' => 'required|max:255',
-                'email'     => 'required|email|max:255|unique:users',
-                'lastname'  => 'required|max:255',
-        ];
-        if (isset($data['password'])){
-            array_merge($rulesSet, ['password' => 'required|confirmed|min:6']);
-        }
-
-        return Validator::make($data, $rulesSet);
     }
 }
