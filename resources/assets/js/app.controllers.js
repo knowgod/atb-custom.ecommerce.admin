@@ -18,8 +18,8 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         };
 
         $scope.updateSortOrder = function (field) {
-            if ($scope.query.orderBy == field) {
-                $scope.query.orderDirection = ($scope.query.orderDirection == 'ASC') ? 'DESC' : 'ASC';
+            if ($scope.query.orderBy === field) {
+                $scope.query.orderDirection = ($scope.query.orderDirection === 'ASC') ? 'DESC' : 'ASC';
             } else {
                 $scope.query.orderBy = field;
             }
@@ -45,6 +45,10 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             }, function () {
                 sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
             });
+        };
+
+        $scope.invokeDetailView = function () {
+            sharedMessageService.emitDataUpdate('onDetailViewOpen');
         };
 
         $scope.invokeHtmlAction = function (url) {
@@ -534,6 +538,31 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
 
         sharedMessageService.onDataUpdate('onSecondarySelectionGrid', $scope, function (message, data) {
             $scope.formData.checkboxData = data;
+        });
+
+
+    }]).controller('DetailViewController', ['$scope', '$http', 'sharedMessageService',
+    function ($scope, $http, sharedMessageService) {
+
+        $scope.layout = {
+            opened: false,
+            close: function () {
+                $scope.layout.opened = false;
+            },
+            open: function () {
+                $scope.layout.opened = true;
+            }
+        };
+        $scope.formData = {};
+        $scope.formDataErrors = {};
+
+        sharedMessageService.onDataUpdate('onDetailViewOpen', $scope, function (message, data) {
+            //TODO: add data loading when data is present in database
+            $scope.layout.open();
+        });
+
+        sharedMessageService.onDataUpdate('onDetailViewClose', $scope, function (message, data) {
+            $scope.layout.close();
         });
 
 

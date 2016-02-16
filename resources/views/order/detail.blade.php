@@ -1,7 +1,7 @@
-<div class="right-content mdl-shadow--2dp">
+<div class="right-content mdl-shadow--2dp" ng-controller="DetailViewController" ng-class="{'open':layout.opened}" right-layout>
     <div class="right-content__head">
         <div class="right-content__head--close">
-            <i class="material-icons">clear</i>
+            <i class="material-icons" ng-click="layout.close();">clear</i>
         </div>
         <div class="right-content__head--title">
             <p>1234132413</p>
