@@ -47,15 +47,21 @@
                     <span class="mdl-textfield__error"><% formDataErrors.password_confirmation[0] %></span>
                 </div>
 
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" ng-class="{'is-invalid': formDataErrors.user_role}">
-                    <label class="mdl-select__label" for="user_role">User Role</label>
-                        <select class="mdl-select__input" id="user_role" name="user_role">
-                          <option value="">Please Select User Role</option>
+                <div class="mdl-select mdl-js-select mdl-select--floating-label">
+                    <div class="mdl-select__container">
+                        <input class="mdl-select__input" name="user_role_text" type="text"  value="" >
+                    </div>
+                    <span class="mdl-select__error"></span>
+                    <label class="mdl-select__label" for="user_role">User Role
+                        <select class="mdl-select__select" id="user_role" ng-model="formData.user_role" name="user_role">
+                            <option value="">Please Select</option>
                             @foreach($roles_list as $role)
-                                <option @if($user_role->getId() === $role->getId()) selected @endif value="{{$role->getId()}}">{{$role->getName()}}</option>
+                                <option @if($user_role->getId() === $role->getId()) selected="selected" @endif value="{{$role->getId()}}">{{$role->getName()}}</option>
                             @endforeach
                         </select>
-                      </div>
+                    </label>
+                    <div class="mdl-select__menu mdl-shadow--2dp bottom"></div>
+                </div>
 
                 <div class="buttons">
                     <button ng-click="dataSubmit()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
