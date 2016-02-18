@@ -11,12 +11,11 @@ namespace App\Http\Controllers\Acl;
 use App\Http\Requests;
 use App\Models\Acl\Entities\Role as Role;
 use App\Models\Acl\Repositories\RoleRepository;
-use Illuminate\Support\Facades\Auth;
 use App\Http\RepositoryFilter;
-use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use LaravelDoctrine\ACL\Permissions\PermissionManager;
+use App\Policies\PermissionPolicy as AclPolicy;
 
 
 class RoleController extends Controller {
@@ -45,26 +44,37 @@ class RoleController extends Controller {
         /**
          * @var $role Role
          */
-        //$this->authorize('store', new AclPolicy());
+        $this->authorize('store', new AclPolicy());
 
         $role = new Role();
-        $role->setName('Some Test Role')
-                ->setPermissions(['UserPolicy.create', 'UserPolicy.update'])
+        $permissions = $this->parsePermissions($request->input());
+
+        if (empty($permissions)){
+            return;
+        }
+
+        $role->setName($request->input('name'))
+                ->setPermissions($permissions)
                 ->save();
         return redirect($this->redirectTo);
     }
 
     public function update(Requests\Acl\RoleFormRequest $request){
 
-        //$this->authorize('update', new AclPolicy());
+        $this->authorize('update', new AclPolicy());
 
         /**
          * @var $role Role
          */
         $role = $this->roleRepo->find($request->input('id'));
+        $permissions = $this->parsePermissions($request->input());
+
+        if (empty($permissions)){
+            return;
+        }
 
         $role->setName($request->input('name'))
-                ->setPermissions(['*'])
+                ->setPermissions($permissions)
                 ->save();
         return redirect($this->redirectTo);
 
@@ -84,7 +94,7 @@ class RoleController extends Controller {
          * @var $item Role
          */
 
-        //$this->authorize('bulkDelete', new AclPolicy());
+        $this->authorize('bulkDelete', new AclPolicy());
 
         if (!$request->has('items')){
             return redirect($this->redirectTo);

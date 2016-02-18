@@ -71,6 +71,10 @@
     </div>
 @endsection
 
+@section('page.bottom')
+    @include('layouts.shared.page_bottom')
+@endsection
+
 @section('navigation')
     @include('role.nav')
 @endsection
