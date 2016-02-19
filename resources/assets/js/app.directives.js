@@ -97,7 +97,7 @@
                 code: '='
             },
             replace: true,
-            template: '<img ng-src="/assets/images/flags/<%  code.shipping_country_code | lowercase %>.png" alt="<% code.shipping_country_code %>" />'
+            template: '<img ng-src="/assets/images/flags/<% code.shipping_address.country | lowercase %>.png" alt="<% code.shipping_address.country %>" />'
         };
     });
 

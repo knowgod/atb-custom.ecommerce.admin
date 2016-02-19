@@ -22,7 +22,7 @@ var atypicalApp;
         $interpolateProvider.endSymbol('%>');
 
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
         $httpProvider.interceptors.push(function ($q, sharedMessageService) {
             return {
                 'request': function (config) {
@@ -36,7 +36,7 @@ var atypicalApp;
                     sharedMessageService.emitDataUpdate('onCloseOverlay');
                     setTimeout(componentHandler.upgradeDom, 100);
                     if (response.data !== 'undefined' && response.data.notifications !== 'undefined') {
-                        sharedMessageService.emitDataUpdate('onNotification', response.data.notifications);
+                        //sharedMessageService.emitDataUpdate('onNotification', response.data.notifications);
                     }
                     return response;
                 },
