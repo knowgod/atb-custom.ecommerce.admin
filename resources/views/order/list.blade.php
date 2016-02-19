@@ -96,7 +96,7 @@
                             <td class="narrow checkbox-data-holder" data-holder="<% item.id %>">
                                 <div data-mdl-checkbox el="item" prefix="checkbox-grid"></div>
                             </td>
-                            <td class="mdl-data-table__cell--non-numeric"><% item.increment_id %></td>
+                            <td class="mdl-data-table__cell--non-numeric"><span class="open-view" ng-click="invokeDetailView()"><% item.increment_id %></span></td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.status %></td>
                             <td class="mdl-data-table__cell--non-numeric"><% item.createdAt.date %></td>
                             <td class="mdl-data-table__cell--non-numeric narrow-all narrow-flag">
@@ -132,4 +132,8 @@
 
 @section('navigation')
     @include('order.nav')
+@endsection
+
+@section('content.detail')
+    @include('order.detail')
 @endsection

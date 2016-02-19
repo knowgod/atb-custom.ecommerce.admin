@@ -13,6 +13,7 @@
             <main class="mdl-layout__content">
                 @yield('content')
             </main>
+            @yield('content.detail')
             @yield('page.bottom')
         </div>
         @include('layouts.shared.footer')

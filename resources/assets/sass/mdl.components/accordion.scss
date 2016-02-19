@@ -1,0 +1,120 @@
+.mdl-accordion {
+    display: block;
+    width: 100%;
+}
+
+.mdl-accordion__tab-bar {
+    display         : flex;
+    flex-direction  : row;
+    justify-content : center; // ⇾
+    align-content   : space-between; // ||
+    align-items     : flex-start; // ↓
+
+    height          : 48px;
+    padding         : 0 0 0 0;
+    margin          : 0;
+    position: relative;
+
+}
+
+.mdl-accordion__tab {
+    margin: 0;
+    border: none;
+    padding: 0 24px 0 24px;
+    width: 100%;
+    position: relative;
+    display: block;
+
+    text-decoration: none;
+    height: 48px;
+    line-height: 48px;
+
+    text-align: left;
+    font-weight: 500;
+    font-size: $layout-tab-font-size;
+    text-transform: uppercase;
+
+    color: $tab-text-color;
+    overflow: hidden;
+
+
+    .mdl-accordion.is-upgraded &.is-active {
+        color: $tab-active-text-color;
+    }
+
+    .mdl-accordion.is-upgraded &.is-active:after {
+        height: 2px;
+        width: 100%;
+        display: block;
+        content: " ";
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        background: $primary-color-dark;
+        animation: border-expand 0.2s cubic-bezier(0.4, 0.0, 0.4, 1) 0.01s alternate forwards;
+        transition: all 1s cubic-bezier(0.4, 0.0, 1, 1);
+    }
+
+    & .mdl-accordion__ripple-container {
+        display: block;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        left: 0px;
+        top: 0px;
+        z-index: 1;
+        overflow: hidden;
+
+        & .mdl-ripple {
+            background: $primary-color-dark;
+        }
+    }
+
+    .material-icons{
+        font-size: 30px;
+        line-height: 46px;
+        float: left;
+        margin-right: 15px;
+    }
+    &:before{
+        content: 'keyboard_arrow_down';
+        position: absolute;
+        font-size: 20px;
+        top: 0px;
+        right: 15px;
+        z-index: 1;
+        font-family: 'Material Icons';
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+        text-transform: none;
+    }
+    &.is-active:before {
+        content: 'keyboard_arrow_up';
+    }
+
+}
+
+.mdl-accordion__panel {
+    display: block;
+    border-bottom: 1px solid $divider-color;
+
+    .mdl-accordion.is-upgraded & {
+        display: none;
+    }
+
+    .mdl-accordion.is-upgraded &.is-active {
+        display: block;
+    }
+}
+
+@keyframes border-expand {
+    0% {
+        opacity: 0;
+        width: 0;
+    }
+
+    100% {
+        opacity: 1;
+        width: 100%;
+    }
+}

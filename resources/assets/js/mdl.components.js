@@ -68,7 +68,7 @@
      *
      * @public
      */
-    MaterialSelect.prototype.enable = function() {
+    MaterialSelect.prototype.enable = function () {
         this.input_.disabled = false;
         this.updateClasses_();
     };
@@ -331,6 +331,88 @@
 
     //END OF: MaterialDatePicker
 
+    var MaterialAccordion = function MaterialAccordion(element) {
+        this.element_ = element;
+
+        this.init();
+    };
+    window['MaterialAccordion'] = MaterialAccordion;
+
+    MaterialAccordion.prototype.CssClasses_ = {
+        TAB_CLASS: 'mdl-accordion__tab',
+        PANEL_CLASS: 'mdl-accordion__panel',
+        ACTIVE_CLASS: 'is-active',
+        UPGRADED_CLASS: 'is-upgraded',
+
+        MDL_JS_RIPPLE_EFFECT: 'mdl-js-ripple-effect',
+        MDL_RIPPLE_CONTAINER: 'mdl-accordion__ripple-container',
+        MDL_RIPPLE: 'mdl-ripple',
+        MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events'
+    };
+
+    MaterialAccordion.prototype.initTabs_ = function() {
+        if (this.element_.classList.contains(this.CssClasses_.MDL_JS_RIPPLE_EFFECT)) {
+            this.element_.classList.add(
+                this.CssClasses_.MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS);
+        }
+
+        // Select element tabs, document panels
+        this.tabs_ = this.element_.querySelectorAll('.' + this.CssClasses_.TAB_CLASS);
+        this.panels_ =
+            this.element_.querySelectorAll('.' + this.CssClasses_.PANEL_CLASS);
+
+        // Create new tabs for each tab element
+        for (var i = 0; i < this.tabs_.length; i++) {
+            new MaterialAccordionTab(this.tabs_[i], this);
+        }
+
+        this.element_.classList.add(this.CssClasses_.UPGRADED_CLASS);
+    };
+
+    MaterialAccordion.prototype.resetTabState_ = function() {
+        for (var k = 0; k < this.tabs_.length; k++) {
+            this.tabs_[k].classList.remove(this.CssClasses_.ACTIVE_CLASS);
+        }
+    };
+
+    MaterialAccordion.prototype.resetPanelState_ = function() {
+        for (var j = 0; j < this.panels_.length; j++) {
+            this.panels_[j].classList.remove(this.CssClasses_.ACTIVE_CLASS);
+        }
+    };
+
+    MaterialAccordion.prototype.init = function() {
+        if (this.element_) {
+            this.initTabs_();
+        }
+    };
+
+    function MaterialAccordionTab(tab, ctx) {
+        if (tab) {
+            var rippleContainer = document.createElement('span'),
+                ripple = document.createElement('span');
+
+            rippleContainer.classList.add(ctx.CssClasses_.MDL_RIPPLE_CONTAINER);
+            rippleContainer.classList.add(ctx.CssClasses_.MDL_JS_RIPPLE_EFFECT);
+            ripple.classList.add(ctx.CssClasses_.MDL_RIPPLE);
+            rippleContainer.appendChild(ripple);
+            tab.appendChild(rippleContainer);
+
+            tab.addEventListener('click', function (e) {
+                e.preventDefault();
+                var href = tab.href.split('#')[1];
+                var panel = ctx.element_.querySelector('#' + href);
+                ctx.resetTabState_();
+                ctx.resetPanelState_();
+                tab.classList.add(ctx.CssClasses_.ACTIVE_CLASS);
+                panel.classList.add(ctx.CssClasses_.ACTIVE_CLASS);
+            });
+
+        }
+    }
+
+    //END OF: MaterialAccordion
+
     componentHandler.register({
         constructor: MaterialSelect,
         classAsString: 'MaterialSelect',
@@ -342,6 +424,13 @@
         constructor: MaterialDatePicker,
         classAsString: 'MaterialDatePicker',
         cssClass: 'mdl-js-datepicker',
+        widget: true
+    });
+
+    componentHandler.register({
+        constructor: MaterialAccordion,
+        classAsString: 'MaterialAccordion',
+        cssClass: 'mdl-js-accordion',
         widget: true
     });
 
