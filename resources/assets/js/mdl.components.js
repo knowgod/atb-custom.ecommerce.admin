@@ -1,11 +1,38 @@
-(function() {
+/*jslint browser: true, multivar: true, this: true */
+/*global window, componentHandler, datepickr */
+/*property
+ ACTIVE_CLASS, BUTTON, CssClasses_, ERROR, ICON, INPUT, IS_DIRTY,
+ IS_DISABLED, IS_FOCUSED, IS_INVALID, IS_UPGRADED, LABEL,
+ MDL_JS_RIPPLE_EFFECT, MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS, MDL_RIPPLE,
+ MDL_RIPPLE_CONTAINER, MENU, MaterialAccordion, MaterialDatePicker,
+ MaterialSelect, PANEL_CLASS, SELECT, TAB_CLASS, UPGRADED_CLASS, add,
+ addEventListener, altInput, appendChild, bind, boundInputOnBlur,
+ boundInputOnChange, boundInputOnClick, boundInputOnFocus,
+ boundUpdateClassesHandler, boundUpdateHandler, change, checkDirty,
+ checkDisabled, checkValidity, classAsString, classList, closeList,
+ constructor, contains, createElement, createEvent, cssClass, dateFormat,
+ disable, disabled, dispatchEvent, element_, enable, error_, exec,
+ fireEvent, forEach, getAttribute, getDate, getFullYear, getMonth,
+ hasOwnProperty, href, init, initCalendar, initChangeEvent, initEvent,
+ initTabs_, innerHTML, innerText, inputMenu, inputSelect, input_,
+ isValidDate, keys, label_, length, onBlur_, onChange_, onClick_, onFocus_,
+ onInput_, openList, options, panels_, preventDefault, prototype,
+ querySelector, querySelectorAll, register, remove, resetPanelState_,
+ resetTabState_, selectedIndex, setAttribute, setItem, setValid, split,
+ tabs_, target, text, updateClasses_, updateItems, valid, validity, value,
+ widget
+ */
+
+
+(function () {
+
     'use strict';
 
-    var MaterialSelect = function MaterialSelect(element) {
+    var MaterialSelect = function (element) {
         this.element_ = element;
         this.init();
     };
-    window['MaterialSelect'] = MaterialSelect;
+    window.MaterialSelect = MaterialSelect;
 
     MaterialSelect.prototype.CssClasses_ = {
         LABEL: 'mdl-select__label',
@@ -19,22 +46,21 @@
         IS_UPGRADED: 'is-upgraded'
     };
 
-    MaterialSelect.prototype.updateClasses_ = function() {
+    MaterialSelect.prototype.updateClasses_ = function () {
         this.checkDisabled();
         this.checkValidity();
         this.checkDirty();
     };
 
-    MaterialSelect.prototype.checkDisabled = function() {
+    MaterialSelect.prototype.checkDisabled = function () {
         if (this.input_.disabled) {
             this.element_.classList.add(this.CssClasses_.IS_DISABLED);
         } else {
             this.element_.classList.remove(this.CssClasses_.IS_DISABLED);
         }
     };
-    MaterialSelect.prototype['checkDisabled'] = MaterialSelect.prototype.checkDisabled;
 
-    MaterialSelect.prototype.checkValidity = function() {
+    MaterialSelect.prototype.checkValidity = function () {
         if (this.input_.validity) {
             if (this.input_.validity.valid) {
                 this.element_.classList.remove(this.CssClasses_.IS_INVALID);
@@ -43,10 +69,8 @@
             }
         }
     };
-    MaterialSelect.prototype['checkValidity'] = MaterialSelect.prototype.checkValidity;
 
-
-    MaterialSelect.prototype.checkDirty = function() {
+    MaterialSelect.prototype.checkDirty = function () {
         if (this.input_.value && this.input_.value.length > 0) {
             this.element_.classList.add(this.CssClasses_.IS_DIRTY);
             this.input_.value = this.inputSelect.options[this.inputSelect.selectedIndex].innerText;
@@ -55,13 +79,11 @@
             this.input_.value = this.inputSelect.options[0].innerText;
         }
     };
-    MaterialSelect.prototype['checkDirty'] = MaterialSelect.prototype.checkDirty;
 
-    MaterialSelect.prototype.disable = function() {
+    MaterialSelect.prototype.disable = function () {
         this.input_.disabled = true;
         this.updateClasses_();
     };
-    MaterialSelect.prototype['disable'] = MaterialSelect.prototype.disable;
 
     /**
      * Enable text field.
@@ -72,59 +94,57 @@
         this.input_.disabled = false;
         this.updateClasses_();
     };
-    MaterialSelect.prototype['enable'] = MaterialSelect.prototype.enable;
 
 
-    MaterialSelect.prototype.change = function(value) {
+    MaterialSelect.prototype.change = function (value) {
 
         this.input_.value = value || '';
         this.updateClasses_();
     };
-    MaterialSelect.prototype['change'] = MaterialSelect.prototype.change;
 
-    MaterialSelect.prototype.onChange_ = function(event) {
+    MaterialSelect.prototype.onChange_ = function () {
         this.updateClasses_();
     };
 
-    MaterialSelect.prototype.onFocus_ = function(event) {
+    MaterialSelect.prototype.onFocus_ = function (event) {
         this.element_.classList.add(this.CssClasses_.IS_FOCUSED);
         event.preventDefault();
         this.openList();
     };
 
-    MaterialSelect.prototype.onClick_ = function(event) {
+    MaterialSelect.prototype.onClick_ = function (event) {
         event.preventDefault();
         this.element_.classList.add(this.CssClasses_.IS_FOCUSED);
         this.openList();
     };
 
-    MaterialSelect.prototype.onBlur_ = function(event) {
+    MaterialSelect.prototype.onBlur_ = function () {
         this.element_.classList.remove(this.CssClasses_.IS_FOCUSED);
         setTimeout(this.closeList.bind(this), 100);
     };
 
-    MaterialSelect.prototype.updateItems = function() {
-        var tmpElement, options = this.inputSelect.querySelectorAll('option');
+    MaterialSelect.prototype.updateItems = function () {
+        var tmpElement, options = this.inputSelect.querySelectorAll('option'), _self = this;
         this.inputMenu.innerHTML = '';
-
-        for(var i=0; i<options.length; i++){
+        Object.keys(options).forEach(function (key) {
             tmpElement = document.createElement('div');
             tmpElement.classList.add('mdl-js-ripple-effect');
             tmpElement.classList.add('mdl-menu__item');
-            tmpElement.innerHTML = options[i].text;
+            tmpElement.innerHTML = options[key].text;
             tmpElement.innerHTML += '<span class="mdl-menu__item-ripple-container"><span class="mdl-ripple"></span></span>';
-            tmpElement.setAttribute('data-option-text', options[i].text);
-            tmpElement.setAttribute('data-option-value', options[i].value);
+            tmpElement.setAttribute('data-option-text', options[key].text);
+            tmpElement.setAttribute('data-option-value', options[key].value);
 
-            tmpElement.addEventListener('click', function(event){
-                this.setItem(event.target.getAttribute('data-option-value'), event.target.getAttribute('data-option-text'));
-            }.bind(this)) ;
+            tmpElement.addEventListener('click', function (event) {
+                _self.setItem(event.target.getAttribute('data-option-value'), event.target.getAttribute('data-option-text'));
+            });
 
-            this.inputMenu.appendChild(tmpElement);
-        }
+            _self.inputMenu.appendChild(tmpElement);
+
+        });
     };
 
-    MaterialSelect.prototype.setItem = function(value, text) {
+    MaterialSelect.prototype.setItem = function (value, text) {
         this.input_.value = text;
         this.inputSelect.value = value;
         this.closeList();
@@ -132,26 +152,26 @@
         this.initChangeEvent();
     };
 
-    MaterialSelect.prototype.initChangeEvent = function() {
-        if ('fireEvent' in this.inputSelect)
+    MaterialSelect.prototype.initChangeEvent = function () {
+        if (this.inputSelect.hasOwnProperty('fireEvent')) {
             this.inputSelect.fireEvent("onchange");
-        else {
+        } else {
             var evt = document.createEvent("HTMLEvents");
             evt.initEvent("change", false, true);
             this.inputSelect.dispatchEvent(evt);
         }
     };
 
-    MaterialSelect.prototype.openList = function() {
+    MaterialSelect.prototype.openList = function () {
         this.updateItems();
         this.inputMenu.classList.add('is-visible');
     };
 
-    MaterialSelect.prototype.closeList = function() {
+    MaterialSelect.prototype.closeList = function () {
         this.inputMenu.classList.remove('is-visible');
     };
 
-    MaterialSelect.prototype.init = function() {
+    MaterialSelect.prototype.init = function () {
         if (this.element_) {
             this.label_ = this.element_.querySelector('.' + this.CssClasses_.LABEL);
             this.input_ = this.element_.querySelector('.' + this.CssClasses_.INPUT);
@@ -170,7 +190,7 @@
             this.input_.addEventListener('click', this.boundInputOnClick);
 
             var selectedOption = this.inputSelect.querySelector('option[selected=selected]');
-            if(selectedOption){
+            if (selectedOption) {
                 this.setItem(selectedOption.value, selectedOption.text);
             }
 
@@ -181,11 +201,11 @@
 
     //END OF: MaterialSelect
 
-    var MaterialDatePicker = function MaterialDatePicker(element) {
+    var MaterialDatePicker = function (element) {
         this.element_ = element;
         this.init();
     };
-    window['MaterialDatePicker'] = MaterialDatePicker;
+    window.MaterialDatePicker = MaterialDatePicker;
 
     MaterialDatePicker.prototype.CssClasses_ = {
         LABEL: 'mdl-datepicker__label',
@@ -200,98 +220,91 @@
         IS_UPGRADED: 'is-upgraded'
     };
 
-    MaterialDatePicker.prototype.updateClasses_ = function() {
+    MaterialDatePicker.prototype.updateClasses_ = function () {
         this.checkDisabled();
         this.checkValidity();
         this.checkDirty();
     };
 
-    MaterialDatePicker.prototype.change = function(value) {
+    MaterialDatePicker.prototype.change = function (value) {
         this.input_.value = value || '';
         this.updateClasses_();
     };
-    MaterialDatePicker.prototype['change'] = MaterialDatePicker.prototype.change;
 
-    MaterialDatePicker.prototype.checkDisabled = function() {
+    MaterialDatePicker.prototype.checkDisabled = function () {
         if (this.input_.disabled) {
             this.element_.classList.add(this.CssClasses_.IS_DISABLED);
         } else {
             this.element_.classList.remove(this.CssClasses_.IS_DISABLED);
         }
     };
-    MaterialDatePicker.prototype['checkDisabled'] = MaterialDatePicker.prototype.checkDisabled;
 
-    MaterialDatePicker.prototype.checkValidity = function() {
-        if(this.input_.value && this.input_.value.length > 0) {
+    MaterialDatePicker.prototype.checkValidity = function () {
+        if (this.input_.value && this.input_.value.length > 0) {
             if (this.isValidDate(this.input_.value)) {
-               this.setValid();
+                this.setValid();
             } else {
                 this.element_.classList.add(this.CssClasses_.IS_INVALID);
                 this.error_.innerHTML = 'Date is not valid';
             }
-        }else{
+        } else {
             this.setValid();
         }
     };
-    MaterialDatePicker.prototype['checkValidity'] = MaterialDatePicker.prototype.checkValidity;
 
-    MaterialDatePicker.prototype.setValid = function() {
+    MaterialDatePicker.prototype.setValid = function () {
         this.element_.classList.remove(this.CssClasses_.IS_INVALID);
         this.error_.innerHTML = '';
     };
 
-    MaterialDatePicker.prototype.checkDirty = function() {
+    MaterialDatePicker.prototype.checkDirty = function () {
         if (this.input_.value && this.input_.value.length > 0) {
             this.element_.classList.add(this.CssClasses_.IS_DIRTY);
         } else {
             this.element_.classList.remove(this.CssClasses_.IS_DIRTY);
         }
     };
-    MaterialDatePicker.prototype['checkDirty'] = MaterialDatePicker.prototype.checkDirty;
 
-    MaterialDatePicker.prototype.disable = function() {
+    MaterialDatePicker.prototype.disable = function () {
         this.input_.disabled = true;
         this.updateClasses_();
     };
-    MaterialDatePicker.prototype['disable'] = MaterialDatePicker.prototype.disable;
 
-    MaterialDatePicker.prototype.enable = function() {
+    MaterialDatePicker.prototype.enable = function () {
         this.input_.disabled = false;
         this.updateClasses_();
     };
-    MaterialDatePicker.prototype['enable'] = MaterialDatePicker.prototype.enable;
 
-
-    MaterialDatePicker.prototype.onFocus_ = function(event) {
+    MaterialDatePicker.prototype.onFocus_ = function () {
         this.element_.classList.add(this.CssClasses_.IS_FOCUSED);
     };
 
-    MaterialDatePicker.prototype.onClick_ = function(event) {
+    MaterialDatePicker.prototype.onClick_ = function () {
         this.element_.classList.add(this.CssClasses_.IS_FOCUSED);
     };
 
-    MaterialDatePicker.prototype.onBlur_ = function(event) {
+    MaterialDatePicker.prototype.onBlur_ = function () {
         this.element_.classList.remove(this.CssClasses_.IS_FOCUSED);
     };
 
-    MaterialDatePicker.prototype.onInput_ = function(event) {
-
+    MaterialDatePicker.prototype.onInput_ = function () {
         this.updateClasses_();
     };
 
-    MaterialDatePicker.prototype.isValidDate = function()
-    {
-        var matches = /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/.exec(this.input_.value);
-        if (matches == null) return false;
+    MaterialDatePicker.prototype.isValidDate = function () {
+        var matches = /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/.exec(this.input_.value);
+        if (matches === null) {
+            return false;
+        }
         var d = matches[2];
         var m = matches[1] - 1;
         var y = matches[3];
         var composedDate = new Date(y, m, d);
 
-        return composedDate.getDate() == d && composedDate.getMonth() == m && composedDate.getFullYear() == y;
+        return composedDate.getDate() === d && composedDate.getMonth() === m && composedDate.getFullYear() === y;
     };
 
-    MaterialDatePicker.prototype.initCalendar = function() {
+    MaterialDatePicker.prototype.initCalendar = function () {
 
         datepickr('.' + this.CssClasses_.BUTTON, {
             altInput: this.input_,
@@ -305,7 +318,7 @@
 
     };
 
-    MaterialDatePicker.prototype.init = function() {
+    MaterialDatePicker.prototype.init = function () {
         if (this.element_) {
             this.label_ = this.element_.querySelector('.' + this.CssClasses_.LABEL);
             this.input_ = this.element_.querySelector('.' + this.CssClasses_.INPUT);
@@ -331,62 +344,6 @@
 
     //END OF: MaterialDatePicker
 
-    var MaterialAccordion = function MaterialAccordion(element) {
-        this.element_ = element;
-
-        this.init();
-    };
-    window['MaterialAccordion'] = MaterialAccordion;
-
-    MaterialAccordion.prototype.CssClasses_ = {
-        TAB_CLASS: 'mdl-accordion__tab',
-        PANEL_CLASS: 'mdl-accordion__panel',
-        ACTIVE_CLASS: 'is-active',
-        UPGRADED_CLASS: 'is-upgraded',
-
-        MDL_JS_RIPPLE_EFFECT: 'mdl-js-ripple-effect',
-        MDL_RIPPLE_CONTAINER: 'mdl-accordion__ripple-container',
-        MDL_RIPPLE: 'mdl-ripple',
-        MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events'
-    };
-
-    MaterialAccordion.prototype.initTabs_ = function() {
-        if (this.element_.classList.contains(this.CssClasses_.MDL_JS_RIPPLE_EFFECT)) {
-            this.element_.classList.add(
-                this.CssClasses_.MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS);
-        }
-
-        // Select element tabs, document panels
-        this.tabs_ = this.element_.querySelectorAll('.' + this.CssClasses_.TAB_CLASS);
-        this.panels_ =
-            this.element_.querySelectorAll('.' + this.CssClasses_.PANEL_CLASS);
-
-        // Create new tabs for each tab element
-        for (var i = 0; i < this.tabs_.length; i++) {
-            new MaterialAccordionTab(this.tabs_[i], this);
-        }
-
-        this.element_.classList.add(this.CssClasses_.UPGRADED_CLASS);
-    };
-
-    MaterialAccordion.prototype.resetTabState_ = function() {
-        for (var k = 0; k < this.tabs_.length; k++) {
-            this.tabs_[k].classList.remove(this.CssClasses_.ACTIVE_CLASS);
-        }
-    };
-
-    MaterialAccordion.prototype.resetPanelState_ = function() {
-        for (var j = 0; j < this.panels_.length; j++) {
-            this.panels_[j].classList.remove(this.CssClasses_.ACTIVE_CLASS);
-        }
-    };
-
-    MaterialAccordion.prototype.init = function() {
-        if (this.element_) {
-            this.initTabs_();
-        }
-    };
-
     function MaterialAccordionTab(tab, ctx) {
         if (tab) {
             var rippleContainer = document.createElement('span'),
@@ -411,6 +368,65 @@
         }
     }
 
+    var MaterialAccordion = function (element) {
+        this.element_ = element;
+
+        this.init();
+    };
+    window.MaterialAccordion = MaterialAccordion;
+
+    MaterialAccordion.prototype.CssClasses_ = {
+        TAB_CLASS: 'mdl-accordion__tab',
+        PANEL_CLASS: 'mdl-accordion__panel',
+        ACTIVE_CLASS: 'is-active',
+        UPGRADED_CLASS: 'is-upgraded',
+
+        MDL_JS_RIPPLE_EFFECT: 'mdl-js-ripple-effect',
+        MDL_RIPPLE_CONTAINER: 'mdl-accordion__ripple-container',
+        MDL_RIPPLE: 'mdl-ripple',
+        MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events'
+    };
+
+    MaterialAccordion.prototype.initTabs_ = function () {
+        var _self = this, materialAccordionTab;
+        if (this.element_.classList.contains(this.CssClasses_.MDL_JS_RIPPLE_EFFECT)) {
+            this.element_.classList.add(this.CssClasses_.MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS);
+        }
+
+        // Select element tabs, document panels
+        this.tabs_ = this.element_.querySelectorAll('.' + this.CssClasses_.TAB_CLASS);
+        this.panels_ = this.element_.querySelectorAll('.' + this.CssClasses_.PANEL_CLASS);
+
+        // Create new tabs for each tab element
+        Object.keys(this.tabs_).forEach(function (key) {
+            materialAccordionTab = new MaterialAccordionTab(_self.tabs_[key], _self);
+        });
+
+        this.element_.classList.add(this.CssClasses_.UPGRADED_CLASS);
+
+        return materialAccordionTab;
+    };
+
+    MaterialAccordion.prototype.resetTabState_ = function () {
+        var _self = this;
+        Object.keys(this.tabs_).forEach(function (key) {
+            _self.tabs_[key].classList.remove(_self.CssClasses_.ACTIVE_CLASS);
+        });
+    };
+
+    MaterialAccordion.prototype.resetPanelState_ = function () {
+        var _self = this;
+        Object.keys(this.panels_).forEach(function (key) {
+            _self.panels_[key].classList.remove(_self.CssClasses_.ACTIVE_CLASS);
+        });
+    };
+
+    MaterialAccordion.prototype.init = function () {
+        if (this.element_) {
+            this.initTabs_();
+        }
+    };
+
     //END OF: MaterialAccordion
 
     componentHandler.register({
@@ -434,4 +450,4 @@
         widget: true
     });
 
-})();
+}());
