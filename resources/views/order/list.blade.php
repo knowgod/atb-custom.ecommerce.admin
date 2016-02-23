@@ -7,8 +7,8 @@
         window['gridCollection'] = []<?php //echo json_encode($collection); ?>;
         window['gridCollection'].urlBase = 'order';
         window['gridCollection'].connection = {
-            'url': 'http://order.atypical-ecommerce-app.dev:8080/v1/orders/',
-            'token': '$2y$10$h2nuq0uG9A8g2ADQ73iwMeEl.nTJyK7imt70Rc0trnhBLygng/44G'
+            'url':  '<?php echo config('oms_api.url') . '/v1/orders/';?>',
+            'token': '<?php echo config('oms_api.key');?>'
         };
         window['gridCollection'].columns = {
             'increment_id':true,
