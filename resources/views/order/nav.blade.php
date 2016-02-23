@@ -1,6 +1,5 @@
 <script>
-    window['gridOrderStatusCollection'] = <?php echo json_encode($order_statuses_count); ?>;
-
+    window['gridOrderStatusCollection'] = []<?php //echo json_encode($order_statuses_count); ?>;
 </script>
 <div class="mdl-layout__drawer" ng-controller="GridLeftController" ng-init="init({'statusCount':'gridOrderStatusCollection'})">
     <nav class="mdl-navigation" ng-cloak>
