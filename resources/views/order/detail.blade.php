@@ -4,8 +4,8 @@
             <i class="material-icons" ng-click="layout.close();">clear</i>
         </div>
         <div class="right-content__head--title">
-            <p>1234132413</p>
-            <p class="small">Status: Under Review</p>
+            <p><% currentItem.order_number %></p>
+            <p class="small">Status: <% currentItem.status %></p>
         </div>
 
         <div class="mdl-layout-spacer"></div>
@@ -28,27 +28,17 @@
 
         <div class="mdl-accordion__panel is-active" id="panel-sales-order">
             <div class="list-items">
-                <div class="list-items_item">
+
+                <div class="list-items_item" ng-repeat="item in currentItem.order_items">
                     <div class="list-items_item--image">
                         <img src="/assets/images/products/octowand.jpg" alt="" />
-                        <span class="count">1</span>
+                        <span class="count"><% item.quantity | number : 0 %></span>
                     </div>
                     <div class="list-items_item--title">
-                        <p class="name">Octowand</p>
-                        <p class="sku">SKU: Octo</p>
+                        <p class="name"><% item.sku %></p>
+                        <p class="sku">SKU: <% item.sku %></p>
                     </div>
-                    <div class="list-items_item--price">$300.00</div>
-                </div>
-                <div class="list-items_item">
-                    <div class="list-items_item--image">
-                        <img src="/assets/images/products/titan_3.jpg" alt="" />
-                        <span class="count">1</span>
-                    </div>
-                    <div class="list-items_item--title">
-                        <p class="name">Titan 3</p>
-                        <p class="sku">SKU: Titan_3</p>
-                    </div>
-                    <div class="list-items_item--price">$0.00</div>
+                    <div class="list-items_item--price">$<% item.price | number : 2 %></div>
                 </div>
             </div>
             <div class="totals">
@@ -57,35 +47,35 @@
                         <p>Subtotal</p>
                         <span></span>
                     </div>
-                    <div class="totals__item-total">$300.00</div>
+                    <div class="totals__item-total">$<% currentItem.payment.subtotal | number : 2 %></div>
                 </div>
                 <div class="totals__item">
                     <div class="totals__item-title">
                         <p>Discount</p>
-                        <span>COUPON</span>
+                        <span><% currentItem.coupon_code %></span>
                     </div>
-                    <div class="totals__item-total">-$200.00</div>
+                    <div class="totals__item-total">-$<% currentItem.payment.discount_amount | number : 2 %></div>
                 </div>
                 <div class="totals__item">
                     <div class="totals__item-title">
                         <p>Shipping</p>
                         <span>Expedited 2 Bussiness Days</span>
                     </div>
-                    <div class="totals__item-total">$18.00</div>
+                    <div class="totals__item-total">$<% currentItem.payment.shipping_amount | number : 2 %></div>
                 </div>
                 <div class="totals__item">
                     <div class="totals__item-title">
                         <p>Tax</p>
                         <span>CA Tax Classes</span>
                     </div>
-                    <div class="totals__item-total">$9.00</div>
+                    <div class="totals__item-total">$<% currentItem.payment.tax_amount | number : 2 %></div>
                 </div>
                 <div class="totals__item">
                     <div class="totals__item-title">
                         <p>Grand Total</p>
                         <span></span>
                     </div>
-                    <div class="totals__item-total">$227.00</div>
+                    <div class="totals__item-total">$<% currentItem.payment.grand_total | number : 2 %></div>
                 </div>
             </div>
         </div>
@@ -99,23 +89,23 @@
                 <div class="info-block__line">
                     <div class="info-block__field">
                         <div class="info-block__field--label">Last Name</div>
-                        <div class="info-block__field--value">Doe</div>
+                        <div class="info-block__field--value"><% currentItem.billing_address.lastname %></div>
                     </div>
                     <div class="info-block__field">
                         <div class="info-block__field--label">First Name</div>
-                        <div class="info-block__field--value">John</div>
+                        <div class="info-block__field--value"><% currentItem.billing_address.firstname %></div>
                     </div>
                 </div>
                 <div class="info-block__line">
                     <div class="info-block__field">
                         <div class="info-block__field--label">Email</div>
-                        <div class="info-block__field--value">test@atypicalbrands.com</div>
+                        <div class="info-block__field--value"><% currentItem.billing_address.email %></div>
                     </div>
                 </div>
                 <div class="info-block__line">
                     <div class="info-block__field">
                         <div class="info-block__field--label">Phone</div>
-                        <div class="info-block__field--value">88-9999-44444-25</div>
+                        <div class="info-block__field--value"><% currentItem.billing_address.phone %></div>
                     </div>
                 </div>
             </div>
@@ -128,25 +118,29 @@
         <div class="mdl-accordion__panel" id="panel-shipments">
             <div class="info-block">
                 <div class="info-block__line">
-                    <div class="info-block__field">
+                    <div class="info-block__field wide">
                         <div class="info-block__field--label">Ship To</div>
-                        <div class="info-block__field--value">16130 Sherman Way <br/>Van Nuys, CA 91406</div>
+                        <div class="info-block__field--value">
+                            <% currentItem.shipping_address.firstname %> <% currentItem.shipping_address.lastname %>,<br/>
+                            <% currentItem.shipping_address.address_1 %>
+                                <br /><% currentItem.shipping_address.city %>, <% currentItem.shipping_address.state %> <% currentItem.shipping_address.country %> <% currentItem.shipping_address.zipcode %>
+                        </div>
                     </div>
                 </div>
                 <div class="info-block__line">
-                    <div class="info-block__field">
+                    <div class="info-block__field wide">
                         <div class="info-block__field--label">Tracking No</div>
                         <div class="info-block__field--value">9400 1000 00000 0000 00</div>
                     </div>
                 </div>
                 <div class="info-block__line">
-                    <div class="info-block__field">
+                    <div class="info-block__field wide">
                         <div class="info-block__field--label">Carrier service</div>
                         <div class="info-block__field--value">UPS Standard</div>
                     </div>
                 </div>
                 <div class="info-block__line">
-                    <div class="info-block__field">
+                    <div class="info-block__field wide">
                         <div class="info-block__field--label">Shipping Type</div>
                         <div class="info-block__field--value">Standard 5-7 days</div>
                     </div>
@@ -155,19 +149,12 @@
                     <div class="info-block__field">
                         <div class="info-block__field--label">Items</div>
                         <div class="info-block__field--value wide products">
-                            <div class="info-block__field--product" id="products-tt-1">
+                            <div class="info-block__field--product" id="products-tt-<% $index %>" ng-repeat="item in currentItem.order_items track by $index" onFinishRender>
                                 <img src="/assets/images/products/octowand.jpg" alt="" />
-                                <span class="count">1</span>
+                                <span class="count"><% item.quantity | number : 0 %></span>
                             </div>
-                            <div class="mdl-tooltip mdl-tooltip--right mdl-tooltip--top mdl-tooltip--large" for="products-tt-1">
-                                Octowand <br/>Sku: Octowand
-                            </div>
-                            <div class="info-block__field--product" id="products-tt-2">
-                                <img src="/assets/images/products/titan_3.jpg" alt="" />
-                                <span class="count">1</span>
-                            </div>
-                            <div class="mdl-tooltip mdl-tooltip--right mdl-tooltip--top mdl-tooltip--large" for="products-tt-2">
-                                Titan 3<br/>SKU: Titan_3
+                            <div class="mdl-tooltip mdl-tooltip--right mdl-tooltip--top mdl-tooltip--large" for="products-tt-">
+                                Item <br/>Sku: sku
                             </div>
                         </div>
                     </div>
@@ -182,13 +169,17 @@
         <div class="mdl-accordion__panel" id="panel-payments">
             <div class="info-block">
                 <div class="info-block__line">
-                    <div class="info-block__field">
+                    <div class="info-block__field wide">
                         <div class="info-block__field--label">Bill To</div>
-                        <div class="info-block__field--value">16130 Sherman Way <br/>Van Nuys, CA 91406</div>
+                        <div class="info-block__field--value">
+
+                            <% currentItem.billing_address.address_1 %>
+                            <br /><% currentItem.billing_address.city %>, <% currentItem.billing_address.state %> <% currentItem.billing_address.country %> <% currentItem.billing_address.zipcode %>
+                        </div>
                     </div>
                 </div>
                 <div class="info-block__line">
-                    <div class="info-block__field">
+                    <div class="info-block__field wide">
                         <div class="info-block__field--label">Credit card</div>
                         <div class="info-block__field--value">0000 0000 0000 0000</div>
                     </div>
@@ -197,11 +188,12 @@
                     <div class="info-block__field">
                         <div class="info-block__field--label">Pay Method</div>
                         <div class="info-block__field--value cards wide">
-                            <img src="/assets/images/payment/mc.png" alt="" />
+                            <% currentItem.payment.payment_method %>
+                            <!-- <img src="/assets/images/payment/mc.png" alt="" />
                             <img src="/assets/images/payment/visa.png" alt="" />
                             <img src="/assets/images/payment/ae.png" alt="" />
                             <img src="/assets/images/payment/dc.png" alt="" />
-                            <img src="/assets/images/payment/pp.png" alt="" />
+                            <img src="/assets/images/payment/pp.png" alt="" /> -->
                         </div>
                     </div>
                 </div>

@@ -5,13 +5,14 @@
  angular, componentHandler, atypicalApp
  */
 /*property
- $apply, $emit, $last, $watch, bind, code, compile, directive, el, element,
- height, layout, link, ngBindHtml, offsetHeight, onResizeFunction, opened,
- post, prefix, querySelector, replace, restrict, scope, style, template,
- toString, upgradeDom
+ $apply, $emit, $last, $watch, add, bind, classList, code, compile,
+ directive, el, element, height, layout, link, ngBindHtml, offsetHeight,
+ onResizeFunction, opened, post, prefix, querySelector, replace, restrict,
+ scope, style, template, toString, upgradeDom
  */
 
 (function () {
+
     'use strict';
 
     atypicalApp.directive('compileTemplate', function ($compile, $parse) {
@@ -76,6 +77,7 @@
             },
             replace: true,
             template: function (element, attributes) {
+                element[0].classList.add('directive-parsed');
                 return '<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="' + attributes.prefix + '-<% el.id %>">' +
                         '<input type="checkbox" ng-click="$parent.checkbox.action(el.id, $event)" id="' + attributes.prefix + '-<% el.id %>" value="<% el.id %>" class="mdl-checkbox__input">' +
                         '</label>';
@@ -97,7 +99,7 @@
                 code: '='
             },
             replace: true,
-            template: '<img ng-src="/assets/images/flags/<%  code.shipping_country_code | lowercase %>.png" alt="<% code.shipping_country_code %>" />'
+            template: '<img ng-src="/assets/images/flags/<% code.shipping_address.country | lowercase %>.png" alt="<% code.shipping_address.country %>" />'
         };
     });
 

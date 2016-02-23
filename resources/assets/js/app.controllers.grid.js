@@ -1,12 +1,39 @@
-atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageService', 'helperGeneralService',
-    function ($scope, $http, sharedMessageService, helperGeneralService) {
+/*jslint
+ multivar: true, browser: true
+ */
+/*global
+ window, angular, atypicalApp, componentHandler
+ */
+/*property
+ $on, Accept, MaterialCheckbox, action, add, belletto, check, checkbox,
+ checkboxData, checked, clearSelection, clickInner, clickOuter, close,
+ collection, connection, controller, currentItem, current_page, data,
+ dataSubmit, emitDataUpdate, error, filter, filterBy, forEach, formData,
+ formDataErrors, formUrl, getItems, hasOwnProperty, headers, helper,
+ htmlContent, id, indexOf, init, inputElement_, invokeAction,
+ invokeDetailView, invokeHtmlAction, invokeMassAction, invokeNavAction,
+ isVisible, items, keys, last_page, layout, length, loader, massAction,
+ massCheckbox, method, name, navigation, next, nume, nutika, onClose,
+ onDataUpdate, open, opened, orderBy, orderDirection, page, param,
+ parseGridStateToQueryString, perPage, perPageCollection, post, prev, push,
+ query, querySelector, querySelectorAll, remove, rowSelected, setPerPage,
+ splice, status, stopPropagation, success, target, then, toString, token,
+ trustAsHtml, uncheck, updateChildren, updateGrid, updateSelection,
+ updateSortOrder, upgradeDom, url, urlBase, value, website, websites
+ */
+
+
+(function () {
+    'use strict';
+
+    atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageService', 'helperGeneralService', function ($scope, $http, sharedMessageService, helperGeneralService) {
 
         $scope.helper = helperGeneralService;
         $scope.query = {
             page: 1,
             orderBy: 'id',
             orderDirection: 'DESC',
-            filterBy: { }
+            filterBy: {}
         };
 
         $scope.massCheckbox = false;
@@ -15,11 +42,15 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         $scope.init = function (data) {
             $scope.updateGrid(window[data]);
             $scope.urlBase = window[data].urlBase;
+            $scope.connection = window[data].connection;
+            $scope.getItems();
         };
 
         $scope.updateSortOrder = function (field) {
             if ($scope.query.orderBy === field) {
-                $scope.query.orderDirection = ($scope.query.orderDirection === 'ASC') ? 'DESC' : 'ASC';
+                $scope.query.orderDirection = ($scope.query.orderDirection === 'ASC')
+                    ? 'DESC'
+                    : 'ASC';
             } else {
                 $scope.query.orderBy = field;
             }
@@ -47,8 +78,20 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             });
         };
 
-        $scope.invokeDetailView = function () {
-            sharedMessageService.emitDataUpdate('onDetailViewOpen');
+        $scope.invokeDetailView = function (item) {
+            sharedMessageService.emitDataUpdate('onShowHorizontalLoader');
+            var req = {
+                method: 'GET',
+                url: $scope.connection.url + item.id + '?api_token=' + encodeURI($scope.connection.token) +
+                        '&' + $scope.helper.parseGridStateToQueryString($scope.query)
+            };
+            $http(req).then(function (response) {
+                sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
+                sharedMessageService.emitDataUpdate('onDetailViewOpen', response.data);
+
+            }, function () {
+                sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
+            });
         };
 
         $scope.invokeHtmlAction = function (url) {
@@ -62,19 +105,33 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             $http(req).then(function (response) {
                 setTimeout(componentHandler.upgradeDom, 100);
                 sharedMessageService.emitDataUpdate('onShow', response.data);
-            }, function () {
             });
         };
 
         $scope.getItems = function () {
+            var req;
             sharedMessageService.emitDataUpdate('onShowHorizontalLoader');
-            var req = {
-                method: 'GET',
-                url: '/' + $scope.urlBase + '/list?' + $scope.helper.parseGridStateToQueryString($scope.query)
-            };
+
+            //quick fix to handle api and database requests
+            if (typeof $scope.connection === 'object') {
+                req = {
+                    method: 'GET',
+                    url: $scope.connection.url + '?api_token=' + encodeURI($scope.connection.token) + '&' + $scope.helper.parseGridStateToQueryString($scope.query)
+                };
+            } else {
+                req = {
+                    method: 'GET',
+                    url: '/' + $scope.urlBase + '/list?' + $scope.helper.parseGridStateToQueryString($scope.query)
+                };
+            }
             $http(req).then(function (response) {
                 $scope.checkbox.clearSelection();
-                $scope.updateGrid(response.data.collection);
+                //quick fix to handle api and database requests
+                if (typeof $scope.connection === 'object') {
+                    $scope.updateGrid(response.data);
+                } else {
+                    $scope.updateGrid(response.data.collection);
+                }
                 setTimeout(componentHandler.upgradeDom, 100);
                 sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
 
@@ -90,7 +147,9 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
 
         $scope.massAction = function (action) {
 
-            if (!$scope.checkboxData.length) return;
+            if (!$scope.checkboxData.length) {
+                return;
+            }
 
             var req = {
                 method: 'POST',
@@ -107,7 +166,6 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                 $scope.checkbox.clearSelection();
                 $scope.updateGrid(response.data.collection);
                 setTimeout(componentHandler.upgradeDom, 10);
-            }, function () {
             });
 
         };
@@ -115,7 +173,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         $scope.checkbox = {
             add: function (id) {
                 var elIndex = $scope.checkboxData.indexOf(id.toString());
-                if (elIndex == -1) {
+                if (elIndex === -1) {
                     $scope.checkboxData.push(id.toString());
                     sharedMessageService.emitDataUpdate('onSelectionGrid', $scope.checkboxData);
                 }
@@ -130,15 +188,19 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             },
 
             action: function (id, event) {
-                (event.target.checked)
-                    ? $scope.checkbox.add(id)
-                    : $scope.checkbox.remove(id);
+                if (event.target.checked) {
+                    $scope.checkbox.add(id);
+                } else {
+                    $scope.checkbox.remove(id);
+                }
                 sharedMessageService.emitDataUpdate('onSelectionGrid', $scope.checkboxData);
             },
 
             massAction: function () {
                 $scope.checkbox.updateChildren();
-                (!$scope.massCheckbox) && $scope.checkbox.clearSelection();
+                if (!$scope.massCheckbox) {
+                    $scope.checkbox.clearSelection();
+                }
             },
 
             clearSelection: function () {
@@ -153,16 +215,14 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             updateChildren: function () {
                 var checkboxes = document.querySelectorAll('.mdl-data-table--body .mdl-checkbox');
 
-                for (var index in checkboxes) {
-                    if (checkboxes.hasOwnProperty(index)) {
-                        if ($scope.massCheckbox) {
-                            checkboxes[index].MaterialCheckbox.check();
-                            $scope.checkbox.add(checkboxes[index].MaterialCheckbox.inputElement_.value);
-                        } else {
-                            checkboxes[index].MaterialCheckbox.uncheck();
-                        }
+                Object.keys(checkboxes).forEach(function (key) {
+                    if ($scope.massCheckbox) {
+                        checkboxes[key].MaterialCheckbox.check();
+                        $scope.checkbox.add(checkboxes[key].MaterialCheckbox.inputElement_.value);
+                    } else {
+                        checkboxes[key].MaterialCheckbox.uncheck();
                     }
-                }
+                });
                 sharedMessageService.emitDataUpdate('onSelectionGrid', $scope.checkboxData);
             }
         };
@@ -170,18 +230,18 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         $scope.navigation = {
             prev: function () {
                 if ($scope.query.page > 1) {
-                    $scope.query.page--;
+                    $scope.query.page -= 1;
                     $scope.getItems();
                 }
             },
             next: function () {
                 if ($scope.query.page < $scope.data.last_page) {
-                    $scope.query.page++;
+                    $scope.query.page += 1;
                     $scope.getItems();
                 }
             },
             page: function (id) {
-                if (id > 0 && $scope.query.page <= $scope.data.last_page && id != $scope.data.current_page) {
+                if (id > 0 && $scope.query.page <= $scope.data.last_page && id !== $scope.data.current_page) {
                     $scope.query.page = id;
                     $scope.getItems();
                 }
@@ -189,53 +249,60 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         };
 
         sharedMessageService.onDataUpdate('onNavAction', $scope, function (message, data) {
-            switch(data.action){
-                case 'navigation':
-                    $scope.navigation[data.param]();
-                    break;
-                case 'perPage':
-                    $scope.query.page = 1;
-                    $scope.query[data.action] = data.param;
-                    $scope.getItems();
-                    break;
-                case 'website':
-                    $scope.query.page = 1;
-                    $scope.query.filterBy[data.action] = data.param;
-                    $scope.getItems();
-                    break;
-                case 'status':
-                    $scope.query.page = 1;
-                    $scope.query.filterBy[data.action] = data.param;
-                    $scope.getItems();
-                    break;
-                default:
-                    $scope.getItems();
-                    break;
+
+            message.name += '.parsed';
+
+            switch (data.action) {
+            case 'navigation':
+                $scope.navigation[data.param]();
+                break;
+            case 'perPage':
+                $scope.query.page = 1;
+                $scope.query[data.action] = data.param;
+                $scope.getItems();
+                break;
+            case 'website':
+                $scope.query.page = 1;
+                $scope.query.filterBy[data.action] = data.param;
+                $scope.getItems();
+                break;
+            case 'status':
+                $scope.query.page = 1;
+                $scope.query.filterBy[data.action] = data.param;
+                $scope.getItems();
+                break;
+            default:
+                $scope.getItems();
+                break;
             }
         });
 
         sharedMessageService.onDataUpdate('onMassAction', $scope, function (message, data) {
+            message.name += '.parsed';
             $scope.massAction(data.action);
         });
 
         sharedMessageService.onDataUpdate('onHtmlAction', $scope, function (message, data) {
+            message.name += '.parsed';
             $scope.invokeHtmlAction(data);
         });
 
         sharedMessageService.onDataUpdate('onAction', $scope, function (message, data) {
+            message.name += '.parsed';
             $scope.invokeAction(data);
         });
 
-        $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
+        $scope.$on('ngRepeatFinished', function () {
             componentHandler.upgradeDom();
         });
 
-        sharedMessageService.onDataUpdate('onClose', $scope, function (message, data) {
+        sharedMessageService.onDataUpdate('onClose', $scope, function () {
             $scope.getItems();
         });
 
-    }]).controller('GridSecondaryController', ['$scope', '$http', 'sharedMessageService', 'helperGeneralService',
-    function ($scope, $http, sharedMessageService, helperGeneralService) {
+    }]);
+
+    atypicalApp.controller('GridSecondaryController', ['$scope', '$http', 'sharedMessageService', 'helperGeneralService', function ($scope, $http, sharedMessageService, helperGeneralService) {
 
         $scope.helper = helperGeneralService;
         $scope.query = {
@@ -243,10 +310,10 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             orderBy: 'id',
             perPage: 10,
             orderDirection: 'DESC',
-            filterBy: { }
+            filterBy: {}
         };
 
-        $scope.perPageCollection = [10,20,50,100];
+        $scope.perPageCollection = [10, 20, 50, 100];
 
         $scope.massCheckbox = false;
         $scope.checkboxData = [];
@@ -258,8 +325,10 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         };
 
         $scope.updateSortOrder = function (field) {
-            if ($scope.query.orderBy == field) {
-                $scope.query.orderDirection = ($scope.query.orderDirection == 'ASC') ? 'DESC' : 'ASC';
+            if ($scope.query.orderBy === field) {
+                $scope.query.orderDirection = ($scope.query.orderDirection === 'ASC')
+                    ? 'DESC'
+                    : 'ASC';
             } else {
                 $scope.query.orderBy = field;
             }
@@ -287,7 +356,7 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
 
         };
 
-        $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
+        $scope.$on('ngRepeatFinished', function () {
             componentHandler.upgradeDom();
             $scope.checkbox.updateSelection();
         });
@@ -296,16 +365,16 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             return $scope.checkboxData.indexOf(id.toString()) > -1;
         };
 
-        $scope.setPerPage = function(count){
+        $scope.setPerPage = function (count) {
             $scope.query.page = 1;
-            $scope.query['perPage'] = count;
+            $scope.query.perPage = count;
             $scope.getItems();
         };
 
         $scope.checkbox = {
             add: function (id) {
                 var elIndex = $scope.checkboxData.indexOf(id.toString());
-                if (elIndex == -1) {
+                if (elIndex === -1) {
                     $scope.checkboxData.push(id.toString());
                 }
                 sharedMessageService.emitDataUpdate('onSecondarySelectionGrid', $scope.checkboxData);
@@ -320,15 +389,19 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             },
 
             action: function (id, event) {
-                (event.target.checked)
-                    ? $scope.checkbox.add(id)
-                    : $scope.checkbox.remove(id);
+                if (event.target.checked) {
+                    $scope.checkbox.add(id);
+                } else {
+                    $scope.checkbox.remove(id);
+                }
                 sharedMessageService.emitDataUpdate('onSecondarySelectionGrid', $scope.checkboxData);
             },
 
             massAction: function () {
                 $scope.checkbox.updateChildren();
-                (!$scope.massCheckbox) && $scope.checkbox.clearSelection();
+                if (!$scope.massCheckbox) {
+                    $scope.checkbox.clearSelection();
+                }
             },
 
             clearSelection: function () {
@@ -338,35 +411,29 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                 $scope.checkbox.updateChildren();
             },
 
-            updateSelection: function(){
+            updateSelection: function () {
                 var checkboxes = document.querySelectorAll('.mdl-data-table--body-secondary .mdl-checkbox'),
                     checkboxValue;
-
-                for (var index in checkboxes) {
-                    if (checkboxes.hasOwnProperty(index)) {
-                        checkboxValue = checkboxes[index].MaterialCheckbox.inputElement_.value;
-                        if($scope.checkboxData.indexOf(checkboxValue.toString())!=-1){
-                            checkboxes[index].MaterialCheckbox.check();
-                        }
+                Object.keys(checkboxes).forEach(function (key) {
+                    checkboxValue = checkboxes[key].MaterialCheckbox.inputElement_.value;
+                    if ($scope.checkboxData.indexOf(checkboxValue.toString()) !== -1) {
+                        checkboxes[key].MaterialCheckbox.check();
                     }
-                }
+                });
                 sharedMessageService.emitDataUpdate('onSecondarySelectionGrid', $scope.checkboxData);
             },
 
             updateChildren: function () {
                 var checkboxes = document.querySelectorAll('.mdl-data-table--body-secondary .mdl-checkbox');
-
-                for (var index in checkboxes) {
-                    if (checkboxes.hasOwnProperty(index)) {
-                        if ($scope.massCheckbox) {
-                            checkboxes[index].MaterialCheckbox.check();
-                            $scope.checkbox.add(checkboxes[index].MaterialCheckbox.inputElement_.value);
-                        } else {
-                            checkboxes[index].MaterialCheckbox.uncheck();
-                            $scope.checkbox.remove(checkboxes[index].MaterialCheckbox.inputElement_.value);
-                        }
+                Object.keys(checkboxes).forEach(function (key) {
+                    if ($scope.massCheckbox) {
+                        checkboxes[key].MaterialCheckbox.check();
+                        $scope.checkbox.add(checkboxes[key].MaterialCheckbox.inputElement_.value);
+                    } else {
+                        checkboxes[key].MaterialCheckbox.uncheck();
+                        $scope.checkbox.remove(checkboxes[key].MaterialCheckbox.inputElement_.value);
                     }
-                }
+                });
                 sharedMessageService.emitDataUpdate('onSecondarySelectionGrid', $scope.checkboxData);
             }
         };
@@ -374,18 +441,18 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         $scope.navigation = {
             prev: function () {
                 if ($scope.query.page > 1) {
-                    $scope.query.page--;
+                    $scope.query.page -= 1;
                     $scope.getItems();
                 }
             },
             next: function () {
                 if ($scope.query.page < $scope.data.last_page) {
-                    $scope.query.page++;
+                    $scope.query.page += 1;
                     $scope.getItems();
                 }
             },
             page: function (id) {
-                if (id > 0 && $scope.query.page <= $scope.data.last_page && id != $scope.data.current_page) {
+                if (id > 0 && $scope.query.page <= $scope.data.last_page && id !== $scope.data.current_page) {
                     $scope.query.page = id;
                     $scope.getItems();
                 }
@@ -393,10 +460,11 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         };
 
 
-    }]).controller('GridBottomController', ['$scope', '$http', 'sharedMessageService', 'helperGeneralService',
-    function ($scope, $http, sharedMessageService, helperGeneralService) {
+    }]);
 
-        $scope.perPageCollection = [10,20,50,100];
+    atypicalApp.controller('GridBottomController', ['$scope', 'sharedMessageService', 'helperGeneralService', function ($scope, sharedMessageService, helperGeneralService) {
+
+        $scope.perPageCollection = [10, 20, 50, 100];
         $scope.checkboxData = [];
 
         $scope.isVisible = true;
@@ -406,53 +474,53 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
             $scope.data = window[data];
         };
 
-        $scope.invokeNavAction = function(action, param){
-            sharedMessageService.emitDataUpdate('onNavAction', {'action':action, 'param': param});
+        $scope.invokeNavAction = function (action, param) {
+            sharedMessageService.emitDataUpdate('onNavAction', {'action': action, 'param': param});
         };
 
-        $scope.invokeMassAction = function(action){
-            sharedMessageService.emitDataUpdate('onMassAction', {'action':action});
+        $scope.invokeMassAction = function (action) {
+            sharedMessageService.emitDataUpdate('onMassAction', {'action': action});
         };
 
         sharedMessageService.onDataUpdate('onUpdateGrid', $scope, function (message, data) {
+            message.name += '.parsed';
             $scope.data = data;
         });
 
         sharedMessageService.onDataUpdate('onSelectionGrid', $scope, function (message, data) {
+            message.name += '.parsed';
             $scope.checkboxData = data;
         });
 
-    }]).controller('GridLeftController', ['$scope', 'sharedMessageService',
+    }]);
 
-    function ($scope, sharedMessageService) {
+    atypicalApp.controller('GridLeftController', ['$scope', 'sharedMessageService', function ($scope, sharedMessageService) {
 
         $scope.data = {};
 
-        $scope.init = function(data){
-            for(var item in data){
-                if(data.hasOwnProperty(item)){
-                    $scope.data[item] = window[data[item]];
-                }
-            }
+        $scope.init = function (data) {
+            Object.keys(data).forEach(function (key) {
+                $scope.data[key] = window[data[key]];
+            });
         };
 
         $scope.filter = {
-            'website':'',
-            'status':''
+            'website': '',
+            'status': ''
         };
 
         $scope.websites = {
-            'nume':'Nume Products',
+            'nume': 'Nume Products',
             'belletto': 'Belletto Studio',
             'nutika': 'Nutika'
         };
 
-        $scope.invokeNavAction = function(action, param){
-            sharedMessageService.emitDataUpdate('onNavAction', {'action':action, 'param': param});
+        $scope.invokeNavAction = function (action, param) {
+            sharedMessageService.emitDataUpdate('onNavAction', {'action': action, 'param': param});
             $scope.filter[action] = param;
         };
 
-        $scope.invokeHtmlAction = function(url){
+        $scope.invokeHtmlAction = function (url) {
             sharedMessageService.emitDataUpdate('onHtmlAction', url);
         };
 
@@ -462,8 +530,9 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         //});
 
 
-    }]).controller('GridPopController', ['$scope', '$http', 'sharedMessageService', '$sce',
-    function ($scope, $http, sharedMessageService, $sce) {
+    }]);
+
+    atypicalApp.controller('GridPopController', ['$scope', 'sharedMessageService', '$sce', function ($scope, sharedMessageService, $sce) {
         $scope.isVisible = false;
         $scope.htmlContent = '';
 
@@ -481,17 +550,19 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         };
 
         sharedMessageService.onDataUpdate('onShow', $scope, function (message, data) {
+            message.name += '.parsed';
             $scope.isVisible = true;
             $scope.htmlContent = $sce.trustAsHtml(data);
         });
 
-        sharedMessageService.onDataUpdate('onClose', $scope, function (message, data) {
+        sharedMessageService.onDataUpdate('onClose', $scope, function () {
             $scope.isVisible = false;
             $scope.htmlContent = $sce.trustAsHtml('');
         });
 
-    }]).controller('GridFormController', ['$scope', '$http', 'sharedMessageService',
-    function ($scope, $http, sharedMessageService) {
+    }]);
+
+    atypicalApp.controller('GridFormController', ['$scope', '$http', 'sharedMessageService', function ($scope, $http, sharedMessageService) {
 
         $scope.formData = {};
         $scope.formDataErrors = {};
@@ -499,7 +570,8 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         $scope.dataSubmit = function () {
             sharedMessageService.emitDataUpdate('onShowHorizontalLoader');
             $scope.formDataErrors = {};
-            $http.post($scope.formUrl, $scope.formData).success(function (data) {
+
+            $http.post($scope.formUrl, $scope.formData).success(function () {
                 $scope.formData = {};
                 sharedMessageService.emitDataUpdate('onClose');
                 sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
@@ -510,10 +582,12 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
         };
 
         sharedMessageService.onDataUpdate('onSecondarySelectionGrid', $scope, function (message, data) {
+            message.name += '.parsed';
             $scope.formData.checkboxData = data;
         });
-    }]).controller('DetailViewController', ['$scope', '$http', 'sharedMessageService',
-    function ($scope, $http, sharedMessageService) {
+    }]);
+
+    atypicalApp.controller('DetailViewController', ['$scope', 'sharedMessageService', function ($scope, sharedMessageService) {
 
         $scope.layout = {
             opened: false,
@@ -524,95 +598,20 @@ atypicalApp.controller('GridController', ['$scope', '$http', 'sharedMessageServi
                 $scope.layout.opened = true;
             }
         };
+
         $scope.formData = {};
         $scope.formDataErrors = {};
+        $scope.currentItem = null;
 
         sharedMessageService.onDataUpdate('onDetailViewOpen', $scope, function (message, data) {
-            //TODO: add data loading when data is present in database
+            message.name += '.parsed';
+            $scope.currentItem = data;
             $scope.layout.open();
         });
 
-        sharedMessageService.onDataUpdate('onDetailViewClose', $scope, function (message, data) {
+        sharedMessageService.onDataUpdate('onDetailViewClose', $scope, function () {
             $scope.layout.close();
         });
-
-
-    }]).controller('OverlayController', ['$scope', '$http', 'sharedMessageService',
-    function ($scope, $http, sharedMessageService) {
-
-        $scope.isVisible = false;
-
-        sharedMessageService.onDataUpdate('onShowOverlay', $scope, function (message, data) {
-            $scope.isVisible = true;
-        });
-
-        sharedMessageService.onDataUpdate('onCloseOverlay', $scope, function (message, data) {
-            $scope.isVisible = false;
-        });
-
-    }]).controller('HorizontalLoaderController', ['$scope', '$http', 'sharedMessageService',
-    function ($scope, $http, sharedMessageService) {
-
-        $scope.isVisible = false;
-
-        sharedMessageService.onDataUpdate('onShowHorizontalLoader', $scope, function (message, data) {
-            $scope.isVisible = true;
-        });
-
-        sharedMessageService.onDataUpdate('onCloseHorizontalLoader', $scope, function (message, data) {
-            $scope.isVisible = false;
-        });
-
-    }]).controller('NotificationController', ['$scope', '$http', '$interval', 'sharedMessageService',
-    function ($scope, $http, $interval, sharedMessageService) {
-
-        var stop;
-        $scope.messages = [];
-
-        $scope.removeMessage = function(hash){
-            console.log(hash)
-            for(var m in $scope.messages){
-                if($scope.messages.hasOwnProperty(m) && $scope.messages[m].hash == hash){
-                    $scope.messages.splice (m, 1);
-                }
-            }
-        };
-
-        $scope.addMessages = function(data){
-            var date=new Date();
-
-            for(var i=0; i<data.length; i++){
-                $scope.messages.push({
-                    type:data[i].type,
-                    text:data[i].text,
-                    hash:date.getTime()+Math.random()
-                })
-            }
-        };
-
-        sharedMessageService.onDataUpdate('onNotification', $scope, function (message, data) {
-
-            $scope.stopInterval();
-
-            $scope.addMessages(data);
-
-            stop = $interval(function(){
-                if($scope.messages.length){
-                    $scope.messages.splice (0, 1);
-                }else{
-                    $scope.stopInterval();
-                }
-            },2000);
-        });
-
-        $scope.stopInterval = function() {
-            if (angular.isDefined(stop)) {
-                $interval.cancel(stop);
-                stop = undefined;
-            }
-        };
-
-        $scope.$on('$destroy', function() {
-           $scope.stopInterval();
-        });
     }]);
+
+}());
