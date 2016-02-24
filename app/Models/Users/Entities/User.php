@@ -245,7 +245,8 @@ class User extends DoctrineModel implements
 
     public function grantRole(Role $role)
     {
-        $this->roles[] = $role;
+        $this->roles->clear();
+        $this->roles->add($role);
         return $this;
     }
 

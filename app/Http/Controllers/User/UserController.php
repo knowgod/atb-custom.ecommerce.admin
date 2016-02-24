@@ -25,11 +25,14 @@ class UserController extends Controller {
 
     public $userRepo = null;
 
+    public $roleRepo = null;
+
     public $repositoryFilter;
 
-    public function __construct(UserRepository $userRepo, RepositoryFilter $repositoryFilter){
+    public function __construct(UserRepository $userRepo, RepositoryFilter $repositoryFilter, RoleRepository $roleRepo){
         $this->userRepo = $userRepo;
         $this->repositoryFilter = $repositoryFilter;
+        $this->roleRepo = $roleRepo;
     }
 
     public function index(Request $request){
@@ -82,6 +85,11 @@ class UserController extends Controller {
                 ->setLastname($request->input('lastname'))
                 ->setFullname($request->input('firstname') . ' ' . $request->input('lastname'))
                 ->setEmail($request->input('email'));
+
+        if($request->has('user_role')){
+            $role =  $this->roleRepo->find($request->input('user_role'));
+            $user->grantRole($role);
+        }
 
         if ($request->has('password')){
             $user->setPassword(bcrypt($request->input('password')));
