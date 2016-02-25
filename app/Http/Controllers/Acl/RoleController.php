@@ -118,6 +118,26 @@ class RoleController extends Controller {
 
         return view('role.update', array('role' => $role,'permissions'=>$permissions));
     }
+
+    protected function parsePermissions($params)
+    {
+        $permissions = [];
+
+        if (isset($params['super_admin']) && $params['super_admin'] === true) {
+            return ['*'];
+        }
+
+        foreach ($params['policies'] as $policyName => $policyAction) {
+            if (is_array($policyAction)) {
+                foreach ($policyAction as $name => $action) {
+                    if ($action == false) continue;
+                    $permissions[] = $policyName.'.'.$name;
+                }
+            }
+        }
+
+        return $permissions;
+    }
 }
 
 
