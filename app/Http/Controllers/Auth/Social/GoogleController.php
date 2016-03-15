@@ -14,7 +14,6 @@ use App\Models\Users\Repositories\UserRepository;
 use App\Models\Invitations\Repositories\InvitationRepository;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Auth;
-use Validator;
 use Socialite;
 
 class GoogleController extends AuthController {
@@ -33,7 +32,7 @@ class GoogleController extends AuthController {
      *
      * @return void
      */
-    public function handleProviderCallback(UserRepository $userRepository, InvitationRepository $inviteRepository){
+    public function handleProviderCallback(UserRepository $userRepository, InvitationRepository $inviteRepository, User $userModel){
 
         $googleUser = Socialite::driver('google')->user();
 
@@ -53,15 +52,18 @@ class GoogleController extends AuthController {
             $firstName = $googleUser['name']['givenName'] ? $googleUser['name']['givenName'] : $nameParts[0];
             $lastName = $googleUser['name']['familyName'] ? $googleUser['name']['familyName'] : $nameParts[1];
 
-            $user = new User();
-            $user->setEmail($googleUser->getEmail())
-                    ->setFirstname($firstName)
-                    ->setLastname($lastName)
-                    ->setFullname($fullName)
-                    ->setRegisterSource('google')
-                    ->setGoogleAvatarImg($googleUser->getAvatar())
-                    ->setGoogleId($googleUser->getId())
-                    ->setPassword(bcrypt($googleUser->getId()));
+            $user = $userModel->fillFromArray(
+                    [
+                            'email'             => $googleUser->getEmail(),
+                            'firstname'         => $firstName,
+                            'lastname'          => $lastName,
+                            'fullname'          => $fullName,
+                            'register_source'   => 'google',
+                            'google_avatar_img' => $googleUser->getAvatar(),
+                            'google_id'         => $googleUser->getId(),
+                            'password'          => bcrypt($googleUser->getId())
+                    ]
+            );
             $user->save();
         }
         Auth::login($user);
