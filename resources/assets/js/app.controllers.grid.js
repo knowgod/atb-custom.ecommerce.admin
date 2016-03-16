@@ -62,20 +62,26 @@
             sharedMessageService.emitDataUpdate('onUpdateGrid', $scope.data);
         };
 
-        $scope.invokeAction = function (url) {
-            sharedMessageService.emitDataUpdate('onShowHorizontalLoader');
-            var req = {
-                method: 'GET',
-                url: url + '?' + $scope.helper.parseGridStateToQueryString($scope.query)
-            };
-            $http(req).then(function (response) {
-                sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
-                $scope.updateGrid(response.data.collection);
-                $scope.checkbox.clearSelection();
-                setTimeout(componentHandler.upgradeDom, 10);
-            }, function () {
-                sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
-            });
+        $scope.invokeAction = function (url, confirmation) {
+            if (confirmation) {
+                if(!confirm('Are you sure?')){
+                    return;
+                }
+            }
+                sharedMessageService.emitDataUpdate('onShowHorizontalLoader');
+                var req = {
+                    method: 'GET',
+                    url: url + '?' + $scope.helper.parseGridStateToQueryString($scope.query)
+                };
+                $http(req).then(function (response) {
+                    sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
+                    $scope.updateGrid(response.data.collection);
+                    $scope.checkbox.clearSelection();
+                    setTimeout(componentHandler.upgradeDom, 10);
+                }, function () {
+                    sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
+                });
+
         };
 
         $scope.invokeDetailView = function (item) {

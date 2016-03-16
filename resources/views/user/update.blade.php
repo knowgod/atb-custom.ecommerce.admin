@@ -56,7 +56,7 @@
                         <select class="mdl-select__select" id="user_role" ng-model="formData.user_role" name="user_role">
                             <option value="">Please Select</option>
                             @foreach($roles_list as $role)
-                                <option @if($user_role->getId() === $role->getId()) selected="selected" @endif value="{{$role->getId()}}">{{$role->getName()}}</option>
+                                <option @if(is_object($user_role) && $user_role->getId() === $role->getId()) selected="selected" @endif value="{{$role->getId()}}">{{$role->getName()}}</option>
                             @endforeach
                         </select>
                     </label>
