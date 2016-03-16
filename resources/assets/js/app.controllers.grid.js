@@ -583,6 +583,7 @@
                     $scope.formData = {};
                     sharedMessageService.emitDataUpdate('onClose');
                     sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
+                    return;
                 }
 
                 $scope.formDataErrors = response;
