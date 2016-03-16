@@ -577,9 +577,15 @@
             sharedMessageService.emitDataUpdate('onShowHorizontalLoader');
             $scope.formDataErrors = {};
 
-            $http.post($scope.formUrl, $scope.formData).success(function () {
-                $scope.formData = {};
-                sharedMessageService.emitDataUpdate('onClose');
+            $http.post($scope.formUrl, $scope.formData).success(function (response, status) {
+
+                if (status != 422) {
+                    $scope.formData = {};
+                    sharedMessageService.emitDataUpdate('onClose');
+                    sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
+                }
+
+                $scope.formDataErrors = response;
                 sharedMessageService.emitDataUpdate('onCloseHorizontalLoader');
             }).error(function (data) {
                 $scope.formDataErrors = data;
