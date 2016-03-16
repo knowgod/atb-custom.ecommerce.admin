@@ -46,12 +46,11 @@ class InvitationController extends Controller {
         return view('invitation.form');
     }
 
-    public function store(Requests\Invitation\InvitationFormRequest $request){
+    public function store(Requests\Invitation\InvitationFormRequest $request, Invitation $invitation){
 
         $this->authorize('sendEmail', new AclPolicy());
 
         $this->sendEmail($request->user()->getEmail(), $request->input('email'));
-        $invitation = new Invitation();
         $invitation
             ->setEmail($request->input('email'))
             ->setStatus(0)
