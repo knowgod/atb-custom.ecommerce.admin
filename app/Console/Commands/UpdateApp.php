@@ -43,6 +43,7 @@ class UpdateApp extends Command
         $this->runShellCommand('git checkout master');
         $this->runShellCommand('composer install');
         $this->runShellCommand('php artisan doctrine:migrations:migrate');
+        $this->runShellCommand('npm install && gulp');
     }
 
     public function runShellCommand($command){
