@@ -41,8 +41,15 @@ class UpdateApp extends Command
     {
         $branch = $this->argument('git_branch') ?: 'master';
 
-        $this->runShellCommand("git pull origin {$branch}");
-        $this->runShellCommand("git checkout {$branch}");
+        $isCheckout = $this->runShellCommand("git checkout {$branch}");
+        if ($isCheckout) {
+            $this->runShellCommand("git pull origin {$branch}");
+        }
+
+        if (!$isCheckout && !$this->confirm("GIT branch switching failed.\nDo you wish to continue? [y|N]", true)) {
+            return;
+        }
+
         $this->runShellCommand('composer install');
         $this->runShellCommand('php artisan doctrine:migrations:migrate');
         $this->runShellCommand('npm install && gulp');
