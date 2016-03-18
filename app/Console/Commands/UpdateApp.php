@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use Collective\Remote\RemoteFacade as SSH;
+use Illuminate\Console\Command;
+use Symfony\Component\Process\Process;
 
 class UpdateApp extends Command
 {
@@ -46,14 +47,27 @@ class UpdateApp extends Command
         $this->runShellCommand('npm install && gulp');
     }
 
-    public function runShellCommand($command){
-        $output = array();
+    /**
+     * @param $command
+     * @return bool
+     */
+    public function runShellCommand($command) {
+        echo "\n\n======== Run: ========\n{$command}\n======================\n";
 
-        echo PHP_EOL.PHP_EOL.'Run: "'.$command.'"'.PHP_EOL;
-        exec($command, $output);
+        $process = new Process($command);
+        $result  = $process->run(array($this, 'processOutput'));
+        return (0 == $result);
+    }
 
-        foreach($output as $line){
-            echo '- '.$line.PHP_EOL;
+    /**
+     * @param string $type
+     * @param string $buffer
+     */
+    public function processOutput($type, $buffer) {
+        if (Process::ERR === $type) {
+            echo 'ERR > ' . $buffer;
+        } else {
+            echo $buffer;
         }
     }
 }
