@@ -13,7 +13,7 @@ class UpdateApp extends Command
      *
      * @var string
      */
-    protected $signature = 'update:app';
+    protected $signature = 'update:app {git_branch?}';
 
     /**
      * The console command description.
@@ -39,9 +39,10 @@ class UpdateApp extends Command
      */
     public function handle()
     {
+        $branch = $this->argument('git_branch') ?: 'master';
 
-        $this->runShellCommand('git pull origin master');
-        $this->runShellCommand('git checkout master');
+        $this->runShellCommand("git pull origin {$branch}");
+        $this->runShellCommand("git checkout {$branch}");
         $this->runShellCommand('composer install');
         $this->runShellCommand('php artisan doctrine:migrations:migrate');
         $this->runShellCommand('npm install && gulp');
