@@ -60,7 +60,9 @@ class UpdateApp extends Command
      * @return bool
      */
     public function runShellCommand($command) {
-        echo "\n\n======== Run: ========\n{$command}\n======================\n";
+        $this->line("\n\n======== Run: ========");
+        $this->line($command);
+        $this->line("======================");
 
         $process = new Process($command);
         $result  = $process->run(array($this, 'processOutput'));
@@ -73,9 +75,9 @@ class UpdateApp extends Command
      */
     public function processOutput($type, $buffer) {
         if (Process::ERR === $type) {
-            echo 'ERR > ' . $buffer;
+            $this->error(trim($buffer));
         } else {
-            echo $buffer;
+            $this->info(trim($buffer));
         }
     }
 }
